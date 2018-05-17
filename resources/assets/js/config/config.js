@@ -9,9 +9,8 @@ export const getHeader = function(){
 	}
 	return headers
 }
-// export const apiDomain = 'http://192.168.10.42:8000'
-// 
-export const apiDomain = 'http://localhost:8000'
+
+export const apiDomain = 'http://167.99.74.115'
 export const loginUrl  = apiDomain + '/oauth/token'
 export const logoutUrl = apiDomain + '/api/logout'
 export const adminUrl = apiDomain+'/api/dofuuAdmin'
