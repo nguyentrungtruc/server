@@ -55,7 +55,7 @@ class ProductController extends Controller
         $find = Store::with(['products' => function($query) use ($name) {
             return $query->where('name', '=', $name);
         }])->where('id','=', $sid)->first();
-        if(count($find->products) > 0){
+        if(!is_null($find->products)){
             return response(['Already exists taken'], 422);
         }
         $product              = new Product;
@@ -124,7 +124,7 @@ class ProductController extends Controller
         $find = Store::with(['products' => function($query) use ($name, $id) {
             return $query->where('name', '=', $name)->where('ec_products.id', '!=', $id);
         }])->where('id','=', $sid)->first();
-        if(count($find->products)>0){
+        if(!is_null($find->products)>0){
             return response(['Đã tồn tại'], 422);
         }
         $product              = Product::find($id);

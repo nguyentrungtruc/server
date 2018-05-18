@@ -46,6 +46,10 @@ const router = new Router({
 	mode: 'history',
 	routes: [
 	{
+		path: '/',
+		redirect: {name: 'Dashboard'}
+	},
+	{
 		path: '/dofuu-admin-panel/test',
 		component: Test,
 		name: 'Test',

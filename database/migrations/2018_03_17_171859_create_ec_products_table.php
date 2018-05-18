@@ -18,6 +18,7 @@ class CreateEcProductsTable extends Migration
             $table->string('name', 255);
             $table->string('_name')->nullable();
             $table->decimal('price', 12, 0);
+            $table->text('description');
             $table->integer('count')->default(0);
             $table->tinyInteger('have_size')->default(0);
             $table->tinyInteger('have_topping')->default(0);
