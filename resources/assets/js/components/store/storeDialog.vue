@@ -349,11 +349,9 @@ save: async function(request) {
 vm.$validator.validateAll('store').then(async function(result){
 	if(result) {	
 		await getLocation(vm.editedItem.store.address).then(response => {
-			if(response.status == 200) {
-				vm.editedItem.store.lat = response.data.results[0].geometry.location.lat
-				vm.editedItem.store.lng = response.data.results[0].geometry.location.lng
-			}							
-		})
+			vm.editedItem.store.lat = response[0].geometry.location.lat()
+			vm.editedItem.store.lng = response[0].geometry.location.lng()	
+		})	
 		vm.$store.dispatch('updateStore', vm.editedItem.store).then(response => {
 			if(response.status == 200) {
 				vm.close()
