@@ -10,7 +10,7 @@ export const getHeader = function(){
 	return headers
 }
 
-// export const apiDomain = 'http://167.99.74.115'
+export const apiDomain = 'http://www.api.dofuu.com'
 export const loginUrl  = apiDomain + '/oauth/token'
 export const logoutUrl = apiDomain + '/api/logout'
 export const adminUrl = apiDomain+'/api/dofuuAdmin'
