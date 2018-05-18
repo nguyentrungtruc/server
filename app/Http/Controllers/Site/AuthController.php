@@ -26,7 +26,7 @@ class AuthController extends Controller
         $this->customer = Role::where('name', 'Customer')->first();
         $this->partner  = Role::where('name', 'Partner')->first();
         $this->employee = Role::where('name', 'Employee')->first();
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
