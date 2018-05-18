@@ -1,4 +1,4 @@
-import {productStatusUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchProductStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(productStatusUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Product-Status', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_PRODUCT_STATUS', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addProductStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(productStatusUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Product-Status', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_PRODUCT_STATUS', response.data)
 				commit('ALERT_PRODUCT_STATUS', {alert:true, messages: payload.product_status_name+' status has been added.', type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updateProductStatus: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(productStatusUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Product-Status/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_PRODUCT_STATUS', response.data)
 				commit('ALERT_PRODUCT_STATUS', {alert:true, messages: payload.product_status_name+' status has been edited.', type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deleteProductStatus: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(productStatusUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Product-Status/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_PRODUCT_STATUS', payload)
 				commit('ALERT_PRODUCT_STATUS', {alert:true, messages: payload.product_status_name+' status has been deleted.', type: 'success'})

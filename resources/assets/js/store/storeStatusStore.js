@@ -1,4 +1,4 @@
-import {storeStatusUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchStoreStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(storeStatusUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Store-Status', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_STORE_STATUS', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addStoreStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(storeStatusUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Store-Status', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_STORE_STATUS', response.data)
 				commit('ALERT_STORE_STATUS', {alert:true, messages: payload.store_status_name+' status has been added.', type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updateStoreStatus: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(storeStatusUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Store-Status/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_STORE_STATUS', response.data)
 				commit('ALERT_STORE_STATUS', {alert:true, messages: payload.store_status_name+' status has been edited.', type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deleteStoreStatus: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(storeStatusUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Store-Status/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_STORE_STATUS', payload)
 				commit('ALERT_STORE_STATUS', {alert:true, messages: payload.store_status_name+' status has been deleted.', type: 'success'})

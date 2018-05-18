@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {productUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 
 const state = {
 	products: {},
@@ -58,7 +58,7 @@ const mutations = {
 
 const actions = {
 	fetchProduct: ({commit}, sid) => new Promise((resolve, reject) => {
-		axios.get(productUrl+'/'+sid, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Product/'+sid, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_PRODUCT', response.data)
 			}
@@ -68,7 +68,7 @@ const actions = {
 		})
 	}),
 	addProduct: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.post(productUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Product', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_PRODUCT', response.data)
 				commit('ALERT_PRODUCT', {alert:true, messages: payload.name+' product has been added.', type: 'success'})
@@ -89,7 +89,7 @@ const actions = {
 	}),
 	updateProduct: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(productUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Product/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_PRODUCT', response.data)
 				commit('ALERT_PRODUCT', {alert:true, messages: payload.name+' product has been edited.', type: 'success'})
@@ -107,7 +107,7 @@ const actions = {
 	}),
 	deleteProduct: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(productUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Product/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_PRODUCT', payload)
 				commit('ALERT_PRODUCT', {alert:true, messages: payload.name+' product has been deleted.', type: 'success'})

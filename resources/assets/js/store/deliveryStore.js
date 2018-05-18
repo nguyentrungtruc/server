@@ -1,4 +1,4 @@
-import {deliveryUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -64,7 +64,7 @@ const mutations = {
 
 const actions = {
 	fetchDelivery: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(deliveryUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Delivery', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_DELIVERY', response.data)
 			}
@@ -78,7 +78,7 @@ const actions = {
 	}),
 	updateDelivery: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(deliveryUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Delivery/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_DELIVERY', response.data)
 				commit('ALERT_DELIVERY', {alert:true, messages: response.data.data.name+' delivery has been edited.', type: 'success'})
@@ -96,7 +96,7 @@ const actions = {
 	}),
 	deleteDelivery: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(deliveryUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Delivery/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_DELIVERY', payload)
 				commit('ALERT_DELIVERY', {alert:true, messages: 'delivery has been deleted.', type: 'success'})

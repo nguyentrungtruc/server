@@ -1,4 +1,4 @@
-import {apiDomain, countryUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchCountry: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(countryUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Country', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_COUNTRY', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addCountry: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(countryUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Country', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_COUNTRY', response.data)
 				commit('ALERT_COUNTRY', {alert:true, messages: payload.country_name+' country has been added.', type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updateCountry: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(countryUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Country/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_COUNTRY', response.data)
 				commit('ALERT_COUNTRY', {alert:true, messages: payload.country_name+' country has been edited.', type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deleteCountry: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(countryUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Country/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_COUNTRY', payload)
 				commit('ALERT_COUNTRY', {alert:true, messages: payload.country_name+' country has been deleted.', type: 'success'})

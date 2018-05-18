@@ -1,4 +1,4 @@
-import {couponUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -63,7 +63,7 @@ const mutations = {
 
 const actions = {
 	fetchCoupon: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(couponUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Coupon', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_COUPON', response.data)
 			}
@@ -73,7 +73,7 @@ const actions = {
 		})
 	}),
 	addCoupon: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(couponUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Coupon', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_COUPON', response.data)
 				commit('ALERT_COUPON', {alert:true, messages: payload.title+' coupon has been added.', type: 'success'})
@@ -89,8 +89,8 @@ const actions = {
 	editCoupon: ({commit}, payload) => new Promise((resolve, reject) => {
 		commit('EDIT_COUPON', payload)
 	}),
-	showCoupon: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get(couponUrl+'/'+payload, {headers: getHeader()}).then(response => {
+	showCoupon: ({commit}, id) => new Promise((resolve, reject) => {
+		axios.get('/api/Dofuu-Coupon/'+id, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('SHOW_COUPON', response.data)
 			}
@@ -100,7 +100,7 @@ const actions = {
 	}),
 	updateCoupon: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(couponUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Coupon/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_COUPON', response.data)
 				commit('ALERT_COUPON', {alert:true, messages: payload.title+' coupon has been edited.', type: 'success'})
@@ -115,7 +115,7 @@ const actions = {
 	}),
 	deleteCoupon: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(couponUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Coupon/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_COUPON', payload)
 				commit('ALERT_COUPON', {alert:true, messages: payload.title+' coupon has been deleted.', type: 'success'})

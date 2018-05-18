@@ -1,4 +1,4 @@
-import {apiDomain, typeUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchType: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(typeUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Type', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_TYPE', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addType: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(typeUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Type', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_TYPE', response.data)
 				commit('ALERT_TYPE', {alert:true, messages: payload.type_name+' type has been added.', type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updateType: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(typeUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Type/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_TYPE', response.data)
 				commit('ALERT_TYPE', {alert:true, messages: payload.type_name+' type has been edited.', type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deleteType: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(typeUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Type/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_TYPE', payload)
 				commit('ALERT_TYPE', {alert:true, messages: payload.type_name+' type has been deleted.', type: 'success'})

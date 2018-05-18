@@ -1,69 +1,27 @@
 webpackJsonp([1],{
 
-/***/ 1115:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(1116);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(9)("7d7e5395", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ec0590a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./activityDialog.vue", function() {
-     var newContent = require("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ec0590a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./activityDialog.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 1116:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.google-map[data-v-4ec0590a] {\r\n\twidth: 800px;\r\n\theight: 600px;\r\n\tmargin: 0 auto;\r\n\tbackground: gray;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 1117:
+/***/ 1194:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(20), __webpack_require__(19), __webpack_require__(4), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19), __webpack_require__(98), __webpack_require__(18), __webpack_require__(13), __webpack_require__(542), __webpack_require__(6), __webpack_require__(541), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else if (typeof exports !== "undefined") {
-		factory(exports, require('babel-runtime/regenerator'), require('babel-runtime/helpers/asyncToGenerator'), require('babel-runtime/helpers/extends'), require('vuex'));
+		factory(exports, require('babel-runtime/regenerator'), require('babel-runtime/core-js/json/stringify'), require('babel-runtime/helpers/asyncToGenerator'), require('vee-validate'), require('vee-validate/dist/locale/vi'), require('@/config/config'), require('@/env.js'), require('vuex'));
 	} else {
 		var mod = {
 			exports: {}
 		};
-		factory(mod.exports, global.regenerator, global.asyncToGenerator, global._extends, global.vuex);
-		global.activityDialog = mod.exports;
+		factory(mod.exports, global.regenerator, global.stringify, global.asyncToGenerator, global.veeValidate, global.vi, global.config, global.env, global.vuex);
+		global.Login = mod.exports;
 	}
 })(this, function (exports) {
 	(function (global, factory) {
 		if (true) {
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(20), __webpack_require__(19), __webpack_require__(4), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19), __webpack_require__(98), __webpack_require__(18), __webpack_require__(13), __webpack_require__(542), __webpack_require__(6), __webpack_require__(541), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -73,10 +31,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 			var mod = {
 				exports: {}
 			};
-			factory(mod.exports, global.regenerator, global.asyncToGenerator, global._extends, global.vuex);
-			global.activityDialog = mod.exports;
+			factory(mod.exports, global.regenerator, global.stringify, global.asyncToGenerator, global.veeValidate, global.vi, global.config, global.env, global.vuex);
+			global.Login = mod.exports;
 		}
-	})(this, function (exports, _regenerator, _asyncToGenerator2, _extends2, _vuex) {
+	})(this, function (exports, _regenerator, _stringify, _asyncToGenerator2, _veeValidate, _vi, _config, _env, _vuex) {
 		'use strict';
 
 		Object.defineProperty(exports, "__esModule", {
@@ -85,9 +43,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 		var _regenerator2 = _interopRequireDefault(_regenerator);
 
+		var _stringify2 = _interopRequireDefault(_stringify);
+
 		var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-		var _extends3 = _interopRequireDefault(_extends2);
+		var _vi2 = _interopRequireDefault(_vi);
 
 		function _interopRequireDefault(obj) {
 			return obj && obj.__esModule ? obj : {
@@ -96,83 +56,106 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 		}
 
 		exports.default = {
-			components: {},
 			data: function data() {
 				return {
-					title: 'Activity Time',
-					items: []
+					locale: 'vi',
+					drawer: null,
+					email: null,
+					password: null,
+					loading: false
 				};
 			},
+			props: {
+				source: String
+			},
 			methods: {
-				saveTime: function saveTime(ref, time, index) {
-					this.$refs[ref][index].save(time);
-				},
-				save: function save() {
-					var data = [];
-					this.items.forEach(function (item) {
-						if (item.id != null) {
-							var timeTemp = [];
-							item.times.forEach(function (time) {
-								timeTemp.push({ from: time.from, to: time.to });
-							});
-							data.push({ activity_id: item.id, times: timeTemp });
-						}
-					});
-					if (data.length > 0) {
-						var payload = { data: data };
-						axios.post('/api/DofuuActivityTime/' + this.store.id, payload, { headers: getHeader() }).then(function (response) {
-							console.log(response);
-						}).catch(function (error) {});
-					}
-				}
-			},
-			computed: (0, _extends3.default)({}, (0, _vuex.mapState)({
-				dialog: function dialog(state) {
-					return state.activityStore.dialog;
-				}
-			})),
-			watch: {
-				'activities': function activities(val) {
-					var array = new Array();
-					val.forEach(function (item) {
-						array.push({ id: null, times: [{ from: '08:00', to: '22:00', fromModal: false, toModal: false }] });
-					});
-					console.log(array);
-					this.items = array;
-				}
-			},
-			mounted: function () {
-				var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-					return _regenerator2.default.wrap(function _callee$(_context) {
-						while (1) {
-							switch (_context.prev = _context.next) {
-								case 0:
-									console.log(this.dialog);
-									if (this.dialog) {
-										this.$store.dispatch('fetchActivity');
-									}
+				login: function () {
+					var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+						var _this = this;
 
-								case 2:
-								case 'end':
-									return _context.stop();
+						var vm;
+						return _regenerator2.default.wrap(function _callee2$(_context2) {
+							while (1) {
+								switch (_context2.prev = _context2.next) {
+									case 0:
+										vm = this;
+										_context2.next = 3;
+										return !vm.loading;
+
+									case 3:
+										vm.loading = _context2.sent;
+										_context2.next = 6;
+										return vm.$validator.validateAll().then(function () {
+											var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(result) {
+												var data, authUser;
+												return _regenerator2.default.wrap(function _callee$(_context) {
+													while (1) {
+														switch (_context.prev = _context.next) {
+															case 0:
+																if (result) {
+																	data = { email: vm.email, password: vm.password };
+																	authUser = {};
+
+																	vm.axios.post('/api/DOFUU-AUTH/8420be8df65a43e246a0a6215c5ed977bb099cb8/login', data).then(function (response) {
+																		console.log(response);
+																		if (response.status == 200) {
+																			console.log(response.data);
+																			authUser.access_token = response.data.access_token;
+																			authUser.expires_in = response.data.expires_in + Date.now();
+																			window.localStorage.setItem('authUser', (0, _stringify2.default)(authUser));
+																			vm.$store.dispatch('getAuth').then(function (response) {
+																				if (response.status == 200) {
+																					_this.$router.push({ name: 'Dashboard' });
+																				}
+																			});
+																		}
+																	});
+																}
+
+															case 1:
+															case 'end':
+																return _context.stop();
+														}
+													}
+												}, _callee, _this);
+											}));
+
+											return function (_x) {
+												return _ref2.apply(this, arguments);
+											};
+										}());
+
+									case 6:
+										vm.loading = !vm.loading;
+
+									case 7:
+									case 'end':
+										return _context2.stop();
+								}
 							}
-						}
-					}, _callee, this);
-				}));
+						}, _callee2, this);
+					}));
 
-				function mounted() {
-					return _ref.apply(this, arguments);
-				}
+					function login() {
+						return _ref.apply(this, arguments);
+					}
 
-				return mounted;
-			}()
+					return login;
+				}()
+			},
+			computed: {},
+			mounted: function mounted() {
+				this.$validator.localize(this.locale, {
+					messages: _vi2.default.messages
+				});
+			}
 		};
 	});
 });
 
 /***/ }),
 
-/***/ 1118:
+/***/ 1195:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -180,278 +163,142 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-dialog",
-    { attrs: { value: _vm.dialog, persistent: "", "max-width": "100%" } },
+    "v-app",
+    { attrs: { id: "inspire" } },
     [
       _c(
-        "v-card",
+        "v-content",
         [
-          _c("v-card-title", { staticClass: "headline" }, [
-            _vm._v("Activity time")
-          ]),
-          _vm._v(" "),
           _c(
-            "v-card-text",
+            "v-container",
+            { attrs: { fluid: "", "fill-height": "", color: "grey" } },
             [
-              _vm._v("\n\t\t\t" + _vm._s(_vm.items) + "\n\t\t\t"),
-              _vm._l(_vm.activities, function(item, index) {
-                return _c(
-                  "v-layout",
-                  { key: item.id, attrs: { row: "", wrap: "" } },
-                  [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "", md4: "" } },
-                      [
-                        _c("v-checkbox", {
-                          staticClass: "pt-3",
-                          attrs: {
-                            "hide-details": "",
-                            label: item.daysOfWeek,
-                            value: item.id
-                          },
-                          model: {
-                            value: _vm.items[index].id,
-                            callback: function($$v) {
-                              _vm.$set(_vm.items[index], "id", $$v)
-                            },
-                            expression: "items[index].id"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _vm._l(_vm.items[index].times, function(time, i) {
-                      return _c(
-                        "v-flex",
-                        { key: i, attrs: { xs8: "" } },
+              _c(
+                "v-layout",
+                { attrs: { "justify-center": "" } },
+                [
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm8: "", md4: "" } },
+                    [
+                      _c(
+                        "v-card",
+                        { staticClass: "elevation-12" },
                         [
+                          _vm.loading
+                            ? _c("v-progress-linear", {
+                                attrs: { indeterminate: true }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
-                            "v-layout",
-                            { attrs: { row: "", wrap: "" } },
+                            "v-toolbar",
+                            {
+                              staticClass: "elevation-1",
+                              attrs: { color: "white" }
+                            },
+                            [
+                              _c("v-toolbar-title", [_vm._v("Đăng nhập")]),
+                              _vm._v(" "),
+                              _c("v-spacer")
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
                             [
                               _c(
-                                "v-flex",
-                                { attrs: { xs6: "" } },
+                                "v-form",
+                                { attrs: { autocomplete: "off" } },
                                 [
-                                  _c(
-                                    "v-dialog",
-                                    {
-                                      ref: "from",
-                                      refInFor: true,
-                                      attrs: {
-                                        persistent: "",
-                                        lazy: "",
-                                        "full-width": "",
-                                        width: "290px",
-                                        "return-value": time.from
-                                      },
-                                      on: {
-                                        "update:returnValue": function($event) {
-                                          _vm.$set(time, "from", $event)
-                                        }
-                                      },
-                                      model: {
-                                        value: time.fromModal,
-                                        callback: function($$v) {
-                                          _vm.$set(time, "fromModal", $$v)
-                                        },
-                                        expression: "time.fromModal"
+                                  _c("v-text-field", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required|email",
+                                        expression: "'required|email'"
                                       }
-                                    },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          slot: "activator",
-                                          "hide-details": "",
-                                          label: "Start time",
-                                          "single-line": "",
-                                          "prepend-icon": "access_time",
-                                          readonly: ""
-                                        },
-                                        slot: "activator",
-                                        model: {
-                                          value: time.from,
-                                          callback: function($$v) {
-                                            _vm.$set(time, "from", $$v)
-                                          },
-                                          expression: "time.from"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-time-picker",
-                                        {
-                                          attrs: {
-                                            actions: "",
-                                            format: "24hr"
-                                          },
-                                          model: {
-                                            value: time.from,
-                                            callback: function($$v) {
-                                              _vm.$set(time, "from", $$v)
-                                            },
-                                            expression: "time.from"
-                                          }
-                                        },
-                                        [
-                                          _c("v-spacer"),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                flat: "",
-                                                color: "primary"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  time.fromModal = false
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Cancel")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                flat: "",
-                                                color: "primary"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.saveTime(
-                                                    "from",
-                                                    time.from,
-                                                    index
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("OK")]
-                                          )
-                                        ],
-                                        1
-                                      )
                                     ],
-                                    1
-                                  )
+                                    attrs: {
+                                      "prepend-icon": "email",
+                                      name: "email",
+                                      label: "Email",
+                                      type: "text",
+                                      "error-messages": _vm.errors.collect(
+                                        "email"
+                                      )
+                                    },
+                                    model: {
+                                      value: _vm.email,
+                                      callback: function($$v) {
+                                        _vm.email =
+                                          typeof $$v === "string"
+                                            ? $$v.trim()
+                                            : $$v
+                                      },
+                                      expression: "email"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    attrs: {
+                                      "prepend-icon": "lock",
+                                      name: "password",
+                                      label: "Mật khẩu",
+                                      id: "password",
+                                      type: "password",
+                                      "error-messages": _vm.errors.collect(
+                                        "password"
+                                      )
+                                    },
+                                    model: {
+                                      value: _vm.password,
+                                      callback: function($$v) {
+                                        _vm.password =
+                                          typeof $$v === "string"
+                                            ? $$v.trim()
+                                            : $$v
+                                      },
+                                      expression: "password"
+                                    }
+                                  })
                                 ],
                                 1
-                              ),
-                              _vm._v(" "),
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
                               _c(
-                                "v-flex",
-                                { attrs: { xs6: "" } },
-                                [
-                                  _c(
-                                    "v-dialog",
-                                    {
-                                      ref: "to",
-                                      refInFor: true,
-                                      attrs: {
-                                        persistent: "",
-                                        lazy: "",
-                                        "full-width": "",
-                                        width: "290px",
-                                        "return-value": time.to
-                                      },
-                                      on: {
-                                        "update:returnValue": function($event) {
-                                          _vm.$set(time, "to", $event)
-                                        }
-                                      },
-                                      model: {
-                                        value: time.toModal,
-                                        callback: function($$v) {
-                                          _vm.$set(time, "toModal", $$v)
-                                        },
-                                        expression: "time.toModal"
-                                      }
-                                    },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          slot: "activator",
-                                          "hide-details": "",
-                                          label: "End time",
-                                          "prepend-icon": "access_time",
-                                          readonly: ""
-                                        },
-                                        slot: "activator",
-                                        model: {
-                                          value: time.to,
-                                          callback: function($$v) {
-                                            _vm.$set(time, "to", $$v)
-                                          },
-                                          expression: "time.to"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-time-picker",
-                                        {
-                                          attrs: {
-                                            actions: "",
-                                            format: "24hr"
-                                          },
-                                          model: {
-                                            value: time.to,
-                                            callback: function($$v) {
-                                              _vm.$set(time, "to", $$v)
-                                            },
-                                            expression: "time.to"
-                                          }
-                                        },
-                                        [
-                                          _c("v-spacer"),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                flat: "",
-                                                color: "primary"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  time.toModal = false
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Cancel")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                flat: "",
-                                                color: "primary"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.saveTime(
-                                                    "to",
-                                                    time.to,
-                                                    index
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("OK")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    block: "",
+                                    color: "primary",
+                                    loading: _vm.loading,
+                                    disabled: _vm.loading
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.login()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Đăng nhập")]
                               )
                             ],
                             1
@@ -459,44 +306,11 @@ var render = function() {
                         ],
                         1
                       )
-                    })
-                  ],
-                  2
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "v-card-actions",
-            [
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "green darken-1", flat: "" },
-                  nativeOn: {
-                    click: function($event) {
-                      _vm.$store.commit("DIALOG_CLOSE_ACTIVITY")
-                    }
-                  }
-                },
-                [_vm._v("Cancel")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "green darken-1", flat: "" },
-                  nativeOn: {
-                    click: function($event) {
-                      _vm.save($event)
-                    }
-                  }
-                },
-                [_vm._v("Save")]
+                    ],
+                    1
+                  )
+                ],
+                1
               )
             ],
             1
@@ -514,31 +328,27 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4ec0590a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c817b64a", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ 518:
+/***/ 222:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(1115)
-}
-var normalizeComponent = __webpack_require__(6)
+var normalizeComponent = __webpack_require__(7)
 /* script */
-var __vue_script__ = __webpack_require__(1117)
+var __vue_script__ = __webpack_require__(1194)
 /* template */
-var __vue_template__ = __webpack_require__(1118)
+var __vue_template__ = __webpack_require__(1195)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-4ec0590a"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -549,7 +359,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\store\\storeDetails\\Activity\\activityDialog.vue"
+Component.options.__file = "resources\\assets\\js\\components\\credential\\Login.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -558,9 +368,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4ec0590a", Component.options)
+    hotAPI.createRecord("data-v-c817b64a", Component.options)
   } else {
-    hotAPI.reload("data-v-4ec0590a", Component.options)
+    hotAPI.reload("data-v-c817b64a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -569,6 +379,60 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
+
+/***/ }),
+
+/***/ 541:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports);
+    global.env = mod.exports;
+  }
+})(this, function (exports) {
+  (function (global, factory) {
+    if (true) {
+      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+      factory(exports);
+    } else {
+      var mod = {
+        exports: {}
+      };
+      factory(mod.exports);
+      global.env = mod.exports;
+    }
+  })(this, function (exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    var clientId = exports.clientId = 4;
+    var clientSecret = exports.clientSecret = 'noSiDc4MfnJLUDtc5yLB3uUqnkNQph95BvNuq8s4';
+  });
+});
+
+/***/ }),
+
+/***/ 542:
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(n,t){ true?module.exports=t():"function"==typeof define&&define.amd?define(t):(n.__vee_validate_locale__vi=n.__vee_validate_locale__vi||{},n.__vee_validate_locale__vi.js=t())}(this,function(){"use strict";var n,t={name:"vi",messages:{_default:function(n){return"Giá trị của "+n+" không đúng."},after:function(n,t){return n+" phải xuất hiện sau "+t[0]+"."},alpha_dash:function(n){return n+" có thể chứa các kí tự chữ (A-Z a-z), số (0-9), gạch ngang (-) và gạch dưới (_)."},alpha_num:function(n){return n+" chỉ có thể chứa các kí tự chữ và số."},alpha_spaces:function(n){return n+" chỉ có thế chứa các kí tự và khoảng trắng"},alpha:function(n){return n+" chỉ có thể chứa các kí tự chữ."},before:function(n,t){return n+" phải xuất hiện trước "+t[0]+"."},between:function(n,t){return n+" phải có giá trị nằm trong khoảng giữa "+t[0]+" và "+t[1]+"."},confirmed:function(n,t){return n+" khác với "+t[0]+"."},credit_card:function(n){return"Đã điền "+n+" không chính xác."},date_between:function(n,t){return n+" phải có giá trị nằm trong khoảng giữa  "+t[0]+" và "+t[1]+"."},date_format:function(n,t){return n+" phải có giá trị dưới định dạng "+t[0]+"."},decimal:function(n,t){void 0===t&&(t=[]);var i=t[0];return void 0===i&&(i="*"),n+" chỉ có thể chứa các kí tự số và dấu thập phân "+("*"===i?"":i)+"."},digits:function(n,t){return"Trường "+n+" chỉ có thể chứa các kí tự số và bắt buộc phải có độ dài là "+t[0]+"."},dimensions:function(n,t){return n+" phải có chiều rộng "+t[0]+" pixels và chiều cao "+t[1]+" pixels."},email:function(n){return n+" phải là một địa chỉ email hợp lệ."},ext:function(n){return n+" phải là một tệp."},image:function(n){return"Trường "+n+" phải là một ảnh."},in:function(n){return n+" phải là một giá trị."},ip:function(n){return n+" phải là một địa chỉ ip hợp lệ."},max:function(n,t){return n+" không thể có nhiều hơn "+t[0]+" kí tự."},max_value:function(n,t){return n+" phải nhỏ hơn hoặc bằng "+t[0]+"."},mimes:function(n){return n+" phải chứa kiểu tệp phù hợp."},min:function(n,t){return n+" phải chứa ít nhất "+t[0]+" kí tự."},min_value:function(n,t){return n+" phải lớn hơn hoặc bằng "+t[0]+"."},not_in:function(n){return n+" phải chứa một giá trị hợp lệ."},numeric:function(n){return n+" chỉ có thể có các kí tự số."},regex:function(n){return n+" có định dạng không đúng."},required:function(n){return n+" là bắt buộc."},size:function(n,t){var i,c,e,h=t[0];return n+" chỉ có thể chứa tệp nhỏ hơn "+(i=h,c=1024,e=0==(i=Number(i)*c)?0:Math.floor(Math.log(i)/Math.log(c)),1*(i/Math.pow(c,e)).toFixed(2)+" "+["Byte","KB","MB","GB","TB","PB","EB","ZB","YB"][e])+"."},url:function(n){return n+" không phải là một địa chỉ URL hợp lệ."}},attributes:{}};"undefined"!=typeof VeeValidate&&VeeValidate.Validator.localize(((n={})[t.name]=t,n));return t});
 
 /***/ })
 

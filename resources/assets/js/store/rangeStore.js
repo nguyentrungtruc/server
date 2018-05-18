@@ -1,4 +1,4 @@
-import {rangeUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -61,7 +61,7 @@ const mutations = {
 
 const actions = {
 	fetchRange: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(rangeUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Range', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_RANGE', response.data)
 			}
@@ -71,7 +71,7 @@ const actions = {
 		})
 	}),
 	addRange: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(rangeUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Range', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_RANGE', response.data)
 				commit('ALERT_RANGE', {alert:true, messages: 'the range has been added.', type: 'success'})
@@ -89,7 +89,7 @@ const actions = {
 	}),
 	updateRange: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(rangeUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Range/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_RANGE', response.data)
 				commit('ALERT_RANGE', {alert:true, messages:'the range has been edited.', type: 'success'})
@@ -104,7 +104,7 @@ const actions = {
 	}),
 	deleteRange: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(rangeUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Range/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_RANGE', payload)
 				commit('ALERT_RANGE', {alert:true, messages: 'the range has been deleted.', type: 'success'})

@@ -1,6 +1,6 @@
 <template>
 	<v-app id="inspire">
-		<vue-navigation v-if="isAuthentication" :drawer="drawer" :items="items"></vue-navigation>
+		<vue-navigation v-if="isAuthentication" :drawer.sync="drawer" :items.sync="items"></vue-navigation>
 
 		<vue-toolbar v-if="isAuthentication" @DRAWER="drawer = !drawer"></vue-toolbar>
 
@@ -44,43 +44,50 @@ export default{
 	data: () => ({
 		drawer: false,
 		items: [		
-		{ icon: 'receipt', title: 'Manage Orders', action: 'Order'},
-		{ icon: 'store', title: 'Manage Stores', action: 'Store'},
+		{ icon: 'receipt', title: 'Manage Orders', isAdmin: true, isEmployee:true, action: 'Order'},
+		{ icon: 'store', title: 'Manage Stores', isAdmin: true, isEmployee:true, action: 'Store'},
 		{
 			icon: 'group',
 			title: 'Manage Users',
+			isAdmin: true, isEmployee:true,
 			model:false,
 			children: [
-			{ title: 'Users', action:'User' },
-			{ title: 'Roles' , action:'Role'},
-			{ title: 'Passports' , action:'Passport'},
+			{ title: 'Users', isEmployee:true, action:'User' },
+			{ title: 'Roles' , isEmployee:false, action:'Role'},
+			{ title: 'Passports', isEmployee:false , action:'Passport'},
 			]
 		},
 		{ icon: 'redeem', title: 'Manage Coupons', action: 'Coupon'},
 		{
 			icon: 'settings',
 			title: 'Manage Services',
+			isAdmin: true, 
+			isEmployee:true,
 			model:false,
 			children: [
-			{ title: 'Services', action: 'Service'},
-			{ title: 'Delivery Locations', action: 'Delivery'},
-			{ title: 'Range For Delivery', action: 'Range'},
+			{ title: 'Services', isEmployee:true, action: 'Service'},
+			{ title: 'Delivery Locations', isEmployee:true, action: 'Delivery'},
+			{ title: 'Range For Delivery', isEmployee:true, action: 'Range'},
 			]
 		},
-		{heading: 'Store'},
+		{heading: 'Store', isAdmin: true, isEmployee:false},
 		{
 			icon: 'format_list_numbered',
-			title: 'Manage Types',
+			title: 'Manage Types', 
+			isAdmin: true,	
+			isEmployee:false,
 			model:false,
 			children: [
 			{ title: 'Types Of Stores', action: 'Type'}
 			]
 		},
 		{ icon: 'access_time', title: 'Manage Activity', action: 'Activity'},
-		{heading: 'System'},
+		{heading: 'System', isAdmin: true,	isEmployee:false},
 		{
 			icon: 'place',
 			title: 'Manage Locations',
+			isAdmin: true,	
+			isEmployee:false,
 			active: true,
 			model:false,
 			children: [
@@ -92,6 +99,8 @@ export default{
 		{
 			icon: 'lens',
 			title: 'Manage Status',
+			isAdmin: true,
+			isEmployee:false,
 			model:false,
 			children: [
 			{ title: 'Order Status', action: 'OrderStatus'},
@@ -100,7 +109,7 @@ export default{
 			{ title: 'Store Status', action: 'StoreStatus'},
 			]
 		},
-		{ icon: 'payment', title: 'Payment Methods', action: 'PaymentMethod'},
+		{ icon: 'payment', title: 'Payment Methods', isAdmin: true,	isEmployee:false, action: 'PaymentMethod'},
 		]
 	}),
 	props: {

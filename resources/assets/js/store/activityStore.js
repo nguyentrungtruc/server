@@ -1,4 +1,4 @@
-import {apiDomain, activityUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchActivity: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(activityUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Activity', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_ACTIVITY', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addActivity: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(activityUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Activity', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_ACTIVITY', response.data)
 				commit('ALERT_ACTIVITY', {show: true, messages: payload.activity+' activity has been added.', type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updateActivity: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(activityUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Activity/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_ACTIVITY', response.data)
 				commit('ALERT_ACTIVITY', {show: true, messages: payload.activity+' activity has been edited.', type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deleteActivity: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(activityUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Activity/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_ACTIVITY', payload)
 				commit('ALERT_ACTIVITY', {show: true, messages: payload.activity+' activity has been deleted.', type: 'success'})

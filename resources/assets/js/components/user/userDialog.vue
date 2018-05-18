@@ -236,13 +236,11 @@ export default {
 						await getLocation(vm.editedItem.address).then(response => {
 							vm.editedItem.lat = response[0].geometry.location.lat()
 							vm.editedItem.lng = response[0].geometry.location.lng()	
-							if(response.status == 200) {
-								vm.$store.dispatch('updateUser', vm.editedItem).then(response => {
-									if(response.status == 201) {
-										vm.close()
-									}
-								})
-							}	
+							vm.$store.dispatch('updateUser', vm.editedItem).then(response => {
+								if(response.status == 201) {
+									vm.close()
+								}
+							})
 						})					
 					}
 				})
@@ -253,14 +251,12 @@ export default {
 						await getLocation(vm.editedItem.address).then(response => {
 							vm.editedItem.lat = response[0].geometry.location.lat()
 							vm.editedItem.lng = response[0].geometry.location.lng()	
+						})		
+						vm.$store.dispatch('addUser', vm.editedItem).then(response => {
 							if(response.status == 200) {
-								vm.$store.dispatch('addUser', vm.editedItem).then(response => {
-									if(response.status == 200) {
-										vm.close()
-									}
-								})
-							}	
-						})								
+								vm.close()
+							}
+						})						
 					}
 				})				
 			}
@@ -351,8 +347,6 @@ export default {
 			}
 		},
 		'editedItem.actived': function(val, oldVal) {
-			console.log(val)
-			console.log(oldVal)
 			if(this.editedIndex > -1 && val != oldVal && oldVal != true) {
 				this.disabled = false
 			} else if(this.editedIndex == -1 && val != '') {

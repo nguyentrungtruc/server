@@ -22,7 +22,6 @@ export default {
 	},
 	methods: {
 		connect(){
-			console.log('broadcasting:connecting:pusher', this.$broadcastUrl)
 			if(!this.echo){
 				this.echo = new Echo({
 					broadcaster: 'pusher',
@@ -75,12 +74,6 @@ export default {
 				return (this.echo &&   this.echo.connector.pusher.connection.connection !== null) 
 			} 
 		},
-		// notification: {
-		// 	cache: false, 
-		// 	get() { 
-		// 		return this.$store.getters.notifications.reverse()
-		// 	} 
-		// },
 		...mapState({
 			currentUser: state => state.authStore.authUser
 		})
@@ -94,7 +87,6 @@ export default {
 		isConnected: { 
 			handler(isConnected){     
 				if(isConnected) {
-					console.log(isConnected)
 					this.bindChannels()
 				}
 				this.$emit('broadcasting:status', isConnected) 

@@ -1,4 +1,4 @@
-import {couponStatusUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchCouponStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.get(couponStatusUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Coupon-Status', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_COUPON_STATUS', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addCouponStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(couponStatusUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Coupon-Status', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_COUPON_STATUS', response.data)
 				commit('ALERT_COUPON_STATUS', {alert:true, messages: payload.coupon_status_name+' status has been added.', type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updateCouponStatus: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(couponStatusUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Coupon-Status/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_COUPON_STATUS', response.data)
 				commit('ALERT_COUPON_STATUS', {alert:true, messages: payload.coupon_status_name+' status has been edited.', type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deleteCouponStatus: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(couponStatusUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Coupon-Status/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_COUPON_STATUS', payload)
 				commit('ALERT_COUPON_STATUS', {alert:true, messages: payload.coupon_status_name+' status has been deleted.', type: 'success'})

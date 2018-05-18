@@ -1,4 +1,4 @@
-import {apiDomain, catalogueUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchCatalogue: ({commit, state}, sid) => new Promise((resolve, reject) => {
-		axios.get(catalogueUrl+'/'+sid, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Catalogue/GetCatalogue/'+sid, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_CATALOGUE', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addCatalogue: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post(catalogueUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Catalogue', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_CATALOGUE', response.data)
 				commit('ALERT_CATALOGUE', {alert:true, messages: payload.catalogue+' catalogue has been added.', type: 'success'})
@@ -90,7 +90,7 @@ const actions = {
 	}),
 	updateCatalogue: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(catalogueUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Catalogue/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_CATALOGUE', response.data)
 				commit('ALERT_CATALOGUE', {alert:true, messages: payload.catalogue+' catalogue has been edited.', type: 'success'})
@@ -108,7 +108,7 @@ const actions = {
 	}),
 	deleteCatalogue: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(catalogueUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Catalogue/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_CATALOGUE', payload)
 				commit('ALERT_CATALOGUE', {alert:true, messages: payload.catalogue+' catalogue has been deleted.', type: 'success'})

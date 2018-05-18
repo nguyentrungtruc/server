@@ -61,9 +61,8 @@ const mutations = {
 const actions = {
 	fetchUser: ({commit}) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.get(userUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-User', {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
-				console.log(response.data)
 				commit('FETCH_USER', response.data)
 			}
 			resolve(response)
@@ -73,8 +72,7 @@ const actions = {
 	}),
 	addUser: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		console.log(payload)
-		axios.post(userUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-User', payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_USER', response.data)
 				commit('ALERT_USER', {alert:true, messages: payload.email+' email has been added.', type: 'success'})
@@ -90,9 +88,8 @@ const actions = {
 	}),
 	updateUser: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this 
-		axios.put(userUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-User/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
-				console.log(response.data)
 				commit('UPDATE_USER', response.data)
 				commit('ALERT_USER', {alert:true, messages: payload.email+ ' account has been updated', type: 'success'})
 			} 
@@ -103,7 +100,7 @@ const actions = {
 	}),
 	deleteUser: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(userUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-User/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_USER', payload)
 				commit('ALERT_USER', {alert:true, messages: payload.email+' account has been deleted.', type: 'success'})

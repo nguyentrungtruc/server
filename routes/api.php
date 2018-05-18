@@ -64,35 +64,35 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'Admin'], fu
 		//API GET ORDERS 
 		Route::post('/Dofuu-Checkout/GetOrderByFilter', 'CheckoutController@getOrderByFilter');
 		//API PAYMENT METHODS
-		Route::resource('/Dofuu-Payment/Method', 'PaymentMethodController');
+		Route::resource('/Dofuu-Payment-Method', 'PaymentMethodController');
  		//API RANGE FOR DELIVERY
-		Route::resource('/dofuuRanges', 'RangeController');
+		Route::resource('/Dofuu-Range', 'RangeController');
 		//API ORDER STATUS
-		Route::resource('/Dofuu-Status/Order', 'OrderStatusController');
+		Route::resource('/Dofuu-Order-Status', 'OrderStatusController');
 		//API COUPON STATUS
-		Route::resource('/dofuuCouponStatus', 'CouponStatusController');
+		Route::resource('/Dofuu-Coupon-Status', 'CouponStatusController');
 		//API PRODUCT STATUS
-		Route::resource('/dofuuProductStatus', 'ProductStatusController');
+		Route::resource('Dofuu-Product-Status', 'ProductStatusController');
         //API ACTIVITY
-		Route::resource('/dofuuActivities', 'ActivityController');
+		Route::resource('/Dofuu-Activity', 'ActivityController');
 		//API STORE STATUS
-		Route::resource('/dofuuStoreStatus', 'StoreStatusController');
+		Route::resource('/Dofuu-Store-Status', 'StoreStatusController');
         //API TYPE
-		Route::resource('/dofuuTypes', 'TypeController');
+		Route::resource('/Dofuu-Type', 'TypeController');
         //API DISTRICT
-		Route::resource('/dofuuDistricts', 'DistrictController');
+		Route::resource('/Dofuu-District', 'DistrictController');
 		//API COUNTRY
-		Route::resource('/dofuuCountries', 'CountryController');
+		Route::resource('/Dofuu-Country', 'CountryController');
         //API GET SHIPPER
 		Route::post('/Dofuu-User/GetShippers', 'UserController@getShipper');
         //API USER
-		Route::resource('/dofuuUsers', 'UserController');
+		Route::resource('/Dofuu-User', 'UserController');
         //API ROLE
-		Route::resource('/dofuuRoles', 'RoleController');
+		Route::resource('Dofuu-Role', 'RoleController');
         //API CITY WITH STORE
-		Route::get('/dofuuCityWithStores', 'CityController@cityWithStore');
+		Route::get('/Dofuu-City/GetCityWithStore', 'CityController@cityWithStore');
         //API CITY
-		Route::resource('/dofuuCities', 'CityController', ['only' => ['index', 'store', 'update', 'destroy']]);
+		Route::resource('/Dofuu-City', 'CityController', ['only' => ['index', 'store', 'update', 'destroy']]);
 	});
 	Route::group(['roles' => ['admin', 'employee']], function() {
 		//API SERVICE
@@ -100,22 +100,22 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'Admin'], fu
 		//API DELIVERY
 		Route::resource('/Dofuu-Delivery', 'DeliveryController');
 		//API COUPON
-		Route::post('/dofuuCoupons/{id}/updateStore', 'CouponController@updateCoupon');
-		Route::resource('/dofuuCoupons', 'CouponController', ['except' => ['updateCoupon']]);
+		Route::post('/Dofuu-Coupon/{id}/updateStore', 'CouponController@updateCoupon');
+		Route::resource('/Dofuu-Coupon', 'CouponController', ['except' => ['updateCoupon']]);
 		//API PRODUCT
-		Route::get('/dofuuProducts/{sid}', 'ProductController@index');
-		Route::resource('/dofuuProducts', 'ProductController', ['except' => ['index']]);
+		Route::get('/Dofuu-Product/{sid}', 'ProductController@index');
+		Route::resource('/Dofuu-Product', 'ProductController', ['except' => ['index']]);
 	       //API CATALOGUE
-		Route::get('/dofuuCatalogues/{sid}', 'CatalogueController@index');
-		Route::resource('/dofuuCatalogues', 'CatalogueController', ['except' => ['index']]);
+		Route::get('/Dofuu-Catalogue/GetCatalogue/{sid}/', 'CatalogueController@index');
+		Route::resource('/Dofuu-Catalogue', 'CatalogueController', ['except' => ['index']]);
 		//Update Activity
 		Route::post('/DofuuActivityTime/{id}', 'StoreController@updateActivity');
 		//API STORE
-		Route::resource('/dofuuStores', 'StoreController');
+		Route::resource('/Dofuu-Store', 'StoreController');
 		//API ACTIVE DELIVERY FOR CITY
 		Route::post('/Dofuu-Cities/ActiveDelivery/{cid}', 'CityController@activeDelivery');        
 		//API CITY NOT DELIVERY
-		Route::get('/Dofuu-CitiesDoesntHaveDelivery', 'CityController@citiesDoesntHaveDelivery');
+		Route::get('/Dofuu-City/DoesntHaveDelivery', 'CityController@citiesDoesntHaveDelivery');
 		//API READ NOTIFICATIONS 
 		Route::post('/Dofuu-Notification/ReadNotification', 'NotificationController@readNotification');
 		//API GET NOTIFICATIONS

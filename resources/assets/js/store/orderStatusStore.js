@@ -1,4 +1,4 @@
-import {orderStatusUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchOrderStatus: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get('/api/Dofuu-Status/Order', {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Order-Status', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_ORDER_STATUS', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addOrderStatus: ({commit, state}, payload) => new Promise((resolve, reject) => {
-		axios.post('/api/Dofuu-Status/Order', payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Order-Status', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_ORDER_STATUS', response.data)
 				commit('ALERT_ORDER_STATUS', {show:true, message: response.data.message , type: 'success'})
@@ -90,7 +90,7 @@ const actions = {
 	}),
 	updateOrderStatus: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put('/api/Dofuu-Status/Order/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Order-Status/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_ORDER_STATUS', response.data)
 				commit('ALERT_ORDER_STATUS', {show:true, message: response.data.message, type: 'success'})
@@ -108,7 +108,7 @@ const actions = {
 	}),
 	deleteOrderStatus: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete('/api/Dofuu-Status/Order/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Order-Status/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_ORDER_STATUS', payload)
 				commit('ALERT_ORDER_STATUS', {show:true, message: payload.name+' status has been deleted.', type: 'success'})

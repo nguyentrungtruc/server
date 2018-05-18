@@ -16,17 +16,18 @@ class AuthResource extends JsonResource
     {
         if($this->role->name === 'Admin') {
             return [
-                'id'       => $this->id,
-                'name'     => $this->name,
-                'email'    => $this->email,
-                'birthday' => $this->birthday,
-                'gender'   => $this->gender ? true : false,
-                'address'  => $this->address,
-                'lat'      => $this->lat,
-                'lng'      => $this->lng,
-                'phone'    => $this->phone,
-                'image'    => $this->image,
-                'isAdmin'  => true,
+                'id'         => $this->id,
+                'name'       => $this->name,
+                'email'      => $this->email,
+                'birthday'   => $this->birthday,
+                'gender'     => $this->gender ? true : false,
+                'address'    => $this->address,
+                'lat'        => $this->lat,
+                'lng'        => $this->lng,
+                'phone'      => $this->phone,
+                'image'      => $this->image,
+                'isAdmin'    => true,
+                'isEmployee' => false,
             ];
         } else if($this->role->name === 'Employee') {
             return [
@@ -41,6 +42,7 @@ class AuthResource extends JsonResource
                 'phone'      => $this->phone,
                 'image'      => $this->image,
                 'isEmployee' => true,
+                'isAdmin'    => false
             ];
         }
     }

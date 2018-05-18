@@ -32,7 +32,6 @@ const getters = {
 	unreadCount: (state) => {
 		var count = 0
 		state.notifications.forEach(item => {
-			console.log(item.read_at == null)
 			if(item.read_at == null) {
 				count = ++count  
 			}

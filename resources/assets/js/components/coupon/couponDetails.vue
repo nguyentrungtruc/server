@@ -70,7 +70,7 @@
 <script>
 import axios from 'axios'
 import storeInformation from '@/mixins/storeInformation'
-import {couponUrl, cityWithStoreUrl, getHeader} from '@/config/config'
+import {getHeader} from '@/config/config'
 import {mapState} from 'vuex'
 export default {
 	mixins: [storeInformation],
@@ -95,7 +95,7 @@ export default {
 	},
 	methods: {
 		fetchCityWithStores() {
-			axios.get(cityWithStoreUrl, {headers: getHeader()}).then(response => {
+			axios.get('/api/Dofuu-City/GetCityWithStore', {headers: getHeader()}).then(response => {
 				if(response.status === 200) {
 					this.cities = Array.from(response.data)
 				}
@@ -124,7 +124,7 @@ export default {
 		},
 		update: function(id) {
 			const data = Object.assign({}, {storeIds: this.storeIds})
-			axios.post(couponUrl+'/'+ id +'/updateStore', data, {headers: getHeader()}).then(response => {
+			axios.post('/api/Dofuu-Coupon/'+ id +'/updateStore', data, {headers: getHeader()}).then(response => {
 				if(response.status == 201) {
 					this.alert = {type: 'success', alert:true, messages: 'Coupon has been updated.'}
 					this.disabled = true

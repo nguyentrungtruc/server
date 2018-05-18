@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {cityUrl, citiesDoesntHaveDeliveryUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 
 const state = {
 	cities: {},
@@ -61,7 +61,7 @@ const mutations = {
 
 const actions = {
 	fetchCity: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get(cityUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-City', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_CITY', response.data)
 			}
@@ -71,7 +71,7 @@ const actions = {
 		})
 	}),
 	fetchCitiesDoesntHaveDelivery: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get('/api/Dofuu-CitiesDoesntHaveDelivery', {headers: getHeader()}).then(response => {
+		axios.get('/Dofuu-City/DoesntHaveDelivery', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_CITY', response.data)
 			}
@@ -81,7 +81,7 @@ const actions = {
 		})
 	}),
 	addCity: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.post(cityUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-City', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_CITY', response.data)
 				commit('ALERT_CITY', {alert:true, messages: payload.name+' city has been added.', type: 'success'})
@@ -99,7 +99,7 @@ const actions = {
 	}),
 	updateCity: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(cityUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-City/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_CITY', response.data)
 				commit('ALERT_CITY', {alert:true, messages: payload.name+' city has been edited.', type: 'success'})
@@ -114,7 +114,7 @@ const actions = {
 	}),
 	deleteCity: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(cityUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-City/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_CITY', payload)
 				commit('ALERT_CITY', {alert:true, messages: payload.name+' city has been deleted.', type: 'success'})

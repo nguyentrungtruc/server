@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {districtUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 
 const state = {
 	districts: {},
@@ -58,7 +58,7 @@ const mutations = {
 
 const actions = {
 	fetchDistrict: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get(districtUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-District', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_DISTRICT', response.data)
 			}
@@ -68,7 +68,7 @@ const actions = {
 		})
 	}),
 	addDistrict: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.post(districtUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-District', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_DISTRICT', response.data)
 				commit('ALERT_DISTRICT', {alert:true, messages: payload.district_name+' district has been added.', type: 'success'})
@@ -86,7 +86,7 @@ const actions = {
 	}),
 	updateDistrict: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(districtUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-District/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_DISTRICT', response.data)
 				commit('ALERT_DISTRICT', {alert:true, messages: payload.district_name+' district has been edited.', type: 'success'})
@@ -101,7 +101,7 @@ const actions = {
 	}),
 	deleteDistrict: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(districtUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-District/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_DISTRICT', payload)
 				commit('ALERT_DISTRICT', {alert:true, messages: payload.district_name+' district has been deleted.', type: 'success'})

@@ -71,9 +71,7 @@ export default {
 					let data = {email: vm.email, password: vm.password}
 					var authUser = {}
 					vm.axios.post('/api/DOFUU-AUTH/8420be8df65a43e246a0a6215c5ed977bb099cb8/login', data).then(response => {
-						console.log(response)
 						if(response.status == 200) {
-							console.log(response.data)
 							authUser.access_token = response.data.access_token
 							authUser.expires_in = response.data.expires_in + Date.now()
 							window.localStorage.setItem('authUser', JSON.stringify(authUser))

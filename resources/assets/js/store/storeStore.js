@@ -1,4 +1,4 @@
-import {apiDomain, storeUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 const state = {
 	stores: {},
@@ -60,7 +60,7 @@ const mutations = {
 const actions = {
 	fetchStore: ({commit}) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.get(storeUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Store', {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('FETCH_STORE', response.data)
 			}
@@ -72,7 +72,7 @@ const actions = {
 	addStore: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
 		console.log(payload)
-		axios.post(storeUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Store', payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_STORE', response.data)
 				commit('ALERT_STORE', {alert:true, messages: payload.name+' store has been added.', type: 'success'})
@@ -85,7 +85,7 @@ const actions = {
 	}),
 	showStore: ({commit}, id) => new Promise((resolve, reject) => {
 		var vm = this 
-		axios.get(storeUrl+'/'+id, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Store/'+id, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('SHOW_STORE', response.data)
 			}
@@ -98,7 +98,7 @@ const actions = {
 		commit('EDIT_STORE', payload)
 	}),
 	updateStore: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.put(storeUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Store/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_STORE', response.data)
 				commit('ALERT_STORE', {alert:true, messages: payload.name+ ' store has been updated', type: 'success'})
@@ -110,7 +110,7 @@ const actions = {
 	}),
 	deleteStore: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(storeUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Store/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_STORE', payload)
 				commit('ALERT_STORE', {alert:true, messages: payload.name+' name has been deleted.', type: 'success'})

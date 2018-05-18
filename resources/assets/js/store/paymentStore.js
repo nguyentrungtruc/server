@@ -1,4 +1,4 @@
-import {apiDomain, countryUrl, getHeader} from '@/config/config.js'
+import {getHeader} from '@/config/config.js'
 import axios from 'axios'
 
 const state = {
@@ -59,7 +59,7 @@ const mutations = {
 
 const actions = {
 	fetchPayment: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get('/api/Dofuu-Payment/Method', {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Payment-Method', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_PAYMENT', response.data)
 			}
@@ -69,7 +69,7 @@ const actions = {
 		})
 	}),
 	addPayment: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.post('/api/Dofuu-Payment/Method', payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Payment-Method', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 201) {
 				commit('UPDATE_PAYMENT', response.data)
 				commit('ALERT_PAYMENT', {show:true, message: response.data.message, type: 'success'})
@@ -87,7 +87,7 @@ const actions = {
 	}),
 	updatePayment: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put('/api/Dofuu-Payment/Method/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Payment-Method/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('UPDATE_PAYMENT', response.data)
 				commit('ALERT_PAYMENT', {show:true, message: response.data.message, type: 'success'})
@@ -102,7 +102,7 @@ const actions = {
 	}),
 	deletePayment: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete('/api/Dofuu-Payment/Method/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Payment-Method/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_PAYMENT', payload)
 				commit('ALERT_PAYMENT', {show:true, message: payload.paymentName+' payment has been deleted.', type: 'success'})

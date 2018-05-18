@@ -57,7 +57,7 @@ const mutations = {
 const actions = {
 	fetchRole: ({commit}) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.get(roleUrl, {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-Role', {headers: getHeader()}).then(response => {
 			if(response.status == 200) {
 				commit('FETCH_ROLE', response.data)
 			}
@@ -68,7 +68,7 @@ const actions = {
 	}),
 	addRole: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this 
-		axios.post(roleUrl, payload, {headers: getHeader()}).then(response => {
+		axios.post('/api/Dofuu-Role', payload, {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('UPDATE_ROLE', response.data)
 				commit('ALERT_ROLE', {alert:true, messages: payload.name+' role has been added.', type: 'success'})
@@ -84,7 +84,7 @@ const actions = {
 	}),
 	updateRole: ({commit}, payload) => new Promise((resolve, reject) =>  {
 		var vm = this 
-		axios.put(roleUrl+'/'+payload.id, payload, {headers: getHeader()}).then(response => {
+		axios.put('/api/Dofuu-Role/'+payload.id, payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_ROLE', response.data)
 				commit('ALERT_ROLE', {alert:true, messages: payload.name+' role has been edited.', type: 'success'})
@@ -96,7 +96,7 @@ const actions = {
 	}),
 	deleteRole: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		axios.delete(roleUrl+'/'+payload.id, {headers: getHeader()}).then(response => {
+		axios.delete('/api/Dofuu-Role/'+payload.id, {headers: getHeader()}).then(response => {
 			if(response.status == 204) {
 				commit('REMOVE_ROLE', payload)
 				commit('ALERT_ROLE', {alert:true, messages: payload.name+' role has been deleted.', type: 'success'})
