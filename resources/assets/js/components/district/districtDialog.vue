@@ -20,7 +20,7 @@
 					:error-messages="errors.collect('city')"
 					v-validate="'required'"
 					data-vv-name="city"
-					item-text="city_name"
+					item-text="name"
 					item-value="id"
 					></v-select>
 
