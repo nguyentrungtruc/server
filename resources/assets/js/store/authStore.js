@@ -50,6 +50,7 @@ const actions = {
 		}).catch(error => {
 			reject(error)
 		})
+		commit('CLEAR_AUTH_USER')
 	})
 }
 
