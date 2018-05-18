@@ -55,7 +55,7 @@ class ProductController extends Controller
         $find = Store::with(['products' => function($query) use ($name) {
             return $query->where('name', '=', $name);
         }])->where('id','=', $sid)->first();
-        if(!is_null($find->products)){
+        if(count($find->products)>0){
             return response(['Already exists taken'], 422);
         }
         $product              = new Product;
@@ -64,15 +64,15 @@ class ProductController extends Controller
         $product->price       = $request->price;
         $product->description = $request->description;
         if(!is_null($request->image)) {
-                $user = User::whereHas('store', function($query) use ($sid) {
+            $user = User::whereHas('store', function($query) use ($sid) {
                 return $query->where('id', '=', $sid);
-                })->first();
-                $data              = $request->image;
-                list($type, $data) = explode(';', $data);
-                list(, $data)      = explode (',', $data);
-                $data              = base64_decode($data);
-                $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$request->$sid.'-'.time(). '.jpeg');
-                $path              = public_path('storage/'.$user->id.'/stores/products/');
+            })->first();
+            $data              = $request->image;
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode (',', $data);
+            $data              = base64_decode($data);
+            $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$request->$sid.'-'.time(). '.jpeg');
+            $path              = public_path('storage/'.$user->id.'/stores/products/');
             if(!file_exists($path)){
                 mkdir($path, 0755, true);
             }
@@ -124,7 +124,7 @@ class ProductController extends Controller
         $find = Store::with(['products' => function($query) use ($name, $id) {
             return $query->where('name', '=', $name)->where('ec_products.id', '!=', $id);
         }])->where('id','=', $sid)->first();
-        if(!is_null($find->products)>0){
+        if(count($find->products)>0){
             return response(['Đã tồn tại'], 422);
         }
         $product              = Product::find($id);
@@ -173,7 +173,7 @@ class ProductController extends Controller
         $product->catalogue_id = $request->catalogue_id;
         $product->updated_at   = new DateTime;
         $product->save();
-         return new ProductResource($product);
+        return new ProductResource($product);
     }
 
     /**
