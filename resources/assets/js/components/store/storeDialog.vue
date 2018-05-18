@@ -57,7 +57,7 @@
 											label="Confirm password" 
 											v-model="editedItem.user.confirm_password" 
 											type="password"
-											v-validate="{required:true, is:editedItem.password}"
+											v-validate="{required:true, is:editedItem.user.password}"
 											data-vv-name="confirmPassword"
 											:error-messages="errors.collect('confirmPassword')"
 											data-vv-scope="user"></v-text-field>
@@ -197,7 +197,7 @@
 										:items="cities"
 										v-model="editedItem.store.city_id"
 										label="City"
-										item-text="city_name"
+										item-text="name"
 										item-value="id"
 										prepend-icon="map"
 										@change="changeCity"
@@ -372,26 +372,22 @@ vm.$validator.validateAll('store').then(async function(result){
 vm.$validator.validateAll().then(async (result) => {
 	if(result) {						
 		await getLocation(vm.editedItem.user.address).then(response => {
-			if(response.status == 200) {
-				vm.editedItem.user.lat = response.data.results[0].geometry.location.lat
-				vm.editedItem.user.lng = response.data.results[0].geometry.location.lng
-			}
-		})
-		await getLocation(vm.editedItem.store.address).then(response => {
-			if(response.status == 200) {
-				vm.editedItem.store.lat = response.data.results[0].geometry.location.lat
-				vm.editedItem.store.lng = response.data.results[0].geometry.location.lng
-				vm.$store.dispatch('addStore', vm.editedItem).then(response => {
-					if(response.status == 201) {
-						vm.close()
-					}
-				}).catch(errors => {
-					if(errors.response.status == 422) {
-
-					}
-				})
-			}
+			vm.editedItem.user.lat = response[0].geometry.location.lat()
+			vm.editedItem.user.lng = response[0].geometry.location.lng()	
 		})			
+		await getLocation(vm.editedItem.store.address).then(response => {
+			vm.editedItem.store.lat = response[0].geometry.location.lat()
+			vm.editedItem.store.lng = response[0].geometry.location.lng()	
+		})	
+		vm.$store.dispatch('addStore', vm.editedItem).then(response => {
+			if(response.status == 201) {
+				vm.close()
+			}
+		}).catch(errors => {
+			if(errors.response.status == 422) {
+
+			}
+		})	
 	}
 })				
 }

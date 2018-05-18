@@ -62,45 +62,45 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        $userForm  = (object)$request->user;
-        $storeForm = (object)$request->store;
-        if((int)$this->role_partner->id === (int)$userForm->role_id) {
+        $userForm  = $request->user;
+        $storeForm = $request->store;
+        if((int)$this->role_partner->id === (int)$userForm['role_id']) {
             $user             = new User;
-            $user->name       = $userForm->name;
-            $user->email      = $userForm->email;
-            $user->password   = bcrypt($userForm->password);
-            $user->birthday   = $userForm->birthday;
-            $user->gender     = $userForm->gender;
-            $user->address    = $userForm->address;
-            $user->lat        = $userForm->lat;
-            $user->lng        = $userForm->lng;
-            $user->phone      = $userForm->phone;
+            $user->name       = $userForm['name'];
+            $user->email      = $userForm['email'];
+            $user->password   = bcrypt($userForm['password']);
+            $user->birthday   = $userForm['birthday'];
+            $user->gender     = $userForm['gender'];
+            $user->address    = $userForm['address'];
+            $user->lat        = $userForm['lat'];
+            $user->lng        = $userForm['lng'];
+            $user->phone      = $userForm['phone'];
             $user->have_store = 1;
-            $user->actived    = $userForm->actived;
+            $user->actived    = $userForm['actived'];
             $user->role_id    = $this->role_partner->id;
             $user->created_at = new DateTime;
             $user->save();
             //Add store
             $store                = new Store;
-            $store->store_name    = $storeForm->name;
-            $store->store_slug    = str_slug($storeForm->name, '-');
-            $store->store_phone   = $storeForm->phone;
-            $store->preparetime   = (int)$storeForm->preparetime;
-            $store->store_address = $storeForm->address;
-            $store->lat           = $storeForm->lat;
-            $store->lng           = $storeForm->lng;
+            $store->store_name    = $storeForm['name'];
+            $store->store_slug    = str_slug($storeForm['name'], '-');
+            $store->store_phone   = $storeForm['phone'];
+            $store->preparetime   = (int)$storeForm['preparetime'];
+            $store->store_address = $storeForm['address'];
+            $store->lat           = $storeForm['lat'];
+            $store->lng           = $storeForm['lng'];
             
-            $store->verified      = $storeForm->verified;
+            $store->verified      = $storeForm['verified'];
             $store->user_id       = $user->id;
-            $store->district_id   = (int)$storeForm->district_id;
-            $store->type_id       = (int)$storeForm->type_id;
+            $store->district_id   = (int)$storeForm['district_id'];
+            $store->type_id       = (int)$storeForm['type_id'];
             $store->status_id     = $this->store_status->id;
-            $store->store_show    = $storeForm->show;
+            $store->store_show    = $storeForm['show'];
             $store->created_at    = new DateTime;
             $store->save();
             // Store Avatar
-            if(!is_null($storeForm->avatar)) {
-                $data              = $storeForm->avatar;
+            if(!is_null($storeForm['avatar'])) {
+                $data              = $storeForm['avatar'];
                 list($type, $data) = explode(';', $data);
                 list(, $data)      = explode (',', $data);
                 $data              = base64_decode($data);
