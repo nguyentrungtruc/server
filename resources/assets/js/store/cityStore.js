@@ -71,7 +71,7 @@ const actions = {
 		})
 	}),
 	fetchCitiesDoesntHaveDelivery: ({commit}, payload) => new Promise((resolve, reject) => {
-		axios.get('/Dofuu-City/DoesntHaveDelivery', {headers: getHeader()}).then(response => {
+		axios.get('/api/Dofuu-City/DoesntHaveDelivery', {headers: getHeader()}).then(response => {
 			if(response.status === 200) {
 				commit('FETCH_CITY', response.data)
 			}
