@@ -12,7 +12,7 @@ return [
     |
     */
     'supportsCredentials'    => true,
-    'allowedOrigins'         => ['http://maps.googleapis.com'],
+    'allowedOrigins'         => ['http://maps.googleapis.com', 'http://dofuu.com'],
     'allowedOriginsPatterns' => [],
     'allowedHeaders'         => ['*','Content-Type', 'X-Requested-With'],
     'allowedMethods'         => ['*'],
