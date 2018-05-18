@@ -335,10 +335,8 @@ export default {
 	methods: {
 //Close Dialog
 close: async function() {
-	setTimeout(async () => {
-		this.editedItem = Object.assign({}, this.defaultItem)
-		await this.errors.clear()
-	},300)
+	this.editedItem = await Object.assign({}, this.defaultItem)
+	await this.errors.clear()
 	this.disabled = true
 	this.$store.commit('DIALOG_STORE_CLOSE')
 
