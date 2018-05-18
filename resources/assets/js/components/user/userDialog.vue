@@ -179,6 +179,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import {getLocation} from '@/helpers/apiGetLocation.js'
 export default {
 	data() {
 		return {
@@ -226,13 +227,13 @@ export default {
 			},300)
 		},
 		//Accept Update Role
-		save: function(request) {
+		save: async function(request) {
 			var vm = this
 			if (vm.editedIndex > -1) {
 				//Accept Edit Role
-				vm.$validator.validateAll('user').then(function(result){
+				vm.$validator.validateAll('user').then(async function(result){
 					if(result) {			
-						vm.getLocation(vm.editedItem.address).then(response => {
+						await getLocation(vm.editedItem.address).then(response => {
 							vm.editedItem.lat = response.data.results[0].geometry.location.lat
 							vm.editedItem.lng = response.data.results[0].geometry.location.lng
 							if(response.status == 200) {
@@ -247,9 +248,9 @@ export default {
 				})
 			} else {
 				//Accept Add User
-				vm.$validator.validateAll('user').then((result) => {
+				vm.$validator.validateAll('user').then(async (result) => {
 					if(result) {
-						vm.getLocation(vm.editedItem.address).then(response => {
+						await getLocation(vm.editedItem.address).then(response => {
 							vm.editedItem.lat = response.data.results[0].geometry.location.lat
 							vm.editedItem.lng = response.data.results[0].geometry.location.lng
 							if(response.status == 200) {								
