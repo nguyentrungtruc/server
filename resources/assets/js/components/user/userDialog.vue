@@ -234,16 +234,16 @@ export default {
 				vm.$validator.validateAll('user').then(async function(result){
 					if(result) {			
 						await getLocation(vm.editedItem.address).then(response => {
-							vm.editedItem.lat = response.data.results[0].geometry.location.lat
-							vm.editedItem.lng = response.data.results[0].geometry.location.lng
+							vm.editedItem.lat = response[0].geometry.location.lat()
+							vm.editedItem.lng = response[0].geometry.location.lng()	
 							if(response.status == 200) {
 								vm.$store.dispatch('updateUser', vm.editedItem).then(response => {
 									if(response.status == 201) {
 										vm.close()
 									}
 								})
-							}
-						})						
+							}	
+						})					
 					}
 				})
 			} else {
@@ -251,15 +251,15 @@ export default {
 				vm.$validator.validateAll('user').then(async (result) => {
 					if(result) {
 						await getLocation(vm.editedItem.address).then(response => {
-							vm.editedItem.lat = response.data.results[0].geometry.location.lat
-							vm.editedItem.lng = response.data.results[0].geometry.location.lng
-							if(response.status == 200) {								
+							vm.editedItem.lat = response[0].geometry.location.lat()
+							vm.editedItem.lng = response[0].geometry.location.lng()	
+							if(response.status == 200) {
 								vm.$store.dispatch('addUser', vm.editedItem).then(response => {
 									if(response.status == 200) {
 										vm.close()
 									}
 								})
-							}
+							}	
 						})								
 					}
 				})				
