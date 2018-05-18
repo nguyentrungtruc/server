@@ -12,7 +12,7 @@ return [
     |
     */
     'supportsCredentials'    => true,
-    'allowedOrigins'         => ['http://localhost:8080', 'http://localhost:3333'],
+    'allowedOrigins'         => ['http://maps.googleapis.com'],
     'allowedOriginsPatterns' => [],
     'allowedHeaders'         => ['*','Content-Type', 'X-Requested-With'],
     'allowedMethods'         => ['*'],
