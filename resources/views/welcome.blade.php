@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
     <head>
+        <meta name="google-site-verification" content="h56ecF9DExm4zZ5PSDVRaUxO-UEgqCasmWx_Bkem2Ho" />
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +19,5 @@
         </div>
          
         <script src="{{asset('js/app.js')}}"></script>
-        {{-- <script src="http://maps.google.com/maps/api/js?key=AIzaSyD8YR1-ZSzJf1G38n6FX76EhQrnyK0rccE&language=vi&region=VN"></script> --}}
     </body>
 </html>
