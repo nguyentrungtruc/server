@@ -45,7 +45,7 @@ class CatalogueController extends Controller
     {
         $name = Str::lower($request->catalogue);
         $find = Catalogue::where('catalogue', '=', $name)->where('store_id', '=', $request->sid)->first();
-        if(count($find)>0){
+        if(!is_null($find)){
             return response(['Already exists taken'], 422);
         }
         $catalogue             = new Catalogue;
@@ -91,7 +91,7 @@ class CatalogueController extends Controller
     {
         $name = Str::lower($request->catalogue);
         $find = Catalogue::where('catalogue', '=', $name)->where('store_id', '=', $request->sid)->where('id', '!=', $id)->first();
-        if(count($find)>0){
+        if(!is_null($find)){
             return response(['Already exists taken'], 422);
         }
         $catalogue             = Catalogue::find($id);

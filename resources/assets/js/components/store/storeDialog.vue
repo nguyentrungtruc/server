@@ -423,12 +423,7 @@ watch: {
 		val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
 	},
 	item (val) {
-		console.log(val)
-		Object.assign(this.editedItem.store, val)
-		// const newObject = Object.keys(val).reduce((obj, key) => {
-		// 	key !== 'user' ? obj[key] = val[key] : null;
-		// 	return obj;
-		// }, {});		
+		Object.assign(this.editedItem.store, val)	
 	},
 	'editedItem.store.avatar': function(val, oldVal) {
 		if(this.editedIndex > -1 && oldVal != null) {

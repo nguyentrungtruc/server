@@ -71,7 +71,6 @@ const actions = {
 	}),
 	addStore: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
-		console.log(payload)
 		axios.post('/api/Dofuu-Store', payload, {headers: getHeader()}).then(response => {
 			if(response.status == 201) {
 				commit('UPDATE_STORE', response.data)
