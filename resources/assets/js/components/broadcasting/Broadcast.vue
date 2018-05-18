@@ -29,7 +29,7 @@ export default {
 					key: '063bdced98d87f38a6d2',
 					cluster: 'ap1',
 					encrypted: true,
-					authEndpoint: 'http://167.99.74.115/broadcasting/auth',
+					authEndpoint: '/broadcasting/auth',
 					auth: {
 						headers: getHeader()
 					},
