@@ -369,25 +369,29 @@ vm.$validator.validateAll('store').then(async function(result){
 })
 } else {
 //Accept Add User
-vm.$validator.validateAll().then(async (result) => {
+vm.$validator.validateAll('user').then(async (result) => {
 	if(result) {						
-		await getLocation(vm.editedItem.user.address).then(response => {
-			vm.editedItem.user.lat = response[0].geometry.location.lat()
-			vm.editedItem.user.lng = response[0].geometry.location.lng()	
-		})			
-		await getLocation(vm.editedItem.store.address).then(response => {
-			vm.editedItem.store.lat = response[0].geometry.location.lat()
-			vm.editedItem.store.lng = response[0].geometry.location.lng()	
-		})	
-		vm.$store.dispatch('addStore', vm.editedItem).then(response => {
-			if(response.status == 201) {
-				vm.close()
-			}
-		}).catch(errors => {
-			if(errors.response.status == 422) {
+		vm.$validator.validateAll('store').then(async(resultStore) => {
+			if(resultStore) {
+				await getLocation(vm.editedItem.user.address).then(response => {
+					vm.editedItem.user.lat = response[0].geometry.location.lat()
+					vm.editedItem.user.lng = response[0].geometry.location.lng()	
+				})			
+				await getLocation(vm.editedItem.store.address).then(response => {
+					vm.editedItem.store.lat = response[0].geometry.location.lat()
+					vm.editedItem.store.lng = response[0].geometry.location.lng()	
+				})	
+				vm.$store.dispatch('addStore', vm.editedItem).then(response => {
+					if(response.status == 201) {
+						vm.close()
+					}
+				}).catch(errors => {
+					if(errors.response.status == 422) {
 
+					}
+				})	
 			}
-		})	
+		})		
 	}
 })				
 }
