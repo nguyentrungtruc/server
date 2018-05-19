@@ -9,7 +9,7 @@
 	<br/>
 	Your registered email-id is {{$user['email']}} , Please click on the below link to verify your email account
 	<br/>
-	<a href="{{url('http://localhost:3333/login/activation/').$user->active->token}}">Verify Email</a>
+	<a href="{{url('http://dofuu.com/login/activation/').$user->active->token}}">Verify Email</a>
 </body>
 
 </html>

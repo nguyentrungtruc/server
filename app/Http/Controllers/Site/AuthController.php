@@ -80,7 +80,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(UserRequest $request) {
+    public function register(Request $request) {
         if($request->filled(['_n', '_e', '_pw', '_g', '_b', '_p'])) {
             $user           = new User;
             $user->name     = $request->_n;
@@ -96,6 +96,7 @@ class AuthController extends Controller
                 'user_id' => $user->id,
                 'token'   => hash_hmac('sha256', str_random(40), config('app.key'))
             ]);
+            
             Mail::to($user->email)->send(new ActiveUserMail($user));
             return response('Create account Successfully!!!', 201);
         }
