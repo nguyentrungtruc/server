@@ -116,27 +116,28 @@ export default {
 	},
 	methods: {
 		//Close Dialog
-		close: function() {
-			this.disabled = true
-			this.editedItem = Object.assign({}, this.defaultItem)	
+		close: async function() {
+			this.disabled = await true
+			this.editedItem = await Object.assign({}, this.defaultItem)	
 			this.$store.commit('DIALOG_PRODUCT_CLOSE')
 			setTimeout(() => {
 				this.errors.clear()		
 			},300)
 		},
 		//Update Status
-		save: function(request) {
+		save: async function(request) {
 			var vm = this
-			Object.assign(this.editedItem, {sid: this.$route.params.sid})
+			await Object.assign(this.editedItem, {sid: this.$route.params.sid})
 			if (vm.editedIndex > -1) {
 				//Accept Edit Status
-				vm.$validator.validateAll().then(function(result){
+				vm.$validator.validateAll().then( async function(result){
 					if(result) {			
-						vm.$store.dispatch('updateProduct', vm.editedItem).then(response => {
+						await vm.$store.dispatch('updateProduct', vm.editedItem).then(response => {
 							if(response.status == 200) {
-								vm.close()
+								
 							}
-						})			
+						})		
+						vm.close()	
 					}
 				})
 			} else {
@@ -199,7 +200,6 @@ export default {
 			}
 		},
 		'editedItem.description': function(val, oldVal) {
-			console.log(val, oldVal)
 			if(this.editedIndex > -1 && oldVal != '') {
 				this.disabled = false
 			} else if(this.editedIndex == -1 && val != '') {
@@ -221,8 +221,6 @@ export default {
 			}
 		},
 		'editedItem.status_id': function(val, oldVal) {
-			console.log(val)
-			console.log(oldVal)
 			if(this.editedIndex > -1 && oldVal != val) {
 				this.disabled = false
 			} else if(this.editedIndex == -1 && val != 1) {
@@ -234,7 +232,9 @@ export default {
 
 	},
 	created() {
-		this.$store.dispatch('fetchProductStatus')
+		setTimeout(() => {
+			this.$store.dispatch('fetchProductStatus')
+		}, 300)
 	}
 }
 </script>

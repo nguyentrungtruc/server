@@ -142,7 +142,9 @@ export default {
 		})
 	},
 	created() {
-		this.$store.dispatch('showStore', this.$route.params.sid)
+		setTimeout(() => {
+			this.$store.dispatch('showStore', this.$route.params.sid)
+		}, 300)
 	}
 }
 

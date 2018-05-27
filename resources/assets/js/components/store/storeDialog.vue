@@ -337,7 +337,7 @@ export default {
 close: async function() {
 	this.editedItem = await Object.assign({}, this.defaultItem)
 	await this.errors.clear()
-	this.disabled = true
+	this.disabled = await true
 	this.$store.commit('DIALOG_STORE_CLOSE')
 
 },
@@ -398,6 +398,7 @@ changeCity: function(id) {
 },
 //Get image 
 getImage(value) {
+	this.disabled = false
 	this.editedItem.store.avatar = value
 }
 },
@@ -424,7 +425,8 @@ watch: {
 		Object.assign(this.editedItem.store, val)	
 	},
 	'editedItem.store.avatar': function(val, oldVal) {
-		if(this.editedIndex > -1 && oldVal != null) {
+		console.log(val)
+		if(this.editedIndex >-1 && oldVal != null && val != null) {
 			this.disabled = false
 		} else if(this.editedIndex == -1 && val != null) {
 			this.disabled = false

@@ -144,7 +144,7 @@ class StoreController extends Controller
         $pageSize = $request->maxSize;
         $context  = $request->context;
         if($request->context == 'search') {
-            
+
             $city = City::where('id', '=', $cityId)->with(['stores' => function ($query) use ($keywords, $pageSize) {
                 return $query
                 ->where(function($queryChild) use ($keywords) {
@@ -260,7 +260,7 @@ class StoreController extends Controller
                 });
             })->with(['status', 'coupons' => function($query) use ($now){
                 return $query->orderBy('created_at', 'desc')->get();
-            }])->where('store_show', '=', 1)->paginate($size);
+            }])->where('store_show', '=', 1)->orderBy('priority', 'desc')->paginate($size);
 
         } else if($type_id != 0) {
 
@@ -278,7 +278,7 @@ class StoreController extends Controller
                 $query->where('type_id', $type_id);
             })->with(['status', 'coupons' => function($query) {
                 return $query->orderBy('created_at', 'desc')->get();
-            }])->where('store_show', '=', 1)->paginate($size);
+            }])->where('store_show', '=', 1)->orderBy('priority', 'desc')->paginate($size);
 
         } else if($district_id != 0) {
 
@@ -295,7 +295,7 @@ class StoreController extends Controller
                 $query->where('district_id', $district_id);
             })->with(['status', 'coupons' => function($query) {
                 return $query->orderBy('created_at', 'desc')->get();
-            }])->where('store_show', '=', 1)->paginate($size);
+            }])->where('store_show', '=', 1)->orderBy('priority', 'desc')->paginate($size);
 
         }
 
@@ -333,7 +333,7 @@ class StoreController extends Controller
                 $query->whereHas('district', function($query) use ($flag_c){
                     $query->where('city_id', $flag_c);
                 });
-            })->with(['status'])->where('store_show', '=', 1)->paginate($size);
+            })->with(['status'])->where('store_show', '=', 1)->orderBy('priority', 'desc')->paginate($size);
 
         } else if($type_id != 0) {
 
@@ -343,7 +343,7 @@ class StoreController extends Controller
                     $query->where('city_id', $flag_c);
                 });
                 $query->where('type_id', $type_id);
-            })->with(['status'])->where('store_show', '=', 1)->paginate($size);
+            })->with(['status'])->where('store_show', '=', 1)->orderBy('priority', 'desc')->paginate($size);
 
         } else if($district_id != 0) {
 
@@ -353,7 +353,7 @@ class StoreController extends Controller
                     $query->where('city_id', $flag_c);
                 });
                 $query->where('district_id', $district_id);
-            })->with(['status'])->where('store_show', '=', 1)->paginate($size);
+            })->with(['status'])->where('store_show', '=', 1)->orderBy('priority', 'desc')->paginate($size);
 
         }
 
