@@ -12,7 +12,7 @@ class NotificationController extends Controller
 	}
 	// READ NOTIFICATION
 	public function readNotification(Request $request) {
-		$notification = auth('api')->user()->unreadNotifications->where('id', '=', $request->id);
+		$notification = auth()->user()->unreadNotifications->where('id', '=', $request->id);
 		$notification->markAsRead();
 		$res = [
 			'type'    => 'success',
@@ -26,14 +26,14 @@ class NotificationController extends Controller
 		if($request->confirm) {
 			$array = [];
 
-			foreach(auth('api')->user()->notifications as $notification) {
+			foreach(auth()->user()->notifications as $notification) {
 				array_push($array, $notification->data);
 			}
 
 			$res = [
 				'type'    => 'success',
 				'message' => 'Get notification successfully.',
-				'data'    => auth('api')->user()->notifications
+				'data'    => auth()->user()->notifications
 			];
 			return response($res, 200);
 		}		
@@ -43,7 +43,7 @@ class NotificationController extends Controller
 		if($request->confirm) {
 			
 		}
-		$notifications = auth('api')->user()->unreadNotifications;
+		$notifications = auth()->user()->unreadNotifications;
 		$res = [
 			'type'    => 'success',
 			'message' => 'Get notification successfully.',

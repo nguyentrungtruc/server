@@ -57,7 +57,7 @@ export default{
 			{ title: 'Passports', isEmployee:false , action:'Passport'},
 			]
 		},
-		{ icon: 'redeem', title: 'Manage Coupons', action: 'Coupon'},
+		{ icon: 'redeem', title: 'Manage Coupons', action: 'Coupon',  isAdmin: true, isEmployee:true},
 		{
 			icon: 'settings',
 			title: 'Manage Services',
@@ -137,6 +137,7 @@ export default{
 	},
 	watch: {
 		'currentUser': function(val) {
+			console.log(val)
 			if(val != null) {
 				this.getNotification()
 			}

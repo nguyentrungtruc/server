@@ -78,7 +78,7 @@ class UserController extends Controller
             $user->store()->save(new Store);
         }
         $res = User::with('role')->find($user->id);
-        return response($res, 200);
+        return response($res, 201);
     }
 
     /**
