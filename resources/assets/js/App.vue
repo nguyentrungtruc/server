@@ -81,7 +81,7 @@ export default{
 			{ title: 'Types Of Stores', action: 'Type'}
 			]
 		},
-		{ icon: 'access_time', title: 'Manage Activity', action: 'Activity'},
+		{ icon: 'access_time', title: 'Manage Activity', action: 'Activity', isAdmin: true, isEmployee:false},
 		{heading: 'System', isAdmin: true,	isEmployee:false},
 		{
 			icon: 'place',
