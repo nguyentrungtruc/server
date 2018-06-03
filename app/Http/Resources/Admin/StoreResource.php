@@ -45,6 +45,9 @@ class StoreResource extends JsonResource
             'coupon_title'  => $this->coupons->map(function($query) {
                 return $query->title;
             })->sortByDesc('created_at')->take(1)->first(),
+            'toppings'      => $this->whenLoaded('toppings', function() {
+                return ToppingResource::collection($this->toppings);
+            })
         ];
     }
 }

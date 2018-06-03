@@ -63,4 +63,8 @@ class Store extends Model
     public function regularOrders() {
         return $this->hasMany('App\Models\RegularOrder', 'store_id');
     }
+
+    public function toppings() {
+        return $this->hasMany('App\Models\Topping', 'store_id');
+    }
 }

@@ -118,7 +118,7 @@ class UserController extends Controller
             }            
         }
         $res = User::with('role')->find($user->id);
-        return response($res, 201);
+        return response($res, 200);
     }
 
     /**

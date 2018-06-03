@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 Route::group(['middleware' => ['api'], 'prefix' => 'DOFUU-AUTH/8420be8df65a43e246a0a6215c5ed977bb099cb8'], function ($router) {
 	Route::group(['namespace' => 'Admin'], function () {
-	        //CREDENTIAL
+	    //CREDENTIAL
 		Route::post('login', 'AuthController@login');
 		Route::post('logout', 'AuthController@logout');
 		Route::post('refresh', 'AuthController@refresh');

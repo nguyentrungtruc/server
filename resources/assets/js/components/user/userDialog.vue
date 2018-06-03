@@ -237,7 +237,7 @@ export default {
 							vm.editedItem.lat = response[0].geometry.location.lat()
 							vm.editedItem.lng = response[0].geometry.location.lng()	
 							vm.$store.dispatch('updateUser', vm.editedItem).then(response => {
-								if(response.status == 201) {
+								if(response.status == 200) {
 									vm.close()
 								}
 							})
@@ -253,7 +253,7 @@ export default {
 							vm.editedItem.lng = response[0].geometry.location.lng()	
 						})		
 						vm.$store.dispatch('addUser', vm.editedItem).then(response => {
-							if(response.status == 200) {
+							if(response.status == 201) {
 								vm.close()
 							}
 						})						

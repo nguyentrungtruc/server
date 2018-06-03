@@ -73,7 +73,7 @@ const actions = {
 	addUser: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this
 		axios.post('/api/Dofuu-User', payload, {headers: getHeader()}).then(response => {
-			if(response.status == 200) {
+			if(response.status == 201) {
 				commit('UPDATE_USER', response.data)
 				commit('ALERT_USER', {alert:true, messages: payload.email+' email has been added.', type: 'success'})
 			}
@@ -89,7 +89,7 @@ const actions = {
 	updateUser: ({commit}, payload) => new Promise((resolve, reject) => {
 		var vm = this 
 		axios.put('/api/Dofuu-User/'+payload.id, payload, {headers: getHeader()}).then(response => {
-			if(response.status == 201) {
+			if(response.status == 200) {
 				commit('UPDATE_USER', response.data)
 				commit('ALERT_USER', {alert:true, messages: payload.email+ ' account has been updated', type: 'success'})
 			} 

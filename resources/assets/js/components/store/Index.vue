@@ -267,12 +267,12 @@ export default {
 				align: 'left',
 				value: 'id'
 			},
-			{ text: 'Store avatar', value: 'store_avatar'},
-			{ text: 'Store name', value: 'store_name'},
-			{ text: 'City', value:'district.city.city_name'},
-			{ text: 'District', value:'district.district_name'},
-			{ text: 'Address', value: 'store_address', sortable: false},
-			{ text: 'Store phone', value: 'store_phone'},
+			{ text: 'Store avatar', sortable:false},
+			{ text: 'Store name', value: 'name'},
+			{ text: 'City', value:'city_name'},
+			{ text: 'District', value:'district_name'},
+			{ text: 'Address', value: 'address', sortable: false},
+			{ text: 'Store phone', value: 'phone'},
 			{ text: 'Store', value: 'user.have_store', sortable: false},
 			{ text: 'Action', sortable:false}
 			],
