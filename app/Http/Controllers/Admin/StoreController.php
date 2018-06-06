@@ -105,7 +105,7 @@ class StoreController extends Controller
                 list(, $data)      = explode (',', $data);
                 $data              = base64_decode($data);
                 $imageName         = str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$store->id.'-'.time(). '.jpeg');
-                $path = public_path('storage/'.$user->id.'/stores/av/');
+                $path = '/var/www/dofuu.com/public/storage/'.$store->user_id.'/stores/av/';
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }
