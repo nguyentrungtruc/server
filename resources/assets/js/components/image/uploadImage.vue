@@ -1,12 +1,14 @@
 <template>
 	<div>
-		<a @click.stop.prevent="onPickImage" style="width:inherit;height:inherit;border-radius:inherit"><img :src="imageUrl != null?imageUrl:'/img/noimage.png' " alt="avatar" style="width:285px; height:160px; cursor:pointer"></a>
+		<a @click.stop.prevent="onPickImage" style="width:inherit;height:inherit;border-radius:inherit"><img :src="image(imageUrl)" alt="avatar" style="width:285px; height:160px; cursor:pointer"></a>
 		<input type="file" style="display:none" ref="fileInput" accept="image/*" v-validate="'mimes:image/jpeg, image/png, image/jpg'" @change="onImagePicked">
 	</div>
 </template>
 
 <script>
+import image from '@/mixins/imageUrl'
 export default {
+	mixins: [image],
 	props: ['image'],
 	data() {
 		return {
