@@ -1,10 +1,11 @@
+import {imageURL} from '@/config/config' 
 export default {
 	methods: {
-		image(value) {
-			if(value == null) {
-				return '/img/noimage.png'
+		image(url) {
+			if(url == null) {
+				return imageURL+'/img/default.png'
 			}
-			return value
-		}
+			return imageURL+url
+		},
 	}
 }
