@@ -109,6 +109,7 @@ class StoreController extends Controller
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }
+
                 file_put_contents($path . $imageName, $data);
                 $imageUrl            = '/storage/'.$user->id.'/stores/av/'.$imageName;
                 $store->store_avatar = $imageUrl;
@@ -158,8 +159,10 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //Update Store
+        //path linux
+        $path = '/var/www/dofuu.xyz/public/storage/'.$store->user_id.'/stores/av/';
 
+        //Update Store
         $store                = Store::find($id);
         $store->store_name    = $request->name;
         $store->store_slug    = str_slug($request->name, '-');
@@ -178,26 +181,29 @@ class StoreController extends Controller
         if(!is_null($request->avatar)) {
             if($store->store_avatar !== $request->avatar && !is_null($store->store_avatar)) {
                 $url               = $store->store_avatar;
-                unlink(public_path().$url);
+                // unlink(public_path().$url);
                 $data              = $request->avatar;
                 list($type, $data) = explode(';', $data);
                 list(, $data)      = explode (',', $data);
                 $data              = base64_decode($data);
                 $imageName         = str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$store->id.'-'.time(). '.jpeg');
-                $path = public_path('storage/'.$store->user_id.'/stores/av/');
+
+                // //path linux
+                // $path = public_path('storage/'.$store->user_id.'/stores/av/');
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }
                 file_put_contents($path . $imageName, $data);
                 $imageUrl            = '/storage/'.$store->user_id.'/stores/av/'.$imageName;
                 $store->store_avatar = $imageUrl;
+
             } else if(is_null($store->store_avatar)) {
                 $data              = $request->avatar;
                 list($type, $data) = explode(';', $data);
                 list(, $data)      = explode (',', $data);
                 $data              = base64_decode($data);
                 $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$store->id.'-'.time(). '.jpeg');
-                $path              = public_path('storage/'.$store->user_id.'/stores/av/');
+                // $path              = public_path('storage/'.$store->user_id.'/stores/av/');
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }
@@ -205,6 +211,7 @@ class StoreController extends Controller
                 $imageUrl            = '/storage/'.$store->user_id.'/stores/av/'.$imageName;
                 $store->store_avatar = $imageUrl;
             }
+
         }
         $store->save();
         $store->user;
