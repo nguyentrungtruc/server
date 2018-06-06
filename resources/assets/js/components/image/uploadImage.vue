@@ -1,15 +1,16 @@
 <template>
 	<div>
-		<a @click.stop.prevent="onPickImage" style="width:inherit;height:inherit;border-radius:inherit"><img :src="image(imageUrl)" alt="avatar" style="width:285px; height:160px; cursor:pointer"></a>
+		<a @click.stop.prevent="onPickImage" style="width:inherit;height:inherit;border-radius:inherit"><img :src="imageUrl" alt="avatar" style="width:285px; height:160px; cursor:pointer"></a>
 		<input type="file" style="display:none" ref="fileInput" accept="image/*" v-validate="'mimes:image/jpeg, image/png, image/jpg'" @change="onImagePicked">
 	</div>
 </template>
 
 <script>
 import image from '@/mixins/imageUrl'
+import {imageURL} from '@/config/config'
 export default {
 	mixins: [image],
-	props: ['image'],
+	props: ['avatar'],
 	data() {
 		return {
 			imageUrl: null
@@ -63,11 +64,20 @@ export default {
 		}
 	},
 	watch: {
-		image(val) {
+		avatar(val) {
 			if(val == null) {
-				this.imageUrl = '/img/noimage.png'
+
+				this.imageUrl =  imageURL + '/img/default.png'
+
 			} else {
-				this.imageUrl = val
+				if(val.lastIndexOf('data')>-1) {
+
+					this.imageUrl = val
+
+				} else {
+
+					this.imageUrl = imageURL + val
+				}
 			}
 		}
 	}

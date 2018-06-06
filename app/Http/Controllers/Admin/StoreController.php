@@ -159,8 +159,6 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //path linux
-
         //Update Store
         $store                = Store::find($id);
         $store->store_name    = $request->name;

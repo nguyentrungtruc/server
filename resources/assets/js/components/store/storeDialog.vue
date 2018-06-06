@@ -141,7 +141,7 @@
 								<v-subheader>Avatar</v-subheader>
 								<v-layout justify-center >
 									<v-flex xs8 sm8 md6>
-										<vue-image :image="editedItem.store.avatar" @IMAGE="getImage"></vue-image>		
+										<vue-image :avatar="editedItem.store.avatar" @IMAGE="getImage"></vue-image>		
 									</v-flex>
 								</v-layout>
 								<v-form>
@@ -425,7 +425,6 @@ watch: {
 		Object.assign(this.editedItem.store, val)	
 	},
 	'editedItem.store.avatar': function(val, oldVal) {
-		console.log(val)
 		if(this.editedIndex >-1 && oldVal != null && val != null) {
 			this.disabled = false
 		} else if(this.editedIndex == -1 && val != null) {
