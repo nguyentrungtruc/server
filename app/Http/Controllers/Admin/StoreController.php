@@ -180,7 +180,8 @@ class StoreController extends Controller
         if(!is_null($request->avatar)) {
             if($store->store_avatar !== $request->avatar && !is_null($store->store_avatar)) {
                 $url               = $store->store_avatar;
-                unlink(public_path().$url);
+                $oldPath = '/var/www/dofuu.com/public';
+                unlink($oldPath.$url);
                 $data              = $request->avatar;
                 list($type, $data) = explode(';', $data);
                 list(, $data)      = explode (',', $data);
@@ -188,7 +189,8 @@ class StoreController extends Controller
                 $imageName         = str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$store->id.'-'.time(). '.jpeg');
 
                 // //path linux
-                $path = '/var/www/dofuu.xyz/public/storage/'.$store->user_id.'/stores/av/';
+                // $path = '/var/www/dofuu.xyz/public/storage/'.$store->user_id.'/stores/av/';
+                $path = '/var/www/dofuu.com/public/storage/'.$store->user_id.'/stores/av/';
                 // $path = public_path('storage/'.$store->user_id.'/stores/av/');
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
@@ -204,7 +206,8 @@ class StoreController extends Controller
                 $data              = base64_decode($data);
                 $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$store->id.'-'.time(). '.jpeg');
                 // $path              = public_path('storage/'.$store->user_id.'/stores/av/');
-                $path = '/var/www/dofuu.xyz/public/storage/'.$store->user_id.'/stores/av/';
+                // $path = '/var/www/dofuu.xyz/public/storage/'.$store->user_id.'/stores/av/';
+                $path = '/var/www/dofuu.com/public/storage/'.$store->user_id.'/stores/av/';
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }
