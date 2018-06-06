@@ -11,8 +11,10 @@ export const getHeader = function(){
 }
 
 export const apiDomain = 'https://admin.dofuu.com'
-export const imageURL  = 'https://www.dofuu.com'
-
+//domain xyz
+export const imageURL  = 'https://www.dofuu.xyz'
+//domain com
+// export const imageURL  = 'https://www.dofuu.com'
 
 export const loginUrl  = apiDomain + '/oauth/token'
 export const logoutUrl = apiDomain + '/api/logout'
