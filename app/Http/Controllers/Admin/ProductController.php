@@ -64,6 +64,7 @@ class ProductController extends Controller
         $product->price       = $request->price;
         $product->description = $request->description;
         if(!is_null($request->image)) {
+
             $user = User::whereHas('store', function($query) use ($sid) {
                 return $query->where('id', '=', $sid);
             })->first();
@@ -72,7 +73,8 @@ class ProductController extends Controller
             list(, $data)      = explode (',', $data);
             $data              = base64_decode($data);
             $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$request->$sid.'-'.time(). '.jpeg');
-            $path              = public_path('storage/'.$user->id.'/stores/products/');
+            // $path              = public_path('storage/'.$user->id.'/stores/products/');
+            $path = '/var/www/dofuu.com/public/storage/'.$user->id.'/stores/products/';
             if(!file_exists($path)){
                 mkdir($path, 0755, true);
             }
@@ -135,7 +137,9 @@ class ProductController extends Controller
         if(!is_null($request->image)) {
             if($product->image !== $request->image && !is_null($product->image)) {
                 $url = $product->image;
-                unlink(public_path().$url);
+                $oldPath = '/var/www/dofuu.com/public';
+                // unlink(public_path().$url);
+                unlink($oldPath.$url);
                 $user = User::whereHas('store', function($query) use ($sid) {
                     return $query->where('id', '=', $sid);
                 })->first();
@@ -144,7 +148,8 @@ class ProductController extends Controller
                 list(, $data)      = explode (',', $data);
                 $data              = base64_decode($data);
                 $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$sid.'-'.time(). '.jpeg');
-                $path              = public_path('storage/'.$user->id.'/stores/products/');
+                // $path              = public_path('storage/'.$user->id.'/stores/products/');
+                $path = '/var/www/dofuu.com/public/storage/'.$user->id.'/stores/products/';
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }
@@ -160,7 +165,8 @@ class ProductController extends Controller
                 list(, $data)      = explode (',', $data);
                 $data              = base64_decode($data);
                 $imageName         =str_replace(' ','-', 'dofuu-'.str_replace('-','', date('Y-m-d')).'-'.$request->$sid.'-'.time(). '.jpeg');
-                $path              = public_path('storage/'.$user->id.'/stores/products/');
+                // $path              = public_path('storage/'.$user->id.'/stores/products/');
+                $path = '/var/www/dofuu.com/public/storage/'.$user->id.'/stores/products/';
                 if(!file_exists($path)){
                     mkdir($path, 0755, true);
                 }

@@ -12,7 +12,7 @@
 			<v-card-text>
 				<v-form>
 					<v-layout justify-center >
-						<vue-image :image="editedItem.image" @IMAGE="getImage"></vue-image>
+						<vue-image :avatar="editedItem.image" @IMAGE="getImage"></vue-image>
 					</v-layout>
 					<v-select
 					label="Catalogue"
@@ -100,7 +100,8 @@ export default {
 				description: '',
 				image: null,
 				catalogue_id:null,
-				status_id: 1
+				status_id: 1,
+				count: 0
 			},
 			defaultItem: {
 				name: '',
@@ -160,12 +161,12 @@ export default {
 	},
 	computed: {
 		...mapState({
-			status: state => Array.from(state.productStatusStore.productStatus),
-			dialog: state => state.productStore.dialog,
+			status: state      => Array.from(state.productStatusStore.productStatus),
+			dialog: state      => state.productStore.dialog,
 			editedIndex: state => state.productStore.editedIndex,
-			item: state => state.productStore.editedItem,
-			alert: state => state.productStore.alert,
-			catalogues: state => Array.from(state.catalogueStore.catalogues)
+			item: state        => state.productStore.editedItem,
+			alert: state       => state.productStore.alert,
+			catalogues: state  => Array.from(state.catalogueStore.catalogues)
 		}),
 		formTitle () {
 			return this.editedIndex === -1 ? 'New Product' : 'Edit Product'
@@ -173,7 +174,8 @@ export default {
 	},
 	watch: {
 		item (val) {
-			this.editedItem = Object.assign(this.editedItem, val)
+			console.log(val)
+			Object.assign(this.editedItem, val)
 		},
 		'editedItem.name': function(val, oldVal) {
 
