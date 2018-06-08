@@ -13,236 +13,237 @@
 		<v-card flat>
 			<v-card-text>
 				<v-card flat>
-					<v-card-text><v-card-title primary-title>
-						<div>
-							<div class="headline">{{title}}</div>
-						</div>
-						<v-spacer></v-spacer>
-						<v-text-field
-						append-icon="search"
-						label="Search"
-						single-line
-						hide-details
-						v-model="search"
-						></v-text-field>
-					</v-card-title>
-					<!-- Alert -->
-					<v-alert :type="alert.type" dismissible v-model="alert.alert">
-						{{alert.messages}}
-					</v-alert>
-					
-					<v-btn color="primary" dark @click.native="$store.commit('DIALOG_STORE')" class="mb-2">New Store</v-btn>
-
-					<vue-dialog></vue-dialog>
-					
-					<v-data-table
-					:headers="headers"
-					:items="items"
-					:search="search"
-					class="elevation-1"
-					:rows-per-page-items="rowsPerPageItems"
-					:pagination.sync="pagination"
-					>
-					<template slot="items" slot-scope="props">
+					<v-card-text>
+						<v-card-title primary-title>
+							<div>
+								<div class="headline">{{title}}</div>
+							</div>
+							<v-spacer></v-spacer>
+							<v-text-field
+							append-icon="search"
+							label="Search"
+							single-line
+							hide-details
+							v-model="search"
+							></v-text-field>
+						</v-card-title>
+						<!-- Alert -->
+						<v-alert :type="alert.type" dismissible v-model="alert.alert">
+							{{alert.messages}}
+						</v-alert>
 						
-						<td @click="expanded(props)">{{ props.item.id }}</td>
-						<td @click="expanded(props)">
-							<v-avatar size="120" tile>
-								<img :src="image(props.item.avatar)" alt="avatar">
-							</v-avatar>
-						</td>
-						<td @click="expanded(props)">{{ props.item.name }}</td>
-						<td @click="expanded(props)">{{ props.item.city_name }}</td>
-						<td @click="expanded(props)">{{ props.item.district_name }}</td>
-						<td><a @click.stop.prevent="showMap(props.item)">{{ props.item.address }}</a></td>
-						<td @click="expanded(props)">{{ props.item.phone }}</td>
-						<td class="text-xs-center">
-							<v-btn v-if="props.item.name!=null" icon class="mx-0" :to="{name: 'StoreDetails', params: {sid: props.item.id}}">
-								<v-icon color="red">store</v-icon>
-							</v-btn>
-							<v-btn v-else icon disabled>
-								<v-icon color="secondary">store</v-icon>
-							</v-btn>
-						</td>
-						<td class="text-xs-center">
-							<v-btn icon class="mx-0" @click="editItem(props.item)">
-								<v-icon color="teal">edit</v-icon>
-							</v-btn>
-						</td>
-					</template>
+						<v-btn color="primary" dark @click.native="$store.commit('DIALOG_STORE')" class="mb-2">New Store</v-btn>
 
-					<template slot="expand" slot-scope="props">
-						<v-container fluid grid-list-md class="grey lighten-3">
-							<v-layout row wrap>
-								<v-flex d-flex xs12 sm6 md6>
-									<v-card>
-										<v-toolbar card>
-											<v-toolbar-title>
-												Informations
-											</v-toolbar-title>
-										</v-toolbar>
-										<v-card-text>
-											<v-list dense>
-												<v-list-tile>
-													<v-list-tile-action>
-														<strong>UID:</strong>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>
-															{{ props.item.user.id }}
-														</v-list-tile-title>
-													</v-list-tile-content>
-												</v-list-tile>
-												<v-list-tile>
-													<v-list-tile-action>
-														<strong>Owner:</strong>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>
-															{{ props.item.user.name }}
-														</v-list-tile-title>
-													</v-list-tile-content>
-												</v-list-tile>
+						<vue-dialog></vue-dialog>
+						
+						<v-data-table
+						:headers="headers"
+						:items="items"
+						:search="search"
+						class="elevation-1"
+						:rows-per-page-items="rowsPerPageItems"
+						:pagination.sync="pagination"
+						>
+						<template slot="items" slot-scope="props">
+							
+							<td @click="expanded(props)">{{ props.item.id }}</td>
+							<td @click="expanded(props)">
+								<v-avatar size="120" tile>
+									<img :src="image(props.item.avatar)" alt="avatar">
+								</v-avatar>
+							</td>
+							<td @click="expanded(props)">{{ props.item.name }}</td>
+							<td @click="expanded(props)">{{ props.item.city_name }}</td>
+							<td @click="expanded(props)">{{ props.item.district_name }}</td>
+							<td><a @click.stop.prevent="showMap(props.item)">{{ props.item.address }}</a></td>
+							<td @click="expanded(props)">{{ props.item.phone }}</td>
+							<td class="text-xs-center">
+								<v-btn v-if="props.item.name!=null" icon class="mx-0" :to="{name: 'StoreDetails', params: {sid: props.item.id}}">
+									<v-icon color="red">store</v-icon>
+								</v-btn>
+								<v-btn v-else icon disabled>
+									<v-icon color="secondary">store</v-icon>
+								</v-btn>
+							</td>
+							<td class="text-xs-center">
+								<v-btn icon class="mx-0" @click="editItem(props.item)">
+									<v-icon color="teal">edit</v-icon>
+								</v-btn>
+							</td>
+						</template>
 
-												<v-list-tile>
-													<v-list-tile-action>
-														<strong>Birthday:</strong>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>
-															{{ props.item.user.birthday }}
-														</v-list-tile-title>
-													</v-list-tile-content>
-												</v-list-tile>
-												<v-list-tile>
-													<v-list-tile-action>
-														<strong>Gender:</strong>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>
-															{{ gender(props.item.user.gender) }}
-														</v-list-tile-title>
-													</v-list-tile-content>
-												</v-list-tile>								
-											</v-list>
-										</v-card-text>
-									</v-card>
-								</v-flex>
-								<v-flex d-flex xs12 sm6 md6>
-									<v-layout row wrap>
-										<v-flex d-flex xs12 sm6 md12>
-											<v-card>
-												<v-toolbar card color="indigo" dark>
-													<v-toolbar-title>Contacts</v-toolbar-title>
-												</v-toolbar>
-												<v-card-text>
-													<v-list dense>
-														<v-list-tile>
-															<v-list-tile-action>
-																<strong>Email:</strong>
-															</v-list-tile-action>
-															<v-list-tile-content>
-																<v-list-tile-title>
-																	{{ props.item.user.email}}
-																</v-list-tile-title>
-															</v-list-tile-content>
-														</v-list-tile>
-														<v-list-tile>
-															<v-list-tile-action>
-																<strong>Phone: </strong>
-															</v-list-tile-action>
-															<v-list-tile-content>
-																<v-list-tile-title>
-																	{{ props.item.user.phone }}
-																</v-list-tile-title>
-															</v-list-tile-content>
-														</v-list-tile>
-														<v-list-tile>
-															<v-list-tile-action>
-																<strong>Address:</strong>
-															</v-list-tile-action>
-															<v-list-tile-content>
-																<v-list-tile-title>
-																	<a @click.stop.prevent="showMap(props.item)">			
-																		{{ props.item.user.address }}
-																	</a>
-																</v-list-tile-title>
-															</v-list-tile-content>
-														</v-list-tile>						
-													</v-list>									
-												</v-card-text>
-											</v-card>
-										</v-flex>
-										<v-flex d-flex>
-											<v-layout row wrap>
-												<v-flex
-												d-flex
-												xs12
-												>
+						<template slot="expand" slot-scope="props">
+							<v-container fluid grid-list-md class="grey lighten-3">
+								<v-layout row wrap>
+									<v-flex d-flex xs12 sm6 md6>
+										<v-card>
+											<v-toolbar card>
+												<v-toolbar-title>
+													Informations
+												</v-toolbar-title>
+											</v-toolbar>
+											<v-card-text>
+												<v-list dense>
+													<v-list-tile>
+														<v-list-tile-action>
+															<strong>UID:</strong>
+														</v-list-tile-action>
+														<v-list-tile-content>
+															<v-list-tile-title>
+																{{ props.item.user.id }}
+															</v-list-tile-title>
+														</v-list-tile-content>
+													</v-list-tile>
+													<v-list-tile>
+														<v-list-tile-action>
+															<strong>Owner:</strong>
+														</v-list-tile-action>
+														<v-list-tile-content>
+															<v-list-tile-title>
+																{{ props.item.user.name }}
+															</v-list-tile-title>
+														</v-list-tile-content>
+													</v-list-tile>
+
+													<v-list-tile>
+														<v-list-tile-action>
+															<strong>Birthday:</strong>
+														</v-list-tile-action>
+														<v-list-tile-content>
+															<v-list-tile-title>
+																{{ props.item.user.birthday }}
+															</v-list-tile-title>
+														</v-list-tile-content>
+													</v-list-tile>
+													<v-list-tile>
+														<v-list-tile-action>
+															<strong>Gender:</strong>
+														</v-list-tile-action>
+														<v-list-tile-content>
+															<v-list-tile-title>
+																{{ gender(props.item.user.gender) }}
+															</v-list-tile-title>
+														</v-list-tile-content>
+													</v-list-tile>								
+												</v-list>
+											</v-card-text>
+										</v-card>
+									</v-flex>
+									<v-flex d-flex xs12 sm6 md6>
+										<v-layout row wrap>
+											<v-flex d-flex xs12 sm6 md12>
 												<v-card>
-													<v-toolbar card color="red" dark>
-														<v-toolbar-title>
-															Settings
-														</v-toolbar-title>
+													<v-toolbar card color="indigo" dark>
+														<v-toolbar-title>Contacts</v-toolbar-title>
 													</v-toolbar>
 													<v-card-text>
 														<v-list dense>
 															<v-list-tile>
 																<v-list-tile-action>
-																	<strong>Actived:</strong>
+																	<strong>Email:</strong>
 																</v-list-tile-action>
 																<v-list-tile-content>
 																	<v-list-tile-title>
-																		{{ props.item.user.actived}}
+																		{{ props.item.user.email}}
 																	</v-list-tile-title>
 																</v-list-tile-content>
 															</v-list-tile>
 															<v-list-tile>
 																<v-list-tile-action>
-																	<strong>Banned: </strong>
+																	<strong>Phone: </strong>
 																</v-list-tile-action>
 																<v-list-tile-content>
 																	<v-list-tile-title>
-																		{{ props.item.user.banned }}
+																		{{ props.item.user.phone }}
 																	</v-list-tile-title>
 																</v-list-tile-content>
 															</v-list-tile>
-														</v-list>		
+															<v-list-tile>
+																<v-list-tile-action>
+																	<strong>Address:</strong>
+																</v-list-tile-action>
+																<v-list-tile-content>
+																	<v-list-tile-title>
+																		<a @click.stop.prevent="showMap(props.item)">			
+																			{{ props.item.user.address }}
+																		</a>
+																	</v-list-tile-title>
+																</v-list-tile-content>
+															</v-list-tile>						
+														</v-list>									
 													</v-card-text>
 												</v-card>
 											</v-flex>
-										</v-layout>
-									</v-flex>
-								</v-layout>
-							</v-flex>
-						</v-layout>
-					</v-container>
-				</template>
+											<v-flex d-flex>
+												<v-layout row wrap>
+													<v-flex
+													d-flex
+													xs12
+													>
+													<v-card>
+														<v-toolbar card color="red" dark>
+															<v-toolbar-title>
+																Settings
+															</v-toolbar-title>
+														</v-toolbar>
+														<v-card-text>
+															<v-list dense>
+																<v-list-tile>
+																	<v-list-tile-action>
+																		<strong>Actived:</strong>
+																	</v-list-tile-action>
+																	<v-list-tile-content>
+																		<v-list-tile-title>
+																			{{ props.item.user.actived}}
+																		</v-list-tile-title>
+																	</v-list-tile-content>
+																</v-list-tile>
+																<v-list-tile>
+																	<v-list-tile-action>
+																		<strong>Banned: </strong>
+																	</v-list-tile-action>
+																	<v-list-tile-content>
+																		<v-list-tile-title>
+																			{{ props.item.user.banned }}
+																		</v-list-tile-title>
+																	</v-list-tile-content>
+																</v-list-tile>
+															</v-list>		
+														</v-card-text>
+													</v-card>
+												</v-flex>
+											</v-layout>
+										</v-flex>
+									</v-layout>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					</template>
 
-				<template slot="no-results">
-					<tr>
-						<td :colspan="headers.length">
-							<v-alert :value="true" color="error" icon="warning">
-								Your search for "{{ search }}" found no results.
-							</v-alert>
-						</td>
-					</tr>			
-				</template>
-			</v-data-table></v-card-text>
-		</v-card>
-	</v-card-text>
-	<v-dialog v-model="mapDialog" max-width="800" v-if="mapDialog">
-		<v-card>
-			<gmap-map
-			:center="location"
-			:zoom="15"
-			map-type-id="terrain"
-			style="height: 500px"
-			><gmap-marker :position="location">
-			</gmap-marker></gmap-map>
-		</v-card>
-	</v-dialog>
-</v-card>
+					<template slot="no-results">
+						<tr>
+							<td :colspan="headers.length">
+								<v-alert :value="true" color="error" icon="warning">
+									Your search for "{{ search }}" found no results.
+								</v-alert>
+							</td>
+						</tr>			
+					</template>
+				</v-data-table></v-card-text>
+			</v-card>
+		</v-card-text>
+		<v-dialog v-model="mapDialog" max-width="800" v-if="mapDialog">
+			<v-card>
+				<gmap-map
+				:center="location"
+				:zoom="15"
+				map-type-id="terrain"
+				style="height: 500px"
+				><gmap-marker :position="location">
+				</gmap-marker></gmap-map>
+			</v-card>
+		</v-dialog>
+	</v-card>
 </v-card>
 </template>
 

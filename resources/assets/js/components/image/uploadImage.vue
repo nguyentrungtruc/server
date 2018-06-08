@@ -1,6 +1,5 @@
 <template>
 	<div>
-		{{avatar}}
 		<a @click.stop.prevent="onPickImage" style="width:inherit;height:inherit;border-radius:inherit"><img :src="imageUrl != null ? imageUrl : 'https://www.dofuu.com/img/default.png'" alt="avatar" style="width:285px; height:160px; cursor:pointer"></a>
 		<input type="file" style="display:none" ref="fileInput" accept="image/*" v-validate="'mimes:image/jpeg, image/png, image/jpg'" @change="onImagePicked">
 	</div>
@@ -66,7 +65,6 @@ export default {
 	},
 	watch: {
 		avatar(val) {
-			console.log(val)
 			if(val == null) {
 
 				this.imageUrl =  imageURL + '/img/default.png'
