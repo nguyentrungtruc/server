@@ -308,7 +308,7 @@ export default {
 					address: '',
 					lat:'',
 					lng:'',
-					isActived: false,
+					actived: false,
 					role_id: 4	
 				},
 				store: {
@@ -321,8 +321,8 @@ export default {
 					address: '',
 					lat: '',
 					lng: '',
-					isShowed: false,
-					isVerified: false,
+					show: false,
+					verified: false,
 					avatar: null,				
 				}
 			},
