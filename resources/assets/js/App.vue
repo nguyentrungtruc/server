@@ -137,7 +137,6 @@ export default{
 	},
 	watch: {
 		'currentUser': function(val) {
-			console.log(val)
 			if(val != null) {
 				this.getNotification()
 			}

@@ -174,7 +174,6 @@ export default {
 	},
 	watch: {
 		item (val) {
-			console.log(val)
 			Object.assign(this.editedItem, val)
 		},
 		'editedItem.name': function(val, oldVal) {

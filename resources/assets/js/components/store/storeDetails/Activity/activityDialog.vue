@@ -87,7 +87,6 @@ export default {
 			if(data.length>0) {
 				var payload = {data: data}
 				axios.post('/api/DofuuActivityTime/'+this.store.id, payload, {headers: getHeader()}).then(response => {
-					console.log(response.data.message)
 					if(response.status === 200) {
 						this.$store.commit('SHOW_STORE', response.data)
 						this.$store.commit('ALERT_ACTIVITY', {show: true, type: 'success', message: response.data.message})
