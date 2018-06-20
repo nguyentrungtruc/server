@@ -193,8 +193,9 @@ class ProductController extends Controller
         try{
             $product = Product::findorFail($id);
             if(!is_null($product->image)) {
+                $path = '/var/www/dofuu.com/public/storage/'.$user->id.'/stores/products/';
                 $url = $product->image;
-                unlink(public_path().$url);
+                unlink($path.$url);
             }
             Product::destroy($id);
             return response(['The product has been deleted'], 204);

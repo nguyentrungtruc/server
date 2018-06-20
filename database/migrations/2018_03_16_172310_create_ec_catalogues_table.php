@@ -19,6 +19,7 @@ class CreateEcCataloguesTable extends Migration
             $table->string('_catalogue', 50)->nullable();
             $table->tinyInteger('priority')->default(0);
             $table->string('slug', 50);
+            $table->boolean('catalogue_show')->default(1);
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('ec_stores')->onDelete('cascade');
             $table->timestamps();

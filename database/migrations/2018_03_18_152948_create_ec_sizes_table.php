@@ -15,9 +15,9 @@ class CreateEcSizesTable extends Migration
     {
         Schema::create('ec_sizes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 255);
-            $table->string('_name', 255);
-            $table->decimal('price', 12, 0);
+            $table->string('name', 20);
+            $table->string('_name', 20)->nullable();
+            $table->decimal('price', 12, 0)->default(0);
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('ec_stores')->onDelete('cascade');
             $table->timestamps();

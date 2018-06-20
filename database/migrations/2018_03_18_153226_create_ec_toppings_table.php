@@ -15,9 +15,9 @@ class CreateEcToppingsTable extends Migration
     {
         Schema::create('ec_toppings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 255);
-            $table->string('_name', 255);
-            $table->decimal('price', 12, 0);
+            $table->string('name', 50);
+            $table->string('_name', 50)->nullable();
+            $table->decimal('price', 7, 0)->default(0);
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('ec_stores')->onDelete('cascade');
             $table->timestamps();
