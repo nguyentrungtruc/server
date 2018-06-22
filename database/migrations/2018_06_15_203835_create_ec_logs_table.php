@@ -17,7 +17,7 @@ class CreateEcLogsTable extends Migration
             $table->increments('id');
             $table->string('event_type');
             $table->string('activity_name');
-            $table->string('message');
+            $table->string('message')->nullable();
             $table->timestamp('log_time')->nullable();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('ec_users')->onDelete('cascade');

@@ -21,7 +21,7 @@ class CreateCityServicesTable extends Migration
             $table->float('min_range')->default(0);
             $table->float('max_range')->default(0);
             $table->time('start_time')->default('08:00:00');
-            $table->time('end_time')->default('22:00:00');
+            $table->time('end_time')->default('21:00:00');
             $table->integer('city_id')->unsigned();
             $table->foreign('city_id')->references('id')->on('ec_cities')->onDelete('cascade');
             $table->timestamps();
