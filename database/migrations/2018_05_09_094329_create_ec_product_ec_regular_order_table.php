@@ -18,6 +18,7 @@ class CreateEcProductEcRegularOrderTable extends Migration
             $table->decimal('price', 12, 0);
             $table->decimal('total', 12, 0);
             $table->text('memo')->nullable();
+            $table->text('toppings')->nullable();
             $table->integer('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('ec_regular_orders')->onDelete('cascade');
             $table->integer('product_id')->unsigned();

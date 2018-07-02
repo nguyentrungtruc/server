@@ -131,8 +131,8 @@ export default{
 	computed: {
 		...mapState({
 			isAuthentication: state => state.authStore.isAuth,
-			progress: state => state.progress,
-			currentUser: state => state.authStore.authUser
+			progress: state         => state.progress,
+			currentUser: state      => state.authStore.authUser
 		})
 	},
 	watch: {

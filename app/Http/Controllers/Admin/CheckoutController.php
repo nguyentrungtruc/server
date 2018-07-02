@@ -8,6 +8,7 @@ use App\Models\RegularOrder;
 use App\Models\OrderStatus;
 use App\Http\Resources\Admin\OrderResource;
 use DateTime;
+
 class CheckoutController extends Controller
 {
 	public function __construct() {

@@ -132,11 +132,11 @@ export default {
 	},
 	computed: {
 		...mapState({
-			countries: state => Array.from(state.countryStore.countries),
-			dialog: state => state.cityStore.dialog,
+			countries: state   => Array.from(state.countryStore.countries),
+			dialog: state      => state.cityStore.dialog,
 			editedIndex: state => state.cityStore.editedIndex,
-			item: state => state.cityStore.editedItem,
-			alert: state => state.cityStore.alert
+			item: state        => state.cityStore.editedItem,
+			alert: state       => state.cityStore.alert
 		}),
 		formTitle () {
 			return this.editedIndex === -1 ? 'New City' : 'Edit City'

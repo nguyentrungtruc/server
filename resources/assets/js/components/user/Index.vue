@@ -284,7 +284,7 @@ export default {
 			{
 				text: 'UID',
 				align: 'left',
-				value: 'uid'
+				value: 'id'
 			},
 			{ text: 'Name', value: 'name' },
 			{ text: 'Email', value: 'email' },

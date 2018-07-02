@@ -25,7 +25,6 @@ class NotificationController extends Controller
 	public function getNotification(Request $request) {
 		if($request->confirm) {
 			$array = [];
-
 			foreach(auth()->user()->notifications as $notification) {
 				array_push($array, $notification->data);
 			}
