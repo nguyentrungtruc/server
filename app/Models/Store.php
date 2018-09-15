@@ -67,4 +67,9 @@ class Store extends Model
     public function toppings() {
         return $this->hasMany('App\Models\Topping', 'store_id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany('App\Models\StoreComment', 'commentable');
+    }
 }

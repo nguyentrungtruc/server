@@ -26,6 +26,7 @@ class CreateEcStoresTable extends Migration
             $table->boolean('verified')->default(0);
             $table->boolean('store_show')->default(0);
             $table->tinyInteger('priority')->default(0);
+            $table->integer('likes');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('ec_users')->onDelete('cascade');
             $table->integer('district_id')->unsigned()->nullable();
