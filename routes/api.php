@@ -79,6 +79,8 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'Admin'], fu
 		Route::resource('/Dofuu-Store-Status', 'StoreStatusController');
         //API TYPE
 		Route::resource('/Dofuu-Type', 'TypeController');
+		//API RATING TYPE
+		Route::resource('/Dofuu-Rating-Type', 'RatingTypeController');
         //API DISTRICT
 		Route::resource('/Dofuu-District', 'DistrictController');
 		//API COUNTRY

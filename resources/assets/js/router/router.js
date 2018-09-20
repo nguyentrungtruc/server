@@ -29,6 +29,7 @@ import CouponStatus from '@/components/coupon_status/Index'
 import Store from '@/components/store/Index'
 import Activity from '@/components/activity/Index'
 import StoreStatus from '@/components/store_status/Index'
+import RatingType from '@/components/rating_type/Index'
 import Type from '@/components/type/Index'
 import District from '@/components/district/Index'
 import City from '@/components/city/Index'
@@ -186,6 +187,14 @@ const router = new Router({
 		path: '/dofuu-admin-panel/store_status',
 		component: StoreStatus,
 		name: 'StoreStatus',
+		meta: {
+			forAuth: true
+		}
+	},
+	{
+		path: '/dofuu-admin-panel/rating_types',
+		component: RatingType,
+		name: 'RatingType',
 		meta: {
 			forAuth: true
 		}

@@ -78,7 +78,8 @@ export default{
 			isEmployee:false,
 			model:false,
 			children: [
-			{ title: 'Types Of Stores', action: 'Type'}
+			{ title: 'Types Of Stores', action: 'Type'},
+			{ title: 'Rating Types', action: 'RatingType'}
 			]
 		},
 		{ icon: 'access_time', title: 'Manage Activity', action: 'Activity', isAdmin: true, isEmployee:false},

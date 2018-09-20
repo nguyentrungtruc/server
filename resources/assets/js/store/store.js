@@ -17,6 +17,7 @@ import storeStore from './storeStore'
 import storeStatusStore from './storeStatusStore'
 import activityStore from './activityStore'
 import typeStore from './typeStore'
+import ratingTypeStore from './ratingTypeStore'
 import districtStore from './districtStore'
 import cityStore from './cityStore'
 import countryStore from './countryStore'
@@ -31,6 +32,7 @@ export default new Vuex.Store({
 		authStore, roleStore, userStore, 
 		countryStore, cityStore, districtStore,
 		typeStore,
+		ratingTypeStore,
 		activityStore,
 		storeStatusStore, storeStore,
 		couponStatusStore, couponStore,

@@ -11,7 +11,6 @@
 
 			<v-card-text>
 				<v-form>
-					{{editedItem}}
 					<v-text-field 
 					label="Range from" 
 					v-model.trim.number="editedItem.from"

@@ -26,7 +26,7 @@ import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router/router.js'
 import store from '@/store/store.js'
-import {http} from '@/api'
+import { http } from '@/api'
 import filters from '@/filters'
 
 Vue.config.productionTip = false

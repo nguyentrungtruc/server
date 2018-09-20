@@ -20,7 +20,7 @@ class CreateEcCommentsTable extends Migration
             $table->string('commentable_type', 20);
             $table->string('user_agent', 255)->nullable();
             $table->string('ip_address', 100)->nullable();
-            $table->bigInteger('parent_id');
+            $table->bigInteger('parent_id')->default(0);
             $table->integer('likes')->default(0);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('ec_users')->onDelete('cascade');
