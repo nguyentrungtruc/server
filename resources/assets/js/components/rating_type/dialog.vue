@@ -25,7 +25,7 @@
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-				<v-btn color="blue darken-1" class="white--text" @click.native="save" :loading="progress" >Save</v-btn>
+				<v-btn color="blue darken-1" class="white--text" @click.native="save" :disabled="disabled" :loading="progress" >Save</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
