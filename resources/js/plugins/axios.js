@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import {localURL, baseURL} from '@/config'
-axios.defaults.baseURL = baseURL;
+import {localURL, baseAPI} from '@/config'
+axios.defaults.baseURL = process.env.NODE_ENV !== 'production' ? localURL : baseAPI;
 axios.interceptors.response.use(function (response) {
 	return Promise.resolve(response)
 }, function (error) {
