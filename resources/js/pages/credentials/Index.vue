@@ -12,26 +12,26 @@
                             <d-alert :index="0"/>
 							<v-form>
 								<v-text-field 
-								        prepend-icon  = "email"
-								        v-model.trim  = "email"
-								        name          = "email"
-								        label         = "Email"
-								        type          = "text"
-								      :error-messages = "errors.collect('email')"
-								        v-validate    = "'required|email'"
-								        color         = "red darken-4"
+								            prepend-icon  = "email"
+								            v-model.trim  = "email"
+								            name          = "email"
+								            label         = "Email"
+								            type          = "text"
+								          :error-messages = "errors.collect('email')"
+								            v-validate    = "'required|email'"
+								            color         = "red darken-4"
 								></v-text-field>
 
 								<v-text-field prepend-icon="lock" 
-								        v-model.trim               = "password"
-								        name                       = "password"
-								        label                      = "Mật khẩu"
-								        id                         = "password"
-								        type                       = "password"
-								      :error-messages              = "errors.collect('password')"
-								        v-validate                 = "'required'"
-								        color                      = "red darken-4"
-								        @keyup.enter.exact.prevent = "login"
+								            v-model.trim               = "password"
+								            name                       = "password"
+								            label                      = "Mật khẩu"
+								            id                         = "password"
+								            type                       = "password"
+								          :error-messages              = "errors.collect('password')"
+								            v-validate                 = "'required'"
+								            color                      = "red darken-4"
+								            @keyup.enter.exact.prevent = "login"
 								></v-text-field>
 							</v-form>
 						</v-card-text>
@@ -65,12 +65,11 @@ export default {
 		login: async function() {
 			var vm = this
 			if(!vm.loading) {
-				vm.loading = true
 				await vm.$validator.validateAll().then(async (result) => {
 					if(result) {
-						let data = {email: vm.email, password: vm.password}
-					
-						const url = `/Credentials/Login`
+						let   data       = {email: vm.email, password: vm.password}
+						const url        = `/Credentials/Login`
+						      vm.loading = true
 						vm.axios.post(url, data, {withCredentials: true}).then(response => {
 							if(response.status === 200) {
 								vm.loginSuccess(response)
