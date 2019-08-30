@@ -2,8 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import {localURL, baseURL} from '@/config'
-console.log(process.env.NODE_ENV)
-axios.defaults.baseURL = process.env.NODE_ENV !== 'production' ? localURL : baseURL;
+axios.defaults.baseURL = baseURL;
 axios.interceptors.response.use(function (response) {
 	return Promise.resolve(response)
 }, function (error) {
