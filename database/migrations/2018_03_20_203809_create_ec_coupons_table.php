@@ -19,6 +19,9 @@ class CreateEcCouponsTable extends Migration
             $table->string('coupon', 15);
             $table->text('notes')->nullable();
             $table->tinyInteger('discount_percent');
+            $table->decimal('price', 12, 0)->default(0);
+            $table->decimal('max_price', 12, 0)->default(0);
+            $table->decimal('total_amount', 12, 0)->default(0);
             $table->integer('max_coupons');
             $table->integer('coupon_used')->default(0);
             $table->datetime('started_at');
@@ -26,6 +29,7 @@ class CreateEcCouponsTable extends Migration
             $table->integer('expires_at');
             $table->string('token', 255);
             $table->boolean('actived')->default(0);
+            $table->boolean('public')->default(0);
             $table->integer('status_id')->unsigned();
             $table->foreign('status_id')->references('id')->on('ec_coupon_status')->onDelete('cascade');
             $table->timestamps();

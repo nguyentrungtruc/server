@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use App\Http\Resources\Admin\ActivityResource;
 use App\Models\Activity;
-use DateTime;
+use App\Http\Resources\Admin\ActivityResource;
+
 class ActivityController extends Controller
 {
     public function __construct() {
@@ -21,24 +20,9 @@ class ActivityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {	
-    	$activity = Activity::get();
-        $res = [
-            'type'    => 'success',
-            'message' => 'Get activity successfully',
-            'data'    => ActivityResource::collection($activity)
-        ];
-        return response($res, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
-        //
+        $activities = Activity::orderByAsc('id')->get();
+        return $this->respondSuccess('Get all activity', $activities, 200, 'many');
     }
 
     /**
@@ -50,47 +34,18 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'daysofweek' => 'unique:ec_activities'
+            'daysofweek' => 'unique:ec_activities,daysofweek'
         ]);
 
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
 
-        $activity             = new Activity;
-        $activity->daysofweek = $request->daysofweek;
-        $activity->number     = $request->number;
-        $activity->created_at = new DateTime;
-        $activity->save();
-        $res = [
-            'type'    => 'success',
-            'message' => 'Get activity successfully',
-            'data'    => new ActivityResource($activity)
-        ];
-        return response($res, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-
+        $activity = Activity::create([
+            'daysofweek' => $request->daysofweek,
+            'number'     => $request->number
+        ]);
+        return $this->respondSuccess('Add activity', $activity, 201, 'one');
     }
 
     /**
@@ -102,17 +57,21 @@ class ActivityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $activity             = Activity::find($id);
-        $activity->daysofweek = $request->daysofweek;
-        $activity->number     = $request->number;
-        $activity->updated_at = new DateTime;
-        $activity->save();
-        $res = [
-            'type'    => 'success',
-            'message' => 'Get activity successfully',
-            'data'    => new ActivityResource($activity)
-        ];
-        return response($res, 200);
+        $validator = Validator::make($request->all(),[
+            'daysofweek' => Rule::unique('ec_activities','daysofweek')->ignore($id),
+        ]);
+        if($validator->fails()){
+            return response($validator->errors()->getMessages(),422);
+        }
+        
+        $activity = Activity::find($id);
+
+        $activity->update([
+            'daysofweek' => $request->daysofweek,
+            'number'     => $request->number
+        ]);
+
+        return $this->respondSuccess('Edit activity', $activity, 200, 'one');
     }
 
     /**
@@ -123,11 +82,38 @@ class ActivityController extends Controller
      */
     public function destroy($id)
     {
-    	try {
-    		Activity::destroy($id);
-    		return response(['The activity has been deleted'], 204);
-    	} catch(Exception $e) {
-    		return response(['Problem deleting the activity', 500]);
-    	}
+        try {
+            Activity::destroy($id);
+            return response(['The activity has been deleted'], 204);
+        } catch(Exception $e) {
+            return response(['Problem deleting the activity', 500]);
+        }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['activity'] = new ActivityResource($data);
+            break;
+
+            case 'many':
+                $res['activities'] = ActivityResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
-use DateTime;
 use App\Models\OrderStatus;
 use App\Http\Resources\Admin\OrderStatusResource;
-use App\Http\Requests\Admin\OrderStatusRequest;
+
 class OrderStatusController extends Controller
 {
     public function __construct() {
@@ -22,24 +21,8 @@ class OrderStatusController extends Controller
      */
     public function index()
     {
-        $status = OrderStatus::get();
-        $res    = [
-            'type'    => 'success',
-            'message' => 'Get order status successfully!',
-            'data'    => OrderStatusResource::collection($status)
-        ];
-
-        return response($res, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $status = OrderStatus::orderByAsc('number_order')->get();
+        return $this->respondSuccess('Get all order status', $status, 200, 'many');
     }
 
     /**
@@ -48,42 +31,23 @@ class OrderStatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderStatusRequest $request)
+    public function store(Request $request)
     {
-        $status                           = new OrderStatus;
-        $status->order_status_name        = $request->name;
-        $status->order_status_description = $request->description;
-        $status->color                    = $request->color;
-        $status->number_order             = $request->numberOrder;
-        $status->save();
-        $res                              = [
-            'type'    => 'success',
-            'message' => 'Created status successfully!',
-            'data'    => new OrderStatusResource($status)
-        ];
-        return response($res, 201);
-    }
+        $validator = Validator::make($request->all(),[
+          'name' => 'unique:ec_order_status,order_status_name'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        if($validator->fails()){
+          return response($validator->errors()->first('order_status_name'), 422);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $status = OrderStatus::create([
+            'order_status_name'        => $request->name,
+            'order_status_description' => $request->description,
+            'number_order'             => $request->step,
+            'color'                    => $request->color
+        ]);
+        return $this->respondSuccess('Add order status', $status, 201, 'one');
     }
 
     /**
@@ -96,23 +60,20 @@ class OrderStatusController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'name'        => Rule::unique('ec_order_status','order_status_name')->ignore($id),
-            'numberOrder' => Rule::unique('ec_order_status','number_order')->ignore($id),
+            'name' => Rule::unique('ec_order_status','order_status_name')->ignore($id),
         ]);
         if($validator->fails()){
-            return response($validator->errors()->getMessages(),422);
+            return response($validator->errors()->first('order_status_name'),422);
         }
-        $status                           = OrderStatus::findorFail($id);
-        $status->order_status_name        = $request->name;
-        $status->order_status_description = $request->description;
-        $status->color                    = $request->color;
-        $status->number_order             = $request->numberOrder;
-        $res                              = [
-            'type'    => 'success',
-            'message' => 'Updated status successfully',
-            'data'    => new OrderStatusResource($status)
-        ];
-        return response($res, 200);
+
+        $status = OrderStatus::find($id);
+        $status->update([
+            'order_status_name'        => $request->name,
+            'order_status_description' => $request->description,
+            'number_order'             => $request->step,
+            'color'                    => $request->color
+        ]);
+        return $this->respondSuccess('Edit order status', $status, 200, 'one');
     }
 
     /**
@@ -125,19 +86,35 @@ class OrderStatusController extends Controller
     {
         try {
             OrderStatus::destroy($id);
-            $res = [
-                'type'    => 'success',
-                'message' => 'The status has been deleted',
-                'data'    => []
-            ];
-            return response($res, 204);
-        } catch(Exception $e) {
-            $res = [
-                'type'    => 'error',
-                'message' => 'Problem deleting the status',
-                'data'    => []
-            ];
-            return response($res, 500);
+            return response(['The status has been deleted'], 204);
+        } catch (Exception $e) {
+            return response(['Problem deleting the status', 500]);
         }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['status'] = new OrderStatusResource($data);
+            break;
+
+            case 'many':
+                $res['status'] = OrderStatusResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

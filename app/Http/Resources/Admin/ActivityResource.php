@@ -16,8 +16,10 @@ class ActivityResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'daysOfWeek' => $this->daysofweek,
+            'daysofweek' => $this->daysofweek,
             'number'     => $this->number,
+            'createdAt'   => $this->created_at,
+            'updatedAt'   => $this->updated_at
         ];
     }
 }

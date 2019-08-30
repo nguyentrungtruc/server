@@ -13,4 +13,12 @@ class RatingType extends Model
 	protected $guarded  = [];
 	
 	protected $hidden   = [];
+
+	public function scopeOrderByAsc($query, $column) {
+        return $query->orderBy($column, 'asc');
+    }
+
+    public function scopeOrderByDesc($query, $column) {
+        return $query->orderBy($column, 'desc');
+    }
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Country;
-use DateTime;
+use App\Http\Resources\Admin\CountryResource;
+
 class CountryController extends Controller
 {
     public function __construct() {
@@ -21,18 +21,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::get();
-        return response($countries, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $countries = Country::orderByAsc('country_name')->get();
+        return $this->respondSuccess('Get all countries', $countries, 200, 'many');
     }
 
     /**
@@ -45,46 +35,24 @@ class CountryController extends Controller
     {
 
         $validator = Validator::make($request->all(),[
-            'country_name' => 'unique:ec_countries'
+            'name' => 'unique:ec_countries,country_name'
         ]);
 
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
 
-        $country               = new Country;
-        $country->country_name = $request->country_name;
-        $country->lang         = $request->lang;
-        $country->country_slug = str_slug($request->country_name, '-');
-        $country->lat          = $request->lat;
-        $country->lng          = $request->lng;
-        $country->dialingcode  = $request->dialingcode;
-        $country->country_show = $request->country_show;
-        $country->created_at   = new DateTime;
-        $country->save();
-        return response($country, 200);
-    }
+        $country = Country::create([
+            'country_name' => $request->name,
+            'lang'         => $request->lang,
+            'country_slug' => str_slug($request->name, '-'),
+            'lat'          => $request->lat,
+            'lng'          => $request->lng,
+            'dialingcode'  => $request->dialingCode,
+            'country_show' => $request->isShow
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->respondSuccess('Add country', $country, 201, 'one');
     }
 
     /**
@@ -97,22 +65,24 @@ class CountryController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'country_name' => Rule::unique('ec_countries')->ignore($id),
+            'name' => Rule::unique('ec_countries','country_name')->ignore($id),
         ]);
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
+        
         $country               = Country::find($id);
-        $country->country_name = $request->country_name;
-        $country->lang         = $request->lang;
-        $country->country_slug = str_slug($request->country_name, '-');
-        $country->lat          = $request->lat;
-        $country->lng          = $request->lng;
-        $country->dialingcode  = $request->dialingcode;
-        $country->country_show = $request->country_show;
-        $country->updated_at   = new DateTime;
-        $country->save();
-        return response($country, 201);
+        $country->update([
+            'country_name' => $request->name,
+            'lang'         => $request->lang,
+            'country_slug' => str_slug($request->name, '-'),
+            'lat'          => $request->lat,
+            'lng'          => $request->lng,
+            'dialingcode'  => $request->dialingCode,
+            'country_show' => $request->isShow
+        ]);
+        
+        return $this->respondSuccess('Edit country', $country, 200, 'one');
     }
 
     /**
@@ -130,4 +100,50 @@ class CountryController extends Controller
             return response(['Problem deleting the country', 500]);
         }
     }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['country']   = new CountryResource($data);
+            break;
+
+            case 'many':
+                $res['countries'] = CountryResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
+    }
+
+    // protected function pagination($data) {
+    //     return $pagination = [
+    //         'total'        => $data->total(),
+    //         'per_page'     => $data->perPage(),
+    //         'from'         => $data->firstItem(),
+    //         'current_page' => $data->currentPage(),
+    //         'to'           => $data->lastItem(),
+    //         'last_page'    => $data->lastPage(),
+    //     ];
+    // }
+
+    // protected function infiniteScroll($offset, $count, $pageSize) {
+    //     if($count-($offset+$pageSize)> 0) {
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
 }

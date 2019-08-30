@@ -4,15 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\ProductStatus;
-use DateTime;
+use App\Http\Resources\Admin\ProductStatusResource;
+
 class ProductStatusController extends Controller
 {
-    public function __construct() 
-    {
+    public function __construct() {
         $this->middleware('auth:api');
     }
     /**
@@ -22,18 +21,8 @@ class ProductStatusController extends Controller
      */
     public function index()
     {
-        $status = ProductStatus::get();
-        return response($status, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
+        $status = ProductStatus::orderByAsc('product_status_name')->get();
+        return $this->respondSuccess('Get all product status', $status, 200, 'many');
     }
 
     /**
@@ -45,41 +34,19 @@ class ProductStatusController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'product_status_name' => 'unique:ec_product_status'
+          'name' => 'unique:ec_product_status,product_status_name'
         ]);
 
         if($validator->fails()){
-            return response($validator->errors()->getMessages(),422);
+          return response($validator->errors()->first('product_status_name'), 422);
         }
-        $status                             = new ProductStatus;
-        $status->product_status_name        = $request->product_status_name;
-        $status->product_status_description = $request->product_status_description;
-        $status->color                      = $request->color;
-        $status->created_at                 = new DateTime;
-        $status->save();
-        return response($status, 200);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-
+        $status = ProductStatus::create([
+            'product_status_name'        => $request->name,
+            'product_status_description' => $request->description,
+            'color'                    => $request->color
+        ]);
+        return $this->respondSuccess('Add product status', $status, 201, 'one');
     }
 
     /**
@@ -92,19 +59,19 @@ class ProductStatusController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'product_status_name' => Rule::unique('ec_product_status')->ignore($id),
+            'name' => Rule::unique('ec_product_status','product_status_name')->ignore($id),
         ]);
         if($validator->fails()){
-            return response($validator->errors()->getMessages(),422);
+            return response($validator->errors()->first('product_status_name'),422);
         }
 
-        $status                             = ProductStatus::find($id);
-        $status->product_status_name        = $request->product_status_name;
-        $status->product_status_description = $request->product_status_description;
-        $status->color                      = $request->color;
-        $status->updated_at                 = new DateTime;
-        $status->save();
-        return response($status, 201);
+        $status = ProductStatus::find($id);
+        $status->update([
+            'product_status_name'        => $request->name,
+            'product_status_description' => $request->description,
+            'color'                      => $request->color
+        ]);
+        return $this->respondSuccess('Edit product status', $status, 200, 'one');
     }
 
     /**
@@ -118,8 +85,34 @@ class ProductStatusController extends Controller
         try {
             ProductStatus::destroy($id);
             return response(['The status has been deleted'], 204);
-        } catch(Exception $e) {
-            return response(['Problem deleting the status'], 500);
+        } catch (Exception $e) {
+            return response(['Problem deleting the status', 500]);
         }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['status'] = new ProductStatusResource($data);
+            break;
+
+            case 'many':
+                $res['status'] = ProductStatusResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

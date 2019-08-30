@@ -14,7 +14,3 @@
 Route::get('/{vue?}', function () {
 	return view('welcome');
 })->where('vue','^(?!.*api).*$[\/\w\.-]*');
-
-// Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');

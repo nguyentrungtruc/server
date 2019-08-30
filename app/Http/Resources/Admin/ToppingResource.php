@@ -15,9 +15,14 @@ class ToppingResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->name,
-            '_name' => $this->_name,
-            'price' => $this->price
+            'id'        => $this->id,
+            'name'      => $this->name,
+            '_name'     => $this->_name,
+            'price'     => $this->price,
+            'storeId'   => $this->store_id,
+            'isShow'    => $this->topping_show,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+use App\User;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 /*
@@ -13,18 +16,12 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\User::class, function (Faker $faker) {
-	return [
-		'name' => $faker->name,
-		'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'birthday'=> $faker->date,
-        'gender'=> rand(0,1),
-        'phone'=> rand(100000000,999999999),
-        'address'=>$faker->address,
-        'role_id'=> 5,
-        'actived'=>0,
-        'banned'=>1,
-        'remember_token' => str_random(10),
+$factory->define(User::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'email_verified_at' => now(),
+        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'remember_token' => Str::random(10),
     ];
 });

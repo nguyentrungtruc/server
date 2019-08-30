@@ -16,7 +16,9 @@ class RatingTypeResource extends JsonResource
     {
         return [
             'id'   => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'createdAt'   => $this->created_at,
+            'updatedAt'   => $this->updated_at
         ];
     }
 }

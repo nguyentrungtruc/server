@@ -11,12 +11,12 @@ return [
     | to accept any value.
     |
     */
+   
     'supportsCredentials'    => true,
-    'allowedOrigins'         => ['http://maps.googleapis.com', 'http://dofuu.com', 'http://localhost:3333'],
+    'allowedOrigins'         => ['https://maps.googleapis.com/', 'http://dofuu.com', 'http://localhost:3333'],
     'allowedOriginsPatterns' => [],
-    'allowedHeaders'         => ['*','Content-Type', 'X-Requested-With'],
+    'allowedHeaders'         => ['*','Content-Type', 'X-Requested-With', 'authorization'],
     'allowedMethods'         => ['*'],
     'exposedHeaders'         => [],
     'maxAge'                 => 0,
-
 ];

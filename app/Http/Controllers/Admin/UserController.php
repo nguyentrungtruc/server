@@ -3,24 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\Admin\UserResource;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Store;
-use DateTime;
+use App\Http\Resources\Admin\UserResource;
+use Illuminate\Support\Str;
+
 class UserController extends Controller
 {
-    protected $partner;
+    private static $page_size = 25;
 
     public function __construct() {
         $this->partner = Role::where('name', 'Partner')->first();
         $this->shipper = Role::where('name', 'Shipper')->first();
         $this->middleware('auth:api');
-
     }
 
     /**
@@ -28,24 +26,42 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function getShipper() {
-        $users = User::where('role_id', '=', $this->shipper->id)->get();
-        $res   = [
-            'type'    => 'success',
-            'message' => 'Get shipper information successfully.',
-            'data'    => UserResource::collection($users)
-        ];
-        return response($res, 200);
+    public function index(Request $request)
+    {
+        $key = Str::lower($request->key);
+
+        switch ($key) {
+            case 'admin':
+                $role = Role::admin();
+                return $this->find($request, $role->id);
+                break;
+            case 'customer':
+                $role = Role::customer();
+                return $this->find($request, $role->id);
+                break;
+            case 'employee':
+                $role = Role::employee();
+                return $this->find($request, $role->id);
+                break;
+            case 'partner':
+                $role = Role::partner();
+                return $this->find($request, $role->id);
+                break;
+            case 'shipper':
+                $role = Role::shipper();
+                return $this->find($request, $role->id);
+                break;  
+        }
     }
 
-    public function index()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $users = User::orderBy('name')->get();
-        foreach($users as $user) {
-            (object)$user->role;
-        }
-        return response($users, 200);
+        //
     }
 
     /**
@@ -56,29 +72,53 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->birthday = $request->birthday;
-        $user->gender = $request->gender;
-        $user->address = $request->address;
-        $user->lat = $request->lat;
-        $user->lng = $request->lng;
-        $user->phone = $request->phone;
-        $user->actived = $request->actived;
-        $user->role_id = $request->role_id;
-        if((int)$request->role_id === $this->partner->id ) {
-            $user->have_store = 1;
+        $validator = Validator::make($request->all(), [
+            'email' => 'unique:ec_users,email',
+            'phone' => 'unique:ec_users,phone',
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->errors()->getMessages(), 422);
         }
-        $user->created_at = new DateTime;
-        $user->save();
-        //Create store with role partner
-        if((int)$request->role_id === $this->partner->id) {
-            $user->store()->save(new Store);
-        }
-        $res = User::with('role')->find($user->id);
-        return response($res, 201);
+
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => bcrypt($request->password),
+            'birthday' => $request->birthday,
+            'gender'   => $request->gender,
+            'phone'    => $request->phone,
+            'address'  => $request->address,
+            'lat'      => $request->lat,
+            'lng'      => $request->lng,
+            'actived'  => $request->isActive,
+            'banned'   => $request->isBan,
+            'role_id'  => $request->roleId       
+        ]);
+
+        return $this->respondSuccess('Add user', $user, 201, 'one');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -90,35 +130,35 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'phone' => Rule::unique('ec_users','phone')->ignore($id),
+            'email' => Rule::unique('ec_users','email')->ignore($id),
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->errors()->getMessages(), 422);
+        }
         $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user->update([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'birthday' => $request->birthday,
+            'gender'   => $request->gender,
+            'phone'    => $request->phone,
+            'address'  => $request->address,
+            'lat'      => $request->lat,
+            'lng'      => $request->lng,
+            'actived'  => $request->isActive,
+            'banned'   => $request->isBan,
+            'role_id'  => $request->roleId       
+        ]);
         if(!empty($request->password)) {
-            $user->password = bcrypt($request->password);       
+            $user->update([
+                'password' => bcrypt($request->password)
+            ]);
         }
-        $user->birthday = $request->birthday;
-        $user->gender = $request->gender;
-        $user->address = $request->address;
-        $user->lat = $request->lat;
-        $user->lng = $request->lng;
-        $user->phone = $request->phone;
-        $user->actived = $request->actived;
-        $user->role_id = $request->role_id;
-        if((int)$request->role_id === $this->partner->id ) {
-            $user->have_store = 1;
-        } else {
-            $user->have_store = 0;
-        }
-        $user->updated_at = new DateTime;
-        $user->save();
-        //Create store with role partner
-        if((int)$request->role_id === $this->partner->id) {
-            if(empty($user->store)) {
-                $user->store()->save(new Store);      
-            }            
-        }
-        $res = User::with('role')->find($user->id);
-        return response($res, 200);
+
+        return $this->respondSuccess('Edit user', $user, 200, 'one');
     }
 
     /**
@@ -135,5 +175,56 @@ class UserController extends Controller
         } catch (Exception $e) {
             return response(['Problem deleting the user', 500]);
         }
+    }
+
+    private function find($request, $roleId) {
+        $isActive   = $request->isActive;
+        $isBan      = $request->isBan;
+        $keywords   = $request->keywords;
+        $pageSize   = self::$page_size;
+        $offset     = 0;
+        $users      = User::orderByDesc('id')->byRoleId($roleId)->active($isActive)->ban($isBan)->like($keywords)->limit($pageSize)->offset($offset)->paginate($pageSize);
+        $pagination = $this->pagination($users);
+        return $this->respondSuccess('Get all users', $users, 200, 'many', $pagination);
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    private function respondSuccess($message, $data, $status = 200, $type, $pagination = []) {
+        $res = [
+            'type'    => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+            $res['user'] = new UserResource($data);
+            break;
+
+            case 'many':
+            $res['users'] = UserResource::collection($data);
+            if (count($pagination) > 0) {
+                $res['pagination'] = $pagination;
+            }
+            break;
+        }
+
+        return response($res, $status);
+    }
+
+    private function pagination($data) {
+        return $pagination = [
+            'total'       => $data->total(),
+            'perPage'     => $data->perPage(),
+            'from'        => $data->firstItem(),
+            'currentPage' => $data->currentPage(),
+            'to'          => $data->lastItem(),
+            'lastPage'    => $data->lastPage(),
+        ];
     }
 }

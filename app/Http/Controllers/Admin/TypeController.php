@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Type;
-use DateTime;
+use App\Http\Resources\Admin\TypeResource;
 
 class TypeController extends Controller
 {
-	public function __construct() {
-		$this->middleware('auth:api');
-	}
+    public function __construct() {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,18 +21,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-    	$types = Type::get();
-    	return response($types, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $types = Type::orderByAsc('type_name')->get();
+        return $this->respondSuccess('Get all types', $types, 200, 'many');
     }
 
     /**
@@ -44,44 +33,22 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-    	$validator = Validator::make($request->all(),[
-    		'type_name' => 'unique:ec_types'
-    	]);
+        $validator = Validator::make($request->all(),[
+            'name' => 'unique:ec_types,type_name'
+        ]);
 
-    	if($validator->fails()){
-    		return response($validator->errors()->getMessages(),422);
-    	}
+        if($validator->fails()){
+            return response($validator->errors()->getMessages(),422);
+        }
 
-    	$type = new Type;
-    	$type->type_name = $request->type_name;
-    	$type->type_slug = str_slug($request->type_name, '-');
-    	$type->type_icon = $request->type_icon;
-    	$type->type_show = $request->type_show;
-    	$type->created_at = new DateTime;
-    	$type->save();
-    	return response($type, 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $type = Type::create([
+            'type_name' => $request->name,
+            'type_slug' => str_slug($request->name, '-'),
+            'code'      => $request->code,
+            'type_icon' => $request->icon,
+            'type_show' => $request->isShow,
+        ]);
+        return $this->respondSuccess('Add type', $type, 201, 'one');
     }
 
     /**
@@ -93,20 +60,21 @@ class TypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$validator = Validator::make($request->all(),[
-    		'type_name' => Rule::unique('ec_types')->ignore($id),
-    	]);
-    	if($validator->fails()){
-    		return response($validator->errors()->getMessages(),422);
-    	}
-    	$type = Type::find($id);
-    	$type->type_name = $request->type_name;
-    	$type->type_slug = str_slug($request->type_name, '-');
-    	$type->type_icon = $request->type_icon;
-    	$type->type_show = $request->type_show;
-    	$type->updated_at = new DateTime;
-    	$type->save();
-    	return response($type, 201);
+        $validator = Validator::make($request->all(),[
+            'name' => Rule::unique('ec_types','type_name')->ignore($id),
+        ]);
+        if($validator->fails()){
+            return response($validator->errors()->getMessages(),422);
+        }
+        $type = Type::find($id);
+        $type->update([
+            'type_name' => $request->name,
+            'type_slug' => str_slug($request->name, '-'),
+            'code'      => $request->code,
+            'type_icon' => $request->icon,
+            'type_show' => $request->isShow,
+        ]);
+        return $this->respondSuccess('Edit type', $type, 200, 'one');
     }
 
     /**
@@ -117,11 +85,37 @@ class TypeController extends Controller
      */
     public function destroy($id)
     {
-    	try {
-    		Type::destroy($id);
-    		return response(['The type has been deleted'], 204);
-    	} catch (Exception $e) {
-    		return response(['Problem deleting the type', 500]);
-    	}
+        try {
+            Type::destroy($id);
+            return response(['The type has been deleted'], 204);
+        } catch (Exception $e) {
+            return response(['Problem deleting the type', 500]);
+        }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['type'] = new TypeResource($data);
+            break;
+
+            case 'many':
+                $res['types'] = TypeResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

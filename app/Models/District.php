@@ -8,7 +8,23 @@ class District extends Model
 {
 	protected $table = 'ec_districts';
 
+	protected $fillable = [
+        'district_name', 'district_slug', 'lat', 'lng', 'district_show', 'city_id'
+    ];
+
 	protected $guarded = [];
+
+	public function scopeByCityId($query, $cityId) {
+		return $query->where('city_id', $cityId);
+	}
+
+	public function scopeOrderByAsc($query, $column) {
+        return $query->orderBy($column, 'asc');
+    }
+
+    public function scopeOrderByDesc($query, $column) {
+        return $query->orderBy($column, 'desc');
+    }
 
 	public function getDistrictShowAttribute($value) {
 		if($value) {

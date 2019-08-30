@@ -8,8 +8,18 @@ class ProductStatus extends Model
 {
 	protected $table = 'ec_product_status';
 
-	protected $guard = [];
+	protected $fillable = [
+        'product_status_name', 'product_status_description', 'color'
+    ];
+    
+    protected $guarded = [];
 
-	protected $hidden = [];
+    public function scopeOrderByAsc($query, $column) {
+        return $query->orderBy($column, 'asc');
+    }
+
+    public function scopeOrderByDesc($query, $column) {
+        return $query->orderBy($column, 'desc');
+    }
 	
 }

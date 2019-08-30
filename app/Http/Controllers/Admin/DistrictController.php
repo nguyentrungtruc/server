@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use App\Models\City;
 use App\Models\District;
-use DateTime;
+use App\Http\Resources\Admin\DistrictResource;
+
 class DistrictController extends Controller
 {
     public function __construct() 
@@ -23,18 +22,14 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        $cities = District::with('city')->get();
-        return response($cities, 200);
+        $districts = District::orderByAsc('district_name')->get();
+        return $this->respondSuccess('Get all districts', $districts, 200, 'many');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function getByCity(Request $request) {
+        $cityId    = $request->cityId;
+        $districts = District::byCityId($cityId)->orderByAsc('district_name')->get();
+        return $this->respondSuccess('Get all districts in city', $districts, 200, 'many');   
     }
 
     /**
@@ -46,46 +41,23 @@ class DistrictController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'district_name' => 'unique:ec_districts'
+            'name' => 'unique:ec_districts,district_name'
         ]);
 
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
 
-        $district                = new District;
-        $district->district_name = $request->district_name;
-        $district->district_slug = str_slug($request->district_name, '-');
-        $district->lat           = $request->lat;
-        $district->lng           = $request->lng;
-        $district->district_show = $request->district_show;
-        $district->city_id       = $request->city_id;
-        $district->created_at    = new DateTime;
-        $district->save();
-        $district->city;
-        return response($district, 200);
-    }
+        $district = District::create([
+            'district_name' => $request->name,
+            'district_slug' => str_slug($request->name, '-'),
+            'lat'           => $request->lat,
+            'lng'           => $request->lng,
+            'district_show' => $request->isShow,
+            'city_id'       => $request->cityId
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->respondSuccess('Add district', $district, 201, 'one');
     }
 
     /**
@@ -98,24 +70,24 @@ class DistrictController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'district_name' => Rule::unique('ec_districts')->ignore($id),
+            'name' => Rule::unique('ec_districts','district_name')->ignore($id),
         ]);
 
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
 
-        $district                = District::with('city')->find($id);
-        $district->district_name = $request->district_name;
-        $district->district_slug = str_slug($request->district_name, '-');
-        $district->lat           = $request->lat;
-        $district->lng           = $request->lng;
-        $district->district_show = $request->district_show;
-        $district->city_id       = $request->city_id;
-        $district->updated_at    = new DateTime;
-        $district->save();
-        $district->city;
-        return response($district, 201);
+        $district = District::find($id);
+        $district->update([
+            'district_name' => $request->name,
+            'district_slug' => str_slug($request->name, '-'),
+            'lat'           => $request->lat,
+            'lng'           => $request->lng,
+            'district_show' => $request->isShow,
+            'city_id'       => $request->cityId
+        ]);
+        
+        return $this->respondSuccess('Edit district', $district, 200, 'one');
     }
 
     /**
@@ -132,5 +104,31 @@ class DistrictController extends Controller
         } catch (Exception $e) {
             return response(['Problem deleting the district', 500]);
         }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['district'] = new DistrictResource($data);
+            break;
+
+            case 'many':
+                $res['districts'] = DistrictResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

@@ -16,7 +16,7 @@ class CreateEcRatingsTable extends Migration
         Schema::create('ec_ratings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('body')->nullable();
-            $table->tinyInteger('value');
+            $table->tinyInteger('value')->default(4);
             $table->integer('ratingtable_id');
             $table->string('ratingtable_type', 20);
             $table->string('user_agent', 255)->nullable();

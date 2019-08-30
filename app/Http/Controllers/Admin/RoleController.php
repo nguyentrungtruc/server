@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Role;
-use DateTime;
+use App\Http\Resources\Admin\RoleResource;
+
 class RoleController extends Controller
 {
     public function __construct() 
@@ -22,18 +22,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::orderBy('name', 'ASC')->get();
-        return response($roles, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $roles = Role::orderByAsc('name')->get();   
+        return $this->respondSuccess('Get all role', $roles, 200, 'many');
     }
 
     /**
@@ -50,35 +40,11 @@ class RoleController extends Controller
         if($validator->fails()) {
             return response($validator->errors()->getMessages(),422);
         }
-        $role              = new Role;
-        $role->name        = $request->name;
-        $role->description = $request->description;
-        $role->created_at  = new DateTime;
-        $role->save();
-        return response($role, 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $role = Role::findorFail($id);
-        return response($role, 200);
+        $role = Role::create([
+            'name'        => $request->name,
+            'description' => $request->description
+        ]);
+        return $this->respondSuccess('Add role', $role, 201, 'one');
     }
 
     /**
@@ -91,17 +57,19 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => Rule::unique('ec_roles')->ignore($id)
+            'name' => Rule::unique('ec_roles','name')->ignore($id)
         ]);
         if($validator->fails()) {
             return response($validator->errors()->getMessages(),422);
         }
-        $role              = Role::find($id);
-        $role->name        = $request->name;
-        $role->description = $request->description;
-        $role->updated_at  = new DateTime;
-        $role->save();
-        return response($role, 201);
+
+        $role = Role::find($id);
+        $role->update([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return $this->respondSuccess('Edit role', $role, 200, 'one');
     }
 
     /**
@@ -118,5 +86,31 @@ class RoleController extends Controller
         } catch(Exception $e) {
             return response(['Problem deleting the role'], 500);
         }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['role']   = new RoleResource($data);
+            break;
+
+            case 'many':
+                $res['roles'] = RoleResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

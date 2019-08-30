@@ -15,9 +15,11 @@ class Coupon extends Model
 	public function stores() {
 		return $this->belongsToMany('App\Models\Store', 'ec_coupon_ec_store', 'coupon_id', 'store_id');
 	}
+
 	public function cities() {
 		return $this->belongsToMany('App\Models\City', 'ec_coupon_ec_store', 'coupon_id', 'city_id');
 	}
+	
 	public function status() {
 		return $this->belongsTo('App\Models\CouponStatus', 'status_id');
 	}

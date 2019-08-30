@@ -4,38 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\StoreStatus;
-use DateTime;
-
+use App\Http\Resources\Admin\StoreStatusResource;
 class StoreStatusController extends Controller
 {
-    protected $statusForm;
+    public function __construct() {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct() {
-        $this->middleware('auth:api');
-    }
-
     public function index()
     {
-    	$status = StoreStatus::get();
-    	return response($status, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $status = StoreStatus::orderByAsc('store_status_name')->get();
+        return $this->respondSuccess('Get all store status', $status, 200, 'many');
     }
 
     /**
@@ -46,44 +32,20 @@ class StoreStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $this->statusForm = (object)$request->all();
         $validator = Validator::make($request->all(),[
-          'store_status_name' => 'unique:ec_store_status'
-      ]);
+          'name' => 'unique:ec_store_status,store_status_name'
+        ]);
 
         if($validator->fails()){
           return response($validator->errors()->first('store_status_name'), 422);
-      }
+        }
 
-      $status = new StoreStatus;
-      $status->store_status_name = $this->statusForm->store_status_name;
-      $status->store_status_description = $this->statusForm->store_status_description;
-      $status->color = $this->statusForm->color;
-      $status->created_at = new DateTime;
-      $status->save();
-      return response($status, 200);    
-  }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $status = StoreStatus::create([
+            'store_status_name'        => $request->name,
+            'store_status_description' => $request->description,
+            'color'                    => $request->color
+        ]);
+        return $this->respondSuccess('Add store status', $status, 201, 'one');
     }
 
     /**
@@ -95,21 +57,20 @@ class StoreStatusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->statusForm = (object)$request->all();
         $validator = Validator::make($request->all(),[
-            'store_status_name' => Rule::unique('ec_store_status')->ignore($id),
+            'name' => Rule::unique('ec_store_status','store_status_name')->ignore($id),
         ]);
         if($validator->fails()){
-            return response($validator->errors()->getMessages(),422);
+            return response($validator->errors()->first('store_status_name'),422);
         }
 
         $status = StoreStatus::find($id);
-        $status->store_status_name = $request->input('store_status_name');
-        $status->store_status_description = $request->input('store_status_description');
-        $status->color = $request->input('color');
-        $status->updated_at = new DateTime;
-        $status->save();
-        return response($status, 201);
+        $status->update([
+            'store_status_name'        => $request->name,
+            'store_status_description' => $request->description,
+            'color'                    => $request->color
+        ]);
+        return $this->respondSuccess('Edit store status', $status, 200, 'one');
     }
 
     /**
@@ -121,10 +82,37 @@ class StoreStatusController extends Controller
     public function destroy($id)
     {
         try {
-          StoreStatus::destroy($id);
-          return response(['The status has been deleted'], 204);
-      } catch (Exception $e) {
-          return response(['Problem deleting the status', 500]);
-      }
-  }
+            StoreStatus::destroy($id);
+            return response(['The status has been deleted'], 204);
+        } catch (Exception $e) {
+            return response(['Problem deleting the status', 500]);
+        }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+
+            case 'one':
+                $res['status'] = new StoreStatusResource($data);
+            break;
+
+            case 'many':
+                $res['status'] = StoreStatusResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
+    }
 }

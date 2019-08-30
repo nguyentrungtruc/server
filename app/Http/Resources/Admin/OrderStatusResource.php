@@ -18,8 +18,10 @@ class OrderStatusResource extends JsonResource
             'id'          => $this->id,
             'name'        => $this->order_status_name,
             'description' => $this->order_status_description,
+            'step'        => $this->number_order,
             'color'       => $this->color,
-            'numberOrder' => $this->number_order
+            'createdAt'   => $this->created_at,
+            'updatedAt'   => $this->updated_at
         ];
     }
 }

@@ -7,10 +7,60 @@ use Illuminate\Database\Eloquent\Model;
 class Store extends Model
 {
     protected $table   = "ec_stores";
+
+    protected $fillable = ['store_name', 'store_slug', 'store_phone', 'preparetime', 'store_address', 'lat', 'lng', 'discount', 'store_avatar', 'verified', 'store_show', 'priority', 'user_id', 'district_id', 'type_id', 'status_id', 'views', 'likes'];
     
     protected $guarded = [];
     
     protected $hidden  = ['pivot', 'city_id'];
+
+    // GET STORE OF CITY
+    public function scopeOfCity($query, $city_id) {
+        $cityId = $city_id;
+        if($cityId > 0) {
+            return $query->whereHas('district', function($query) use ($cityId) {
+                $query->byCityId($cityId);
+            });   
+        }
+        return $query;
+    }
+
+    // GET STORE BY TYPE ID
+    public function scopeByTypeId($query, $type_id) {
+        $typeId = (int) $type_id;
+        if($typeId>0) {
+            return $query->where('type_id', $typeId);
+        }   
+        return $query;
+    }
+
+    // GET STORE SHOWED
+    public function scopeShow($query, $is_show) {
+        if(!is_null($is_show)) {
+            if($is_show === 'true') {
+                return $query->where('store_show', 1);  
+            } else {
+                return $query->where('store_show', 0);  
+            }               
+        }  
+        return $query;
+    }
+
+    // SEARCH STORE BY PLACE
+    public function scopeLikePlace($query, $keywords) {
+        if(!is_null($keywords)) {
+            return $query->where('store_name', 'like',  '%'.$keywords.'%')->orWhere('id', 'like', '%'.$keywords.'%')->orWhere('store_address', 'like', '%'.$keywords.'%');
+        }
+        return $query;
+    }
+
+    public function scopeOrderByDesc($query, $column) {
+        return $query->orderBy($column, 'desc');
+    }
+
+    public function scopeOrderByAsc($query, $column) {
+        return $query->orderBy($column, 'asc');
+    }
 
     public function getVerifiedAttribute($value) {
         if($value) {

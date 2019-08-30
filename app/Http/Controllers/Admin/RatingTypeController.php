@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\RatingType;
 use App\Http\Resources\Admin\RatingTypeResource;
+use Illuminate\Support\Str;
+
 class RatingTypeController extends Controller
 {
     public function __construct(RatingType $type) {
@@ -22,8 +23,8 @@ class RatingTypeController extends Controller
      */
     public function index()
     {
-        $types = RatingType::get();
-        return $this->respondSuccess('Get rating type', $types, 200, 'many');
+        $types = RatingType::orderByAsc('name')->get();
+        return $this->respondSuccess('Get all types', $types, 200, 'many');
     }
 
     /**
@@ -35,31 +36,39 @@ class RatingTypeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'unique:ec_rating_types'
+            'name' => 'unique:ec_rating_types,name'
         ]);
 
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
 
-        $type = RatingType::create($request->all());
-
-        return $this->respondSuccess('Added rating type', $type, 201, 'one');
+        $type = RatingType::create([
+            'name' => $request->name,
+        ]);
+        return $this->respondSuccess('Add type', $type, 201, 'one');
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'name' => Rule::unique('ec_rating_types')->ignore($id),
+            'name' => Rule::unique('ec_rating_types','name')->ignore($id),
         ]);
         if($validator->fails()){
             return response($validator->errors()->getMessages(),422);
         }
         $type = RatingType::find($id);
-        $type->name = $request->name;
-        $type->save();
-
-        return $this->respondSuccess('Updated rating type', $type, 200, 'one');
+        $type->update([
+            'name' => $request->name,
+        ]);
+        return $this->respondSuccess('Edit type', $type, 200, 'one');
     }
 
     /**
@@ -77,19 +86,27 @@ class RatingTypeController extends Controller
             return response(['Problem deleting the rating type', 500]);
         }
     }
-
-    public function respondSuccess($message, $data, $status = 200, $type) {
+    
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    protected function respondSuccess($message, $data, $status = 200, $type) {
         $res = [
-            'type'    => 'success',
-            'message' => $message.' Successfully.'
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
         ];
 
         switch ($type) {
+
             case 'one':
-            $res['ratingType']  = new RatingTypeResource($data);
+                $res['type']   = new RatingTypeResource($data);
             break;
+
             case 'many':
-            $res['ratingTypes'] = RatingTypeResource::collection($data);
+                $res['types'] = RatingTypeResource::collection($data);
             break;
         }
 

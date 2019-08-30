@@ -7,18 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     protected $table = 'ec_cities';
-
+    
+    protected $fillable = [
+        'city_name', 'city_slug', 'lat', 'lng', 'zipcode', 'city_show', 'country_id'
+    ];
+    
     protected $guarded = [];
 
-    public function getCityShowAttribute($value) {
-        if($value) {
-            return true;
-        } 
-        return false;
-
+    public function scopeOrderByAsc($query, $column) {
+        return $query->orderBy($column, 'asc');
     }
-    
-    public function getDeliveryActivedAttribute($value) {
+
+    public function scopeOrderByDesc($query, $column) {
+        return $query->orderBy($column, 'desc');
+    }
+
+    public function getCityShowAttribute($value) {
         if($value) {
             return true;
         } 

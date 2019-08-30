@@ -14,6 +14,19 @@ class CatalogueResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'        => $this->id,
+            'name'      => $this->catalogue,
+            '_name'     => $this->_catalogue,
+            'priority'  => $this->priority,
+            'isShow'    => $this->catalogue_show,
+            'storeId'   => $this->store_id,
+            'slug'      => $this->slug,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
+            // 'products' => ProductResource::collection($this->whenLoaded('products', function() {
+            //     return $this->products->sortByDesc('priority')->sortBy('name');
+            // }))
+        ];
     }
 }

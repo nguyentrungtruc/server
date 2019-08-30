@@ -4,35 +4,28 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Catalogue;
+use App\Models\Store;
 use App\Http\Resources\Admin\CatalogueResource;
 use Illuminate\Support\Str;
-use DateTime;
+
 class CatalogueController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Request $request)
     {
-        $sid       = (int)$id;
-        $catalogue = Catalogue::where('store_id', '=', $sid)->get();
-        return CatalogueResource::collection($catalogue);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id)
-    {
-        //
+        $storeId    = (int) $request->storeId;
+        $catalogues = Store::findorFail($storeId)->catalogues()->orderByAsc('catalogue')->get();
+        return $this->respondSuccess('Get all catalogues', $catalogues, 200, 'many');
     }
 
     /**
@@ -43,41 +36,23 @@ class CatalogueController extends Controller
      */
     public function store(Request $request)
     {
-        $name = Str::lower($request->catalogue);
-        $find = Catalogue::where('catalogue', '=', $name)->where('store_id', '=', $request->sid)->first();
+        $name    = Str::lower($request->name);
+        $storeId = $request->storeId;
+        $find    = Catalogue::exist($name, $storeId)->first();
         if(!is_null($find)){
             return response(['Already exists taken'], 422);
         }
-        $catalogue             = new Catalogue;
-        $catalogue->catalogue  = $request->catalogue;
-        $catalogue->_catalogue = $request->_catalogue;
-        $catalogue->slug       = str_slug($request->catalogue, '-');
-        $catalogue->store_id   = $request->sid;
-        $catalogue->created_at = new DateTime;
-        $catalogue->save();
-        return new CatalogueResource($catalogue);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $catalogue = Catalogue::create([
+            'catalogue'      => Str::lower($request->name),
+            '_catalogue'     => Str::lower($request->_name),
+            'slug'           => str_slug($request->name, '-'),
+            'priority'       => $request->priority,
+            'catalogue_show' => $request->isShow,
+            'store_id'       => $request->storeId
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-
+        return $this->respondSuccess('Add catalogue', $catalogue, 201, 'one');
     }
 
     /**
@@ -89,18 +64,23 @@ class CatalogueController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $name = Str::lower($request->catalogue);
-        $find = Catalogue::where('catalogue', '=', $name)->where('store_id', '=', $request->sid)->where('id', '!=', $id)->first();
+        $name    = Str::lower($request->name);
+        $storeId = $request->storeId;
+        $find    = Catalogue::exist($name, $storeId)->ignore($id)->first();
         if(!is_null($find)){
             return response(['Already exists taken'], 422);
         }
-        $catalogue             = Catalogue::find($id);
-        $catalogue->catalogue  = $request->catalogue;
-        $catalogue->_catalogue = $request->_catalogue;
-        $catalogue->slug       = str_slug($request->catalogue);
-        $catalogue->updated_at = new DateTime;
-        $catalogue->save();
-        return new CatalogueResource($catalogue);
+        $catalogue = Catalogue::find($id);
+        $catalogue->update([
+            'catalogue'      => Str::lower($request->name),
+            '_catalogue'     => Str::lower($request->_name),
+            'slug'           => str_slug($request->name, '-'),
+            'priority'       => $request->priority,
+            'catalogue_show' => $request->isShow,
+            'store_id'       => $request->storeId
+        ]);
+
+        return $this->respondSuccess('Update catalogue', $catalogue, 200, 'one');
     }
 
     /**
@@ -117,5 +97,31 @@ class CatalogueController extends Controller
         } catch(Exception $e) {
             return response(['The catalogue has been deleted'], 204);
         }
+    }
+
+    /**
+     * Response a listing of the resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    protected function respondSuccess($message, $data, $status = 200, $type) {
+        $res = [
+            'status'  => 'success',
+            'message' => $message . ' successfully.',
+        ];
+
+        switch ($type) {
+            case 'one':
+            $res['catalogue']  = new CatalogueResource($data);
+            break;
+
+            case 'many':
+            $res['catalogues'] = CatalogueResource::collection($data);
+            break;
+        }
+
+        return response($res, $status);
     }
 }

@@ -15,20 +15,24 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'catalogue_id' => $this->catalogue_id,
-            'count'        => $this->count,            
-            'created_at'   => $this->created_at,
-            'id'           => $this->id,
-            'name'         => $this->name,
-            '_name'        => $this->_name,
-            'image'        => $this->image,
-            'price'        => $this->price,
-            'description'  => $this->description,
-            'status_id'    => $this->status_id,
-            'status'       => $this->status,
-            'haveSize'     => $this->have_size,
-            'haveTopping'  => $this->haveTopping,
-            'updated_at'   => $this->updated_at
+            'id'            => $this->id,
+            'name'          => $this->name,
+            '_name'         => $this->_name,
+            'description'   => $this->description,
+            'count'         => $this->count,
+            'sizes'         => $this->sizes->map(function($query) {
+                $query->price = $query->pivot->price;
+                return $query;
+            }),
+            'haveTopping'   => $this->have_topping,
+            'avatar'        => $this->image,
+            'priority'      => $this->priority,
+            'statusId'      => $this->status_id,
+            'statusName'    => $this->status->product_status_name,
+            'catalogueId'   => $this->catalogue_id,
+            'catalogueName' => $this->catalogue->catalogue,
+            'createdAt'     => $this->created_at,
+            'updatedAt'     => $this->updated_at,
         ];
     }
 }

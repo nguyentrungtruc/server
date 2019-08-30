@@ -97,10 +97,11 @@ return [
     | Some people may want this behaviour for e.g. a mobile app.
     | This is not particularly recommended, so make sure you have appropriate
     | systems in place to revoke the token if necessary.
+    | Notice: If you set this to null you should remove 'exp' element from 'required_claims' list.
     |
     */
 
-    'ttl' => env('JWT_TTL', 60),
+    'ttl' => env('JWT_TTL', 480),
 
     /*
     |--------------------------------------------------------------------------
@@ -119,7 +120,7 @@ return [
     |
     */
 
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 480),
 
     /*
     |--------------------------------------------------------------------------
@@ -275,7 +276,7 @@ return [
         */
 
         'jwt' => Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
-        // 'jwt' => Tymon\JWTAuth\Providers\JWT\Namshi::class,
+
         /*
         |--------------------------------------------------------------------------
         | Authentication Provider
