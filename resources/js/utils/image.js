@@ -1,6 +1,12 @@
-export function image(value) {
-	if(value == null) {
-		return '/img/noimage.png'
+import {imageURL} from '@/config'
+export function image(url) {
+	if(url == null) {
+		return imageURL+'/img/default.png'
+	} else {
+		if(url.slice(1, 8) === "storage") {
+			return imageURL+url
+		} else {
+			return url
+		}
 	}
-	return value
 }
