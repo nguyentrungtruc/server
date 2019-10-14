@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import {localURL, baseAPI} from '@/config'
-axios.defaults.baseURL = process.env.NODE_ENV !== baseAPI;
+axios.defaults.baseURL = baseAPI;
 axios.interceptors.response.use(function (response) {
 	return Promise.resolve(response)
 }, function (error) {
