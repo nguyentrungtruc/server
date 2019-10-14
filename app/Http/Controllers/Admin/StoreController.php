@@ -151,6 +151,74 @@ class StoreController extends Controller
     }
 
     /**
+     * Update Avatar
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    public function updateAvatar(Request $request, $id)
+    {
+        $avatar    = $request->avatar;
+        $storeId   = (int) $id;
+        $store     = Store::findorFail($storeId);
+
+        $this->handleRemoveImage($store->store_avatar);
+        
+        $dir       = '/storage/st/'. $storeId .'/av/';
+        
+        $path      = StoreController::PUBLIC_PATH . $dir;//DEV
+        // $path   = public_path($dir);//PRODUCT
+        $imageName = str_replace(' ', '-', 'dofuu-6' . str_replace('-', '', date('Y-m-d')) . '-6' . md5($store->name) . '-6' . time() . '.jpeg');
+        $imageUrl  = $dir . $imageName;
+
+        $this->handleUploadedImage($avatar, $path, $imageName);
+  
+
+        $store->update([
+            'store_avatar' => $imageUrl,
+        ]);
+
+        return $this->respondSuccess('Update image', $store->load('activities', 'user'), 200, 'one');
+    }
+
+    /**
+     * Handle Upload Image
+    */
+    protected function handleUploadedImage($image, $path, $name)
+    {
+        if (!is_null($image)) {
+            $data              = $image;
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data              = base64_decode($data);
+
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            file_put_contents($path . $name, $data);
+        }
+    }
+    /**
+     * Remove Image
+     *
+     * @param  string  $image
+     * 
+    */
+
+    protected function handleRemoveImage($image)
+    {
+
+        if (!is_null($image)) {
+            if (substr($image, 1, 7) === 'storage') {
+                $url = StoreController::PUBLIC_PATH . $image;//PRODUCT
+                // $url = public_path($image);//DEV
+                unlink($url);
+            }
+        }
+    }
+
+    /**
      * Response a listing of the resource.
      *
      * @param  int  $id
@@ -195,4 +263,6 @@ class StoreController extends Controller
             'lastPage'    => $data->lastPage(),
         ];
     }
+
+    
 }

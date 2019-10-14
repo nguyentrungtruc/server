@@ -9,7 +9,7 @@ class Product extends Model
 	protected $table = 'ec_products';
 
 	protected $fillable = [
-        'name', '_name', 'count', 'have_topping', 'image', 'priority', 'status_id', 'catalogue_id', 'description'
+        'name', '_name', 'count', 'have_topping', 'have_size', 'image', 'priority', 'status_id', 'catalogue_id', 'description'
     ];
 
 	protected $guarded = [];

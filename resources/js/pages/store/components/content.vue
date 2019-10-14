@@ -10,9 +10,9 @@
                   loading-text = "Loading... Please wait"
                 :headers       = "headers"
                 dense
-                :items = "stores"
-                hide-default-footer
-                class = "elevation-1"
+                :items          = "stores"
+                  class         = "elevation-1"
+                :items-per-page = "25"
             >
                 <template v-slot:top>
                     <v-card-title>
@@ -112,14 +112,32 @@
                     </div>           
                 </template>
                 <template v-slot:item.avatar="{item}">
-                     <v-card  class = "card-radius">
-                        <v-img
-                        :src           = "image(item.avatar)"
-                          aspect-ratio = "2.75"
-                          height       = "48px"
-                          width        = "48px"
-                        />
-                    </v-card>
+                    <v-hover v-slot:default="{ hover }">
+                        <v-card  class = "card-radius">
+                            <v-img
+                            :src           = "image(item.avatar)"
+                              aspect-ratio = "2.75"
+                              height       = "48px"
+                              width        = "48px"
+                            >
+                                <v-expand-transition>
+                                    <div
+                                                                  v-if           = "hover || $vuetify.breakpoint.smAndDown"
+                                                                  class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
+                                                                  style          = " cursor: pointer;"
+                                                                  @click.prevent = "updatingAvatar(item)"
+                                                                :style           = "cameraOverlay"
+                                    >
+                                        <v-layout column justify-center align-center>
+											<v-flex>
+												<v-icon color="white">camera_alt</v-icon>
+											</v-flex>
+										</v-layout>
+                                    </div>
+                                </v-expand-transition>
+                            </v-img>
+                        </v-card>
+                    </v-hover>                     
                 </template>
                 <template v-slot:item.name="{item}">
                    
@@ -192,19 +210,20 @@
             </v-data-table>
             <div class="text-xs-center pt-2" v-if="pagination.lastPage>1">
                 <v-pagination 
-                                        v-model = "pagination.currentPage"
-                                      :length   = "pagination.lastPage"
-                                        @input  = "changePage(pagination.currentPage)"
+                          v-model = "pagination.currentPage"
+                        :length   = "pagination.lastPage"
+                          @input  = "changePage(pagination.currentPage)"
                 circle
                 />
             </div>
         </v-card-text>          
         <d-confirm ref="confirm"/>
+        <d-image ref="avatar"></d-image>
     </div>
 </template>
 
 <script>
-import {Alert, Confirm} from '@/components'
+import {Alert, Confirm, ImageDialog} from '@/components'
 import index from '@/mixins'
 import {mapState} from 'vuex'
 export default {
@@ -233,7 +252,8 @@ export default {
     },
     components: {
         'd-alert'  : Alert,
-        'd-confirm': Confirm
+        'd-confirm': Confirm,
+        'd-image'  : ImageDialog
     },
     methods: {        
          //ACTION BUTTON ADD
@@ -265,6 +285,7 @@ export default {
             this.$store.dispatch('searchStore', this.search)
             this.$store.dispatch('fetchStore', query)
         },
+        //CHANGE PAGE
         changePage(page) {
             var   vm    = this
             const query = {...this.search, page: page}
@@ -272,6 +293,31 @@ export default {
                 vm.$store.dispatch('fetchStore', query)
             }            
         },
+        //UPDATING AVATAR
+        updatingAvatar(item) {
+			var   vm   = this
+			const size = { width: 350, height: 350 }
+			this.$refs.avatar.open('Change avatar of store '+item.name, size).then(response => {
+				if(response.status) {
+					vm.updateAvatar(response.avatar, item)
+				}
+			})
+        },
+        //REQUEST UPDATE AVATAR TO SERVER
+        updateAvatar(avatar, store) {
+			var   vm      = this
+			const storeId = store.id
+			const url     = `/Store/${storeId}/Avatar/Update`
+			const data    = { avatar: avatar }
+			axios.post(url, data, { withCredentials: true }).then(response => {
+				if(response.status === 200 ){
+                    console.log(response.data.store)
+					store.avatar = response.data.store.avatar
+				}
+			}).finally(() => {
+
+			})
+		},
     },
     computed: {
         ...mapState({

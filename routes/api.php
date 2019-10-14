@@ -130,7 +130,8 @@ Route::group(['namespace' => 'Admin'], function ($router) {
 		Route::get('/{id}/Show', 'StoreController@show');
 	    Route::post('/{id}/Edit', 'StoreController@update');
 	    Route::post('/{id}/Activity/Update', 'StoreController@updateActivity');
-	    Route::post('/{id}/Remove', 'StoreController@destroy');
+		Route::post('/{id}/Remove', 'StoreController@destroy');
+		Route::post('/{id}/Avatar/Update', 'StoreController@updateAvatar');
 	});
 
 	//STORE STATUS
