@@ -166,9 +166,9 @@ class StoreController extends Controller
         
         $dir       = '/storage/st/'. $storeId .'/av/';
         
-        $path      = StoreController::PUBLIC_PATH . $dir;//DEV
-        // $path   = public_path($dir);//PRODUCT
-        $imageName = str_replace(' ', '-', 'dofuu-6' . str_replace('-', '', date('Y-m-d')) . '-6' . md5($store->name) . '-6' . time() . '.jpeg');
+        $path      = StoreController::PUBLIC_PATH . $dir;//PRODUCT
+        // $path   = public_path($dir);//DEV
+        $imageName = $this->handleImageName($store->name);
         $imageUrl  = $dir . $imageName;
 
         $this->handleUploadedImage($avatar, $path, $imageName);
@@ -178,7 +178,14 @@ class StoreController extends Controller
             'store_avatar' => $imageUrl,
         ]);
 
-        return $this->respondSuccess('Update image', $store->load('activities', 'user'), 200, 'one');
+        return $this->respondSuccess('Update image', $store, 200, 'one');
+    }
+
+    /**
+     * Handle Upload Image
+    */
+    protected function handleImageName($name) {
+        return str_replace(' ', '-', 'dofuu-6' . str_replace('-', '', date('Y-m-d')) . '-6' . md5($name) . '-6' . time() . '.jpeg');
     }
 
     /**

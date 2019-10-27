@@ -122,11 +122,11 @@
                             >
                                 <v-expand-transition>
                                     <div
-                                                                  v-if           = "hover || $vuetify.breakpoint.smAndDown"
-                                                                  class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
-                                                                  style          = " cursor: pointer;"
-                                                                  @click.prevent = "updatingAvatar(item)"
-                                                                :style           = "cameraOverlay"
+                                          v-if           = "hover || $vuetify.breakpoint.smAndDown"
+                                          class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
+                                          style          = " cursor: pointer;"
+                                          @click.prevent = "updatingAvatar(item)"
+                                        :style           = "cameraOverlay"
                                     >
                                         <v-layout column justify-center align-center>
 											<v-flex>
@@ -210,9 +210,9 @@
             </v-data-table>
             <div class="text-xs-center pt-2" v-if="pagination.lastPage>1">
                 <v-pagination 
-                          v-model = "pagination.currentPage"
-                        :length   = "pagination.lastPage"
-                          @input  = "changePage(pagination.currentPage)"
+                            v-model = "pagination.currentPage"
+                          :length   = "pagination.lastPage"
+                            @input  = "changePage(pagination.currentPage)"
                 circle
                 />
             </div>
@@ -311,7 +311,6 @@ export default {
 			const data    = { avatar: avatar }
 			axios.post(url, data, { withCredentials: true }).then(response => {
 				if(response.status === 200 ){
-                    console.log(response.data.store)
 					store.avatar = response.data.store.avatar
 				}
 			}).finally(() => {

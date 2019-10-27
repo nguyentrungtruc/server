@@ -7,14 +7,14 @@
 			<v-divider></v-divider>
 			<v-layout row wrap class="justify-center pt-3">			
 				<vue-croppie 
-                                    ref           = "croppieRef"
-                                    @result       = "result"
-                                  :enableResize   = "resize"
-                                  :enableExif     = "true"
-                                  :mouseWheelZoom = "true"
-                                    @update       = "update"
-                                  :viewport       = "viewport"
-                                  :boundary       = "boundary"
+                                                    ref           = "croppieRef"
+                                                    @result       = "result"
+                                                  :enableResize   = "resize"
+                                                  :enableExif     = "true"
+                                                  :mouseWheelZoom = "true"
+                                                    @update       = "update"
+                                                  :viewport       = "viewport"
+                                                  :boundary       = "boundary"
                 >
 				</vue-croppie>
 				<v-btn @click.stop.prevent="onPickImage" :loading="loading" rounded small><v-icon left >camera_alt</v-icon> Tải ảnh</v-btn>
@@ -115,9 +115,9 @@
 			update(val) {
 				let options = {
 					format: 'jpeg',
-					size  : this.size,
+					size  : this.$refs.croppieRef.croppie.options.boundary,
 					circle: false
-                }
+				}
 				this.$refs.croppieRef.result(options, (output) => {
 					this.cropped = output;
 				});

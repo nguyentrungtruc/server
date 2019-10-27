@@ -122,6 +122,82 @@ class ProductController extends Controller
     }
 
     /**
+     * Update Avatar
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+    */
+    public function updateAvatar(Request $request, $id)
+    {
+        $avatar      = $request->avatar;
+        $storeId     = (int)$request->storeId;
+        $productId   = (int) $id;
+        $product     = Product::findorFail($productId);
+
+        $this->handleRemoveImage($product->image);
+        
+        $dir       = '/storage/st/'. $storeId .'/pr/';
+        
+        $path      = StoreController::PUBLIC_PATH . $dir;//PRODUCT
+        // $path   = public_path($dir);//DEV
+        $imageName = $this->handleImageName($product->name);
+        $imageUrl  = $dir . $imageName;
+
+        $this->handleUploadedImage($avatar, $path, $imageName);
+  
+
+        $product->update([
+            'image' => $imageUrl,
+        ]);
+
+        return $this->respondSuccess('Update image', $product, 200, 'one');
+    }
+
+    /**
+     * Handle Upload Image
+    */
+    protected function handleImageName($name) {
+        return str_replace(' ', '-', 'dofuu-6' . str_replace('-', '', date('Y-m-d')) . '-6' . md5($name) . '-6' . time() . '.jpeg');
+    }
+
+    /**
+     * Handle Upload Image
+    */
+    protected function handleUploadedImage($image, $path, $name)
+    {
+        if (!is_null($image)) {
+            $data              = $image;
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data              = base64_decode($data);
+
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            file_put_contents($path . $name, $data);
+        }
+    }
+
+    /**
+     * Remove Image
+     *
+     * @param  string  $image
+     * 
+    */
+
+    protected function handleRemoveImage($image)
+    {
+        if (!is_null($image)) {
+            if (substr($image, 1, 7) === 'storage') {
+                $url = StoreController::PUBLIC_PATH . $image;//PRODUCT
+                // $url = public_path($image);//DEV
+                unlink($url);
+            }
+        }
+    }
+
+    /**
      * Response a listing of the resource.
      *
      * @param  int  $id
