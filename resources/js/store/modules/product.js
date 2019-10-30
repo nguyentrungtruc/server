@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const ProductRepository = RepositoryFactory.get('products')
 
 const state = {
 	products   : [],
@@ -22,8 +23,9 @@ const mutations = {
 		state.dialog = true
     },
     CLOSE_PRODUCT_DIALOG(state) {
-        state.dialog      = false
-        state.editedIndex = -1
+		state.dialog      = false
+		state.editedItem  = {}
+		state.editedIndex = -1
     },
     EDIT_PRODUCT(state, payload) {
 		state.editedIndex = state.products.indexOf(payload)
@@ -50,10 +52,9 @@ const mutations = {
 const actions = {
 	fetchProduct: ({commit, state}, id) => new Promise((resolve, reject) => {
         const params = {storeId: id}
-        const url    = `Product/Fetch`
         if(!state.loading) {
             commit('LOADING_PRODUCT')
-            axios.get(url, {params, withCredentials: true}).then(response => {
+            ProductRepository.get(params).then(response => {
                 if(response.status === 200) {
 					commit('FETCH_PRODUCT', response.data.products)
 				}
@@ -62,10 +63,14 @@ const actions = {
         }
 	}),
     editProduct: ({commit}, product) => new Promise((resolve, reject) => {
-        commit('EDIT_PRODUCT', product)
-        commit('OPEN_PRODUCT_DIALOG')
+		commit('EDIT_PRODUCT', product)
+		commit('OPEN_PRODUCT_DIALOG')	
         resolve(true)
-    }),
+	}),
+	editAvatar: ({commit}, product) => new Promise((resolve, reject) => {
+		commit('EDIT_PRODUCT', product)
+        resolve(true)
+	}),
     updateProduct: ({commit}, product) => new Promise((resolve, reject) => {
         commit('UPDATE_PRODUCT', product)
         resolve(true)

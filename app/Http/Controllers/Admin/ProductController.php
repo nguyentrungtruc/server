@@ -115,6 +115,8 @@ class ProductController extends Controller
     {
         try {
             Product::destroy($id);
+            $product     = Product::findorFail($id);
+            $this->handleRemoveImage($product->image);
             return response(['The product has been deleted'], 204);
         } catch(Exception $e) {
             return response(['The product has been deleted'], 204);
@@ -131,8 +133,7 @@ class ProductController extends Controller
     {
         $avatar      = $request->avatar;
         $storeId     = (int)$request->storeId;
-        $productId   = (int) $id;
-        $product     = Product::findorFail($productId);
+        $product     = Product::findorFail($id);
 
         $this->handleRemoveImage($product->image);
         

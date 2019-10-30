@@ -8,23 +8,23 @@
 			<v-card-text> 
 				<v-form>
 					<v-select
-					    label         = "City"
-					    v-model       = "editedItem.cityId"
-					  :items          = "cities"
-					    item-text     = "name"
-					    item-value    = "id"
-					  :error-messages = "errors.collect('city')"
-					    v-validate    = "'required'"
-					    data-vv-name  = "city"
+					        label         = "City"
+					        v-model       = "editedItem.cityId"
+					      :items          = "cities"
+					        item-text     = "name"
+					        item-value    = "id"
+					      :error-messages = "errors.collect('city')"
+					        v-validate    = "'required'"
+					        data-vv-name  = "city"
 					></v-select>
 					
 					<v-text-field 
-					    label         = "District name"
-					    v-model       = "editedItem.name"
-					  :counter        = "50"
-					  :error-messages = "errors.collect('name')"
-					    v-validate    = "'required|max:50'"
-					    data-vv-name  = "name"
+					        label         = "District name"
+					        v-model       = "editedItem.name"
+					      :counter        = "50"
+					      :error-messages = "errors.collect('name')"
+					        v-validate    = "'required|max:50'"
+					        data-vv-name  = "name"
 					></v-text-field>
 
 					<v-switch
@@ -45,10 +45,11 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const DistrictRepository = RepositoryFactory.get('districts')
 export default {
 	data: function() {
 		return {
@@ -101,8 +102,7 @@ export default {
 		},
 		//ACTION ADD NEW
 		add(data) {
-			const url = `District/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			DistrictRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateDistrict', response.data.district)
 					this.close()
@@ -117,8 +117,7 @@ export default {
 		//ACTION UPDATE
 		update(data) {
 			const {id} = data
-			const url  = `District/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			DistrictRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateDistrict', response.data.district)
 					this.close()

@@ -22,32 +22,32 @@
 					/>
 
 					<v-text-field
-					                        prepend-icon  = "store"
-					                        label         = "Store name"
-					                        v-model       = "editedItem.name"
-					                        v-validate    = "'required'"
-					                      :error-messages = "errors.collect('name')"
-					                        data-vv-name  = "name"
+					                                prepend-icon  = "store"
+					                                label         = "Store name"
+					                                v-model       = "editedItem.name"
+					                                v-validate    = "'required'"
+					                              :error-messages = "errors.collect('name')"
+					                                data-vv-name  = "name"
 					/>
 
 					<v-text-field
-					                        mask          = "(####) ### - ###"
-					                        prepend-icon  = "phone"
-					                        label         = "Phone"
-					                        v-model       = "editedItem.phone"
-					                        v-validate    = "'numeric|min:10|max:11'"
-					                      :error-messages = "errors.collect('phone')"
-					                        data-vv-name  = "phone"
+					                                mask          = "(####) ### - ###"
+					                                prepend-icon  = "phone"
+					                                label         = "Phone"
+					                                v-model       = "editedItem.phone"
+					                                v-validate    = "'numeric|min:10|max:11'"
+					                              :error-messages = "errors.collect('phone')"
+					                                data-vv-name  = "phone"
 					/>
 
 					<v-text-field
-					                        prepend-icon  = "access_time"
-					                        label         = "Prepare time"
-					                        v-model       = "editedItem.prepareTime"
-					                        suffix        = "minutes"
-					                        v-validate    = "'required|numeric|max:2'"
-					                      :error-messages = "errors.collect('prepare time')"
-					                        data-vv-name  = "prepare time"
+					                                prepend-icon  = "access_time"
+					                                label         = "Prepare time"
+					                                v-model       = "editedItem.prepareTime"
+					                                suffix        = "minutes"
+					                                v-validate    = "'required|numeric|max:2'"
+					                              :error-messages = "errors.collect('prepare time')"
+					                                data-vv-name  = "prepare time"
 					/>
 
 					<v-select
@@ -64,28 +64,28 @@
 					/>
 
 					<v-select
-					            v-if          = "editedItem.cityId != null"
-					          :items          = "districts"
-					            v-model       = "editedItem.districtId"
-					            label         = "District"
-					            item-text     = "name"
-					            item-value    = "id"
-					            prepend-icon  = "streetview"
-					            v-validate    = "'required'"
-					          :error-messages = "errors.collect('district')"
-					            data-vv-name  = "district"
+					                    v-if          = "editedItem.cityId != null"
+					                  :items          = "districts"
+					                    v-model       = "editedItem.districtId"
+					                    label         = "District"
+					                    item-text     = "name"
+					                    item-value    = "id"
+					                    prepend-icon  = "streetview"
+					                    v-validate    = "'required'"
+					                  :error-messages = "errors.collect('district')"
+					                    data-vv-name  = "district"
 					/>
 
 					<v-text-field
-					  id            = "auto-complete"
-					  ref           = "autocomplete"
-					  prepend-icon  = "place"
-					  label         = "Địa chỉ cửa hàng"
-					  v-model       = "editedItem.address"
-					  v-validate    = "'required|max:255'"
-					:error-messages = "errors.collect('address')"
-					  @focus        = "autocomplete"
-					  data-vv-name  = "address"
+					          id            = "auto-complete"
+					          ref           = "autocomplete"
+					          prepend-icon  = "place"
+					          label         = "Địa chỉ cửa hàng"
+					          v-model       = "editedItem.address"
+					          v-validate    = "'required|max:255'"
+					        :error-messages = "errors.collect('address')"
+					          @focus        = "autocomplete"
+					          data-vv-name  = "address"
 					/>
 					<GmapMap v-if="dialog" :center="{lat:editedItem.lat, lng:editedItem.lng}" :zoom="15" style="width: 100%; height: 300px">
 						<GmapMarker	:position="{lat:editedItem.lat, lng:editedItem.lng}"
@@ -100,12 +100,12 @@
 				<v-container>
 					<v-flex xs12>
 						<v-text-field
-						                        prepend-icon  = "stars"
-						                        label         = "Priority"
-						                        v-model       = "editedItem.priority"
-						                        v-validate    = "'required|numeric|max:2'"
-						                      :error-messages = "errors.collect('priority')"
-						                        data-vv-name  = "priority"
+						                                prepend-icon  = "stars"
+						                                label         = "Priority"
+						                                v-model       = "editedItem.priority"
+						                                v-validate    = "'required|numeric|max:2'"
+						                              :error-messages = "errors.collect('priority')"
+						                                data-vv-name  = "priority"
 						/>
 					</v-flex>		
 
@@ -123,13 +123,13 @@
 
 					<v-flex xs12>
 						<v-text-field
-						                        prepend-icon  = "attach_money"
-						                        label         = "Discount"
-						                        v-model       = "editedItem.discount"
-						                        v-validate    = "{required: editedItem.isVerify, numeric:true, max: 2}"
-						                      :error-messages = "errors.collect('discount')"
-						                        data-vv-name  = "discount"
-						                        suffix        = "%"
+						                                prepend-icon  = "attach_money"
+						                                label         = "Discount"
+						                                v-model       = "editedItem.discount"
+						                                v-validate    = "{required: editedItem.isVerify, numeric:true, max: 2}"
+						                              :error-messages = "errors.collect('discount')"
+						                                data-vv-name  = "discount"
+						                                suffix        = "%"
 						/>
 					</v-flex>								
 
@@ -159,10 +159,12 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const StoreRepository    = RepositoryFactory.get('stores')
+const DistrictRepository = RepositoryFactory.get('districts')
 export default {
 	data: function() {
 		return {
@@ -258,8 +260,8 @@ export default {
 			vm.$validator.validateAll().then(async (result) => {
 				if(result) {
 					if(!vm.progress) {
-						                                          vm.progress = true
-						                                    const data        = {...this.editedItem}
+						      vm.progress = true
+						const data        = {...this.editedItem}
 						if(vm.editedIndex > -1) {
 							vm.update(data)
 						} else {
@@ -271,8 +273,7 @@ export default {
 		},
 		//ACTION ADD NEW 
 		add(data) {
-			const url = `Store/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			StoreRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateStore', response.data.store)
 					this.close()
@@ -288,7 +289,7 @@ export default {
 		update(data) {
 			const {id} = data
 			const url  = `Store/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			StoreRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateStore', response.data.store)
 					this.close()
@@ -303,7 +304,7 @@ export default {
 		//CHANGE CITY GET DISTRICT
 		changeCity: function(id) {
 			const url = `District/${id}/GetByCity`
-			this.axios.get(url, null, {withCredentials: true}).then(response => {
+			DistrictRepository.getByCity(id).then(response => {
 				if(response.status === 200) {
 					this.districts = response.data.districts
 				}

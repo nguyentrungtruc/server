@@ -83,11 +83,11 @@
                             >
                                 <v-expand-transition>
                                     <div
-                                                      v-if           = "hover || $vuetify.breakpoint.smAndDown"
-                                                      class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
-                                                      style          = " cursor: pointer;"
-                                                      @click.prevent = "updatingAvatar(item)"
-                                                    :style           = "cameraOverlay"
+                                                                                            v-if           = "hover || $vuetify.breakpoint.smAndDown"
+                                                                                            class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
+                                                                                            style          = " cursor: pointer;"
+                                                                                            @click.prevent = "updatingAvatar(item)"
+                                                                                          :style           = "cameraOverlay"
                                     >
                                         <v-layout column justify-center align-center>
 											<v-flex>
@@ -147,6 +147,8 @@
 import {Alert, Confirm, ImageDialog} from '@/components'
 import index from '@/mixins'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const ProductRepository = RepositoryFactory.get('products')
 export default {
     mixins: [index],
     data() {
@@ -194,7 +196,7 @@ export default {
                 if(result) {
                     const data = []
                     const url  = `/Product/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    ProductRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeProduct', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.name+' product has been deleted.', routeName: this.$route.name, show: true, type: 'success'})
@@ -237,22 +239,25 @@ export default {
         updatingAvatar(item) {
 			var   vm   = this
 			const size = { width: 350, height: 350 }
+            this.$store.dispatch('editAvatar', item)
 			this.$refs.avatar.open('Change avatar of product '+item.name, size).then(response => {
 				if(response.status) {
 					vm.updateAvatar(response.avatar, item)
-				}
+                } else {
+                    this.$store.commit('CLOSE_PRODUCT_DIALOG')
+                }
 			})
         },
         //REQUEST UPDATE AVATAR TO SERVER
         updateAvatar(avatar, product) {
-			var   vm        = this
-			const productId = product.id
-			const storeId   = this.$route.params.storeId
-			const url       = `/Product/${productId}/Avatar/Update`
-			const data      = { avatar: avatar, storeId: storeId }
-			axios.post(url, data, { withCredentials: true }).then(response => {
+			var   vm      = this
+			const {id}    = product
+			const storeId = this.$route.params.storeId
+			const data    = { avatar: avatar, storeId: storeId }
+			ProductRepository.updateAvatar(id, data).then(response => {
 				if(response.status === 200 ){
-					product.avatar = response.data.product.avatar
+                    this.$store.dispatch('updateProduct', response.data.product)
+                    this.$store.commit('CLOSE_PRODUCT_DIALOG')
 				}
 			}).finally(() => {
 

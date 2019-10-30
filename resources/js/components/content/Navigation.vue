@@ -1,9 +1,5 @@
 <template>
     <v-navigation-drawer disable-route-watcher app :clipped="$vuetify.breakpoint.mdAndUp" :value="drawer" expand-on-hover>
-        <template v-slot:prepend>
-           <v-system-bar></v-system-bar>
-        </template>  
-        
         <v-list dense shaped>
             <template v-for="(item, index) in items">
                 <v-subheader v-if="item.header" :key="index">

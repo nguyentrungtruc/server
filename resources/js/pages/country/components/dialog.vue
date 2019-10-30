@@ -8,30 +8,30 @@
 			<v-card-text> 
 				<v-form>
 					<v-text-field 
-				        label         = "Country name"
-				        v-model       = "editedItem.name"
-				      :error-messages = "errors.collect('name')"
-				        v-validate    = "'required|max:50'"
-				        data-vv-name  = "name"
+				                label         = "Country name"
+				                v-model       = "editedItem.name"
+				              :error-messages = "errors.collect('name')"
+				                v-validate    = "'required|max:50'"
+				                data-vv-name  = "name"
 					persistent-hint
 					></v-text-field>
 
 					<v-text-field 
-					        label         = "Language"
-					        v-model       = "editedItem.lang"
-					      :counter        = "2"
-					      :error-messages = "errors.collect('lang')"
-					        v-validate    = "'required|max:2'"
-					        data-vv-name  = "lang"
+					                label         = "Language"
+					                v-model       = "editedItem.lang"
+					              :counter        = "2"
+					              :error-messages = "errors.collect('lang')"
+					                v-validate    = "'required|max:2'"
+					                data-vv-name  = "lang"
 					></v-text-field>
 
 					<v-text-field 
-						        label         = "Dialing code"
-						        v-model       = "editedItem.dialingCode"
-						      :counter        = "5"
-						      :error-messages = "errors.collect('dialingcode')"
-						        v-validate    = "'required|max:5'"
-						        data-vv-name  = "dialingcode"
+						                label         = "Dialing code"
+						                v-model       = "editedItem.dialingCode"
+						              :counter        = "5"
+						              :error-messages = "errors.collect('dialingcode')"
+						                v-validate    = "'required|max:5'"
+						                data-vv-name  = "dialingcode"
 					></v-text-field>
 
 					<v-switch
@@ -56,10 +56,11 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CountryRepository = RepositoryFactory.get('countries')
 export default {
 	data: function() {
 		return {
@@ -113,8 +114,7 @@ export default {
 		},
 		//ACTION ADD NEW COUNTRY
 		add(data) {
-			const url = `Country/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			CountryRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateCountry', response.data.country)
 					this.close()
@@ -129,8 +129,7 @@ export default {
 		//ACTION UPDATE COUNTRY
 		update(data) {
 			const {id} = data
-			const url  = `Country/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			CountryRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateCountry', response.data.country)
 					this.close()

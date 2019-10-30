@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CountryRepository = RepositoryFactory.get('countries')
 
 const state = {
 	countries  : [],
@@ -43,16 +44,14 @@ const mutations = {
 
 const actions = {
 	fetchCountry: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `Country/Fetch`
         if(!state.loading) {
-            commit('LOADING_COUNTRY')
-            axios.get(url, data, {withCredentials: true}).then(response => {
-                if(response.status === 200) {
+			commit('LOADING_COUNTRY')
+			CountryRepository.get().then(response => {
+				if(response.status === 200) {
 					commit('FETCH_COUNTRY', response.data.countries)
 				}
 				resolve(response)
-            }).catch(error => {reject(error)}).finally(() => commit('LOADING_COUNTRY'))
+			}).catch(error => {reject(error)}).finally(() => commit('LOADING_COUNTRY'))
         }
 	}),
     editCountry: ({commit}, country) => new Promise((resolve, reject) => {

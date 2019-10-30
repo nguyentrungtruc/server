@@ -19,21 +19,21 @@
 					/>
 
 					<v-text-field 
-			      label         = "Name"
-			      v-model       = "editedItem.name"
-			    :error-messages = "errors.collect('name')"
-			    :counter        = "45"
-			      v-validate    = "'required|max:45'"
-			      data-vv-name  = "name"
+			                label         = "Name"
+			                v-model       = "editedItem.name"
+			              :error-messages = "errors.collect('name')"
+			              :counter        = "45"
+			                v-validate    = "'required|max:45'"
+			                data-vv-name  = "name"
 					></v-text-field>
 
 					<v-text-field 
-				      label         = "English name"
-				      v-model       = "editedItem._name"
-				    :counter        = "45"
-				    :error-messages = "errors.collect('English name')"
-				      v-validate    = "'max:45'"
-				      data-vv-name  = "English name"
+				                label         = "English name"
+				                v-model       = "editedItem._name"
+				              :counter        = "45"
+				              :error-messages = "errors.collect('English name')"
+				                v-validate    = "'max:45'"
+				                data-vv-name  = "English name"
 					></v-text-field>
 					
 					<v-container grid-list-md fluid>
@@ -50,26 +50,26 @@
 					</v-radio-group>		
 
 					<v-text-field 
-			      label         = "Description"
-			      v-model       = "editedItem.description"
-			    :error-messages = "errors.collect('description')"
-			      v-validate    = "'max:254'"
-			      data-vv-name  = "description"
+			                label         = "Description"
+			                v-model       = "editedItem.description"
+			              :error-messages = "errors.collect('description')"
+			                v-validate    = "'max:254'"
+			                data-vv-name  = "description"
 					/>
 
 					<v-text-field
-			      label         = "Priority"
-			      v-model       = "editedItem.priority"
-			      v-validate    = "'required|numeric|max:2'"
-			    :error-messages = "errors.collect('priority')"
-			      data-vv-name  = "priority"
+			                label         = "Priority"
+			                v-model       = "editedItem.priority"
+			                v-validate    = "'required|numeric|max:2'"
+			              :error-messages = "errors.collect('priority')"
+			                data-vv-name  = "priority"
 					/>
 
 					<v-select
-					      label         = "Status"
-					    :items          = "status"
-					      v-model       = "editedItem.statusId"
-					    :error-messages = "errors.collect('status')"
+					                label         = "Status"
+					              :items          = "status"
+					                v-model       = "editedItem.statusId"
+					              :error-messages = "errors.collect('status')"
 					autocomplete
 					v-validate   = "'required'"
 					data-vv-name = "status"
@@ -91,9 +91,10 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
+import {RepositoryFactory} from '@/services/Repository/index'
+const ProductRepository = RepositoryFactory.get('products')
 export default {
 	data: function() {
 		return {
@@ -137,8 +138,8 @@ export default {
 			vm.$validator.validateAll().then(async (result) => {
 				if(result) {
 					if(!vm.progress) {
-						                                                vm.progress = true
-						                                          const data        = {...this.editedItem}
+						                  vm.progress = true
+						            const data        = {...this.editedItem}
 						if(vm.editedIndex > -1) {
 							vm.update(data)
 						} else {
@@ -152,7 +153,7 @@ export default {
 		add(data) {
 			const url    = `Product/Add`
 			const params = {storeId: this.$route.params.storeId}
-			this.axios.post(url, data, {params, withCredentials: true}).then(response => {
+			ProductRepository.create(data, params).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateProduct', response.data.product)
 					this.close()
@@ -167,8 +168,7 @@ export default {
 		//ACTION UPDATE
 		update(data) {
 			const {id} = data
-			const url  = `Product/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			ProductRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateProduct', response.data.product)
 					this.close()

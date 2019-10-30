@@ -11,6 +11,7 @@ import City from '@/pages/city/Index'
 import Country from '@/pages/country/Index'
 import CouponStatus from '@/pages/status/coupon/Index'
 import District from '@/pages/district/Index'
+import Order from  '@/pages/order/Index'
 import OrderStatus from '@/pages/status/order/Index'
 import ProductStatus from '@/pages/status/product/Index'
 import RatingType from '@/pages/type/rating/Index'
@@ -121,6 +122,14 @@ const routes = [
                 path     : '/order-status',
                 component: OrderStatus,
                 name     : 'OrderStatus',
+                meta     : {
+                    forAuth: true
+                }
+            },
+            {
+                path     : '/orders',
+                component: Order,
+                name     : 'Order',
                 meta     : {
                     forAuth: true
                 }

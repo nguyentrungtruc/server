@@ -8,32 +8,32 @@
 			<v-card-text> 
 				<v-form>
 					<v-select
-					          label         = "Country"
-					          v-model       = "editedItem.countryId"
-					        :items          = "countries"
-					          item-text     = "name"
-					          item-value    = "id"
-					        :error-messages = "errors.collect('country')"
-					          v-validate    = "'required'"
-					          data-vv-name  = "country"
+					                  label         = "Country"
+					                  v-model       = "editedItem.countryId"
+					                :items          = "countries"
+					                  item-text     = "name"
+					                  item-value    = "id"
+					                :error-messages = "errors.collect('country')"
+					                  v-validate    = "'required'"
+					                  data-vv-name  = "country"
 					></v-select>
 					
 					<v-text-field 
-					          label         = "City name"
-					          v-model       = "editedItem.name"
-					        :counter        = "50"
-					        :error-messages = "errors.collect('name')"
-					          v-validate    = "'required|max:50'"
-					          data-vv-name  = "name"
+					                  label         = "City name"
+					                  v-model       = "editedItem.name"
+					                :counter        = "50"
+					                :error-messages = "errors.collect('name')"
+					                  v-validate    = "'required|max:50'"
+					                  data-vv-name  = "name"
 					></v-text-field>
 
 					<v-text-field 
-					          label         = "Zip code"
-					          v-model       = "editedItem.zipCode"
-					        :counter        = "10"
-					        :error-messages = "errors.collect('zipcode')"
-					          v-validate    = "'required|max:10'"
-					          data-vv-name  = "zipcode"
+					                  label         = "Zip code"
+					                  v-model       = "editedItem.zipCode"
+					                :counter        = "10"
+					                :error-messages = "errors.collect('zipcode')"
+					                  v-validate    = "'required|max:10'"
+					                  data-vv-name  = "zipcode"
 					></v-text-field>
 
 					<v-switch
@@ -54,10 +54,11 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CityRepository = RepositoryFactory.get('cities')
 export default {
 	data: function() {
 		return {
@@ -109,8 +110,7 @@ export default {
 		},
 		//ACTION ADD NEW CITY
 		add(data) {
-			const url = `City/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			CityRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateCity', response.data.city)
 					this.close()
@@ -125,8 +125,7 @@ export default {
 		//ACTION UPDATE CITY
 		update(data) {
 			const {id} = data
-			const url  = `City/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			CityRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateCity', response.data.city)
 					this.close()

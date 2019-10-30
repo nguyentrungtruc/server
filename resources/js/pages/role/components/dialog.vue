@@ -8,21 +8,21 @@
 			<v-card-text> 
 				<v-form>
 					<v-text-field 
-					      label         = "Role name"
-					      v-model       = "editedItem.name"
-					    :counter        = "25"
-					    :error-messages = "errors.collect('name')"
-					      v-validate    = "'required|max:25'"
-					      data-vv-name  = "name"
+					            label         = "Role name"
+					            v-model       = "editedItem.name"
+					          :counter        = "25"
+					          :error-messages = "errors.collect('name')"
+					            v-validate    = "'required|max:25'"
+					            data-vv-name  = "name"
 					></v-text-field>
 
 					<v-text-field 
-					      label         = "Description"
-					      v-model       = "editedItem.description"
-					    :counter        = "255"
-					    :error-messages = "errors.collect('description')"
-					      v-validate    = "'required|max:255'"
-					      data-vv-name  = "description"
+					            label         = "Description"
+					            v-model       = "editedItem.description"
+					          :counter        = "255"
+					          :error-messages = "errors.collect('description')"
+					            v-validate    = "'required|max:255'"
+					            data-vv-name  = "description"
 					></v-text-field>
 				</v-form>
 			</v-card-text>
@@ -38,9 +38,10 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
+import {RepositoryFactory} from '@/services/Repository/index'
+const RoleRepository = RepositoryFactory.get('roles')
 export default {
 	data: function() {
 		return {
@@ -85,8 +86,7 @@ export default {
 		},
 		//ACTION ADD NEW ROLE
 		add(data) {
-			const url = `Role/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			RoleRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateRole', response.data.role)
 					this.close()
@@ -101,8 +101,7 @@ export default {
 		//ACTION UPDATE ROLE
 		update(data) {
 			const {id} = data
-			const url  = `Role/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			RoleRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateRole', response.data.role)
 					this.close()

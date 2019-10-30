@@ -1,6 +1,6 @@
-import axios from 'axios'
-
-const state = {
+import {RepositoryFactory} from '@/services/Repository/index'
+const CatalogueRepository = RepositoryFactory.get('catalogues')
+const state               = {
 	catalogues : [],
 	loading    : false,
 	dialog     : false,
@@ -47,15 +47,14 @@ const mutations = {
 const actions = {
 	fetchCatalogue: ({commit, state}, id) => new Promise((resolve, reject) => {
         const params = {storeId: id}
-        const url    = `Catalogue/Fetch`
         if(!state.loading) {
-            commit('LOADING_CATALOGUE')
-            axios.get(url, {params, withCredentials: true}).then(response => {
-                if(response.status === 200) {
+			commit('LOADING_CATALOGUE')
+			CatalogueRepository.get(params).then(response => {
+				if(response.status === 200) {
 					commit('FETCH_CATALOGUE', response.data.catalogues)
 				}
 				resolve(response)
-            }).catch(error => {reject(error)}).finally(() => commit('LOADING_CATALOGUE'))
+			}).catch(error => {reject(error)}).finally(() => commit('LOADING_CATALOGUE'))
         }
 	}),
     editCatalogue: ({commit}, catalogue) => new Promise((resolve, reject) => {

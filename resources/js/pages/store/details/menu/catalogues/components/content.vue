@@ -66,6 +66,8 @@
 <script>
 import {Alert, Confirm} from '@/components'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CatalogueRepository = RepositoryFactory.get('catalogues')
 export default {
     data() {
         return {
@@ -105,7 +107,7 @@ export default {
                 if(result) {
                     const data = []
                     const url  = `/Catalogue/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    CatalogueRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeCatalogue', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.name+' catalogue has been deleted.', routeName: this.$route.name, show: true, type: 'success'})

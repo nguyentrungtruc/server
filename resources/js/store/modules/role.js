@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const RoleRepository = RepositoryFactory.get('roles')
 
 const state = {
 	roles      : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchRole: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `Role/Fetch`
         if(!state.loading) {
             commit('LOADING_ROLE')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+            RoleRepository.get().then(response => {
                 if(response.status === 200) {
                     commit('FETCH_ROLE', response.data.roles)
 				}

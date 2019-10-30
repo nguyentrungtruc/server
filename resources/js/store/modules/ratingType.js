@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const RatingTypeRepository = RepositoryFactory.get('ratingType')
 
 const state = {
 	types      : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchRatingType: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `RatingType/Fetch`
         if(!state.loading) {
             commit('LOADING_RATING_TYPE')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+            RatingTypeRepository.get().then(response => {
                 if(response.status === 200) {
 					commit('FETCH_RATING_TYPE', response.data.types)
 				}

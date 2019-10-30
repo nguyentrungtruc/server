@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const SizeRepository = RepositoryFactory.get('sizes')
 
 const state = {
 	sizes      : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchSize: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `Size/Fetch`
         if(!state.loading) {
             commit('LOADING_SIZE')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+            SizeRepository.get().then(response => {
                 if(response.status === 200) {
                     commit('FETCH_SIZE', response.data.sizes)
                 }

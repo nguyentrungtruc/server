@@ -88,8 +88,8 @@ Route::group(['namespace' => 'Admin'], function ($router) {
 		Route::get('Fetch', 'ProductController@index');
 		Route::post('/Add', 'ProductController@store');
 	    Route::post('/{id}/Edit', 'ProductController@update');
-		Route::post('/{id}/Remove', 'ProductController@destroy');
 		Route::post('/{id}/Avatar/Update', 'ProductController@updateAvatar');
+		Route::post('/{id}/Remove', 'ProductController@destroy');
 	});
 
 	//PRODUCT STATUS

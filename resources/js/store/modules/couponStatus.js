@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CouponStatusRepository = RepositoryFactory.get('couponStatus')
 
 const state = {
 	status     : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchCouponStatus: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `CouponStatus/Fetch`
         if(!state.loading) {
             commit('LOADING_COUPON_STATUS')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+			CouponStatusRepository.get().then(response => {
                 if(response.status === 200) {
 					commit('FETCH_COUPON_STATUS', response.data.status)
 				}

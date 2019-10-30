@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const DistrictRepository = RepositoryFactory.get('districts')
 
 const state = {
 	districts  : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchDistrict: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `District/Fetch`
         if(!state.loading) {
             commit('LOADING_DISTRICT')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+            DistrictRepository.get().then(response => {
                 if(response.status === 200) {
                     commit('FETCH_DISTRICT', response.data.districts)
                 }

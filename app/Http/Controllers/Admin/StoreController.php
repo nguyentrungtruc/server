@@ -143,7 +143,9 @@ class StoreController extends Controller
     public function destroy($id)
     {
         try {
-            Store::destroy($id);
+            $store = Store::findorFail($id);
+            $this->handleRemoveImage($store->image);
+            Store::destroy($id);           
             return response(['The store has been deleted'], 204);
         } catch (Exception $e) {
             return response(['Problem deleting the store', 500]);

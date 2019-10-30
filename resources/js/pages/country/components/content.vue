@@ -65,6 +65,8 @@
 <script>
 import {Alert, Confirm} from '@/components'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CountryRepository = RepositoryFactory.get('countries')
 export default {
     data() {
         return {
@@ -105,9 +107,7 @@ export default {
         removeItem(item) {
             this.$refs.confirm.open('Remove Item', 'delete '+item.name+' country').then(result => {
                 if(result) {
-                    const data = []
-                    const url  = `/Country/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    CountryRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeCountry', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.name+' country has been deleted.', routeName: this.$route.name, show: true, type: 'success'})

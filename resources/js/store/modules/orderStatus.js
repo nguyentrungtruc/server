@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const OrderStatusRepository = RepositoryFactory.get('orderStatus')
 
 const state = {
 	status     : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchOrderStatus: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `OrderStatus/Fetch`
         if(!state.loading) {
             commit('LOADING_ORDER_STATUS')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+            OrderStatusRepository.get().then(response => {
                 if(response.status === 200) {
 					commit('FETCH_ORDER_STATUS', response.data.status)
 				}

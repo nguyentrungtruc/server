@@ -8,29 +8,29 @@
 			<v-card-text> 
 				<v-form>
 					<v-text-field 
-					                label         = "Name"
-					                v-model       = "editedItem.name"
-					              :error-messages = "errors.collect('name')"
-					              :counter        = "45"
-					                v-validate    = "'required|max:45'"
-					                data-vv-name  = "name"
+					                                  label         = "Name"
+					                                  v-model       = "editedItem.name"
+					                                :error-messages = "errors.collect('name')"
+					                                :counter        = "45"
+					                                  v-validate    = "'required|max:45'"
+					                                  data-vv-name  = "name"
 					></v-text-field>
 
 					<v-text-field 
-					                label         = "English name"
-					                v-model       = "editedItem._name"
-					              :counter        = "45"
-					              :error-messages = "errors.collect('English name')"
-					                v-validate    = "'max:45'"
-					                data-vv-name  = "English name"
+					                                  label         = "English name"
+					                                  v-model       = "editedItem._name"
+					                                :counter        = "45"
+					                                :error-messages = "errors.collect('English name')"
+					                                  v-validate    = "'max:45'"
+					                                  data-vv-name  = "English name"
 					></v-text-field>
 
 					<v-text-field
-					              label         = "Priority"
-					              v-model       = "editedItem.priority"
-					              v-validate    = "'required|numeric|max:2'"
-					            :error-messages = "errors.collect('priority')"
-					              data-vv-name  = "priority"
+					                                label         = "Priority"
+					                                v-model       = "editedItem.priority"
+					                                v-validate    = "'required|numeric|max:2'"
+					                              :error-messages = "errors.collect('priority')"
+					                                data-vv-name  = "priority"
 					/>
 
 					<v-switch label="Ẩn/Hiện" v-model="editedItem.isShow" color="primary"></v-switch>					
@@ -49,10 +49,11 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CatalogueRepository = RepositoryFactory.get('catalogues')
 export default {
 	data: function() {
 		return {
@@ -88,8 +89,8 @@ export default {
 			vm.$validator.validateAll().then(async (result) => {
 				if(result) {
 					if(!vm.progress) {
-						                                                                  vm.progress = true
-						                                                            const data        = {...this.editedItem}
+						                                                      vm.progress = true
+						                                                const data        = {...this.editedItem}
 						if(vm.editedIndex > -1) {
 							vm.update(data)
 						} else {
@@ -101,9 +102,8 @@ export default {
 		},
 		//ACTION ADD NEW
 		add(data) {
-			const url    = `Catalogue/Add`
 			const params = {storeId: this.$route.params.storeId}
-			this.axios.post(url, data, {params, withCredentials: true}).then(response => {
+			CatalogueRepository.create(data, params).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateCatalogue', response.data.catalogue)
 					this.close()
@@ -118,10 +118,9 @@ export default {
 		//ACTION UPDATE
 		update(data) {
 			const {id} = data
-			const url  = `Catalogue/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			CatalogueRepository.update(id, data).then(response => {
 				if(response.status === 200) {
-					this.$store.dispatch('updateCatalogue', response.data.catalogue)
+					this.$store.dispatch('updateCatalogue', response.data.catalogue) 
 					this.close()
 					this.success(data.name+' catalogue has been edited.')
 				}
@@ -130,6 +129,7 @@ export default {
 					this.fail(data.name+' catalogue has already been taken.')
 				}
 			}).finally(() => {this.progress = false})
+			
 		},
 		//ACTION ALERT WHEN SUCCESS
 		success(message) {

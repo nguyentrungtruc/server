@@ -122,11 +122,11 @@
                             >
                                 <v-expand-transition>
                                     <div
-                                          v-if           = "hover || $vuetify.breakpoint.smAndDown"
-                                          class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
-                                          style          = " cursor: pointer;"
-                                          @click.prevent = "updatingAvatar(item)"
-                                        :style           = "cameraOverlay"
+                                                                v-if           = "hover || $vuetify.breakpoint.smAndDown"
+                                                                class          = "d-flex transition-fast-in-fast-out black lighten-2 v-card--reveal white--text"
+                                                                style          = " cursor: pointer;"
+                                                                @click.prevent = "updatingAvatar(item)"
+                                                              :style           = "cameraOverlay"
                                     >
                                         <v-layout column justify-center align-center>
 											<v-flex>
@@ -210,9 +210,9 @@
             </v-data-table>
             <div class="text-xs-center pt-2" v-if="pagination.lastPage>1">
                 <v-pagination 
-                            v-model = "pagination.currentPage"
-                          :length   = "pagination.lastPage"
-                            @input  = "changePage(pagination.currentPage)"
+                                                  v-model = "pagination.currentPage"
+                                                :length   = "pagination.lastPage"
+                                                  @input  = "changePage(pagination.currentPage)"
                 circle
                 />
             </div>
@@ -226,6 +226,8 @@
 import {Alert, Confirm, ImageDialog} from '@/components'
 import index from '@/mixins'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const StoreRepository = RepositoryFactory.get('stores')
 export default {
     mixins: [index],
     data() {
@@ -268,9 +270,7 @@ export default {
         removeItem(item) {
             this.$refs.confirm.open('Remove Item', 'delete '+item.name+' store').then(result => {
                 if(result) {
-                    const data = []
-                    const url  = `/Store/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    StoreRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeStore', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.name+' store has been deleted.', routeName: this.$route.name, show: true, type: 'success'})
@@ -297,21 +297,25 @@ export default {
         updatingAvatar(item) {
 			var   vm   = this
 			const size = { width: 350, height: 350 }
+            this.$store.dispatch('editAvatar', item)
 			this.$refs.avatar.open('Change avatar of store '+item.name, size).then(response => {
 				if(response.status) {
 					vm.updateAvatar(response.avatar, item)
-				}
+                } else {
+                    this.$store.commit('CLOSE_STORE_DIALOG')
+                }
+                
 			})
         },
         //REQUEST UPDATE AVATAR TO SERVER
         updateAvatar(avatar, store) {
-			var   vm      = this
-			const storeId = store.id
-			const url     = `/Store/${storeId}/Avatar/Update`
-			const data    = { avatar: avatar }
-			axios.post(url, data, { withCredentials: true }).then(response => {
+			var   vm   = this
+			const {id} = store
+			const data = { avatar: avatar }
+			StoreRepository.updateAvatar(id, data).then(response => {
 				if(response.status === 200 ){
-					store.avatar = response.data.store.avatar
+                    this.$store.dispatch('updateStore', response.data.store)
+                    this.$store.commit('CLOSE_STORE_DIALOG')
 				}
 			}).finally(() => {
 

@@ -8,11 +8,11 @@
 			<v-card-text> 
 				<v-form>
 					<v-text-field 
-						          label         = "Type name"
-						          v-model       = "editedItem.name"
-						        :error-messages = "errors.collect('name')"
-						          v-validate    = "'required|max:50'"
-						          data-vv-name  = "name"
+						            label         = "Type name"
+						            v-model       = "editedItem.name"
+						          :error-messages = "errors.collect('name')"
+						            v-validate    = "'required|max:50'"
+						            data-vv-name  = "name"
 						persistent-hint
 					></v-text-field>
 					
@@ -30,10 +30,11 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const RatingTypeRepository = RepositoryFactory.get('ratingType')
 export default {
 	data: function() {
 		return {
@@ -64,8 +65,8 @@ export default {
 			vm.$validator.validateAll().then(async (result) => {
 				if(result) {
 					if(!vm.progress) {
-						      vm.progress = true
-						const data        = {...this.editedItem}
+						            vm.progress = true
+						      const data        = {...this.editedItem}
 						if(vm.editedIndex > -1) {
 							vm.update(data)
 						} else {
@@ -78,7 +79,7 @@ export default {
 		//ACTION ADD NEW
 		add(data) {
 			const url = `RatingType/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			RatingTypeRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateRatingType', response.data.type)
 					this.close()
@@ -93,8 +94,7 @@ export default {
 		//ACTION UPDATE
 		update(data) {
 			const {id} = data
-			const url  = `RatingType/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			RatingTypeRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateRatingType', response.data.type)
 					this.close()

@@ -60,8 +60,9 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
-	import axios from 'axios'
+import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const StoreRepository = RepositoryFactory.get('stores')
 	export default {
 		data : function() {
 			return {
@@ -90,9 +91,9 @@
 					}
 				})
 				if(data.length>0) {
-					const url     = `Store/${this.store.id}/Activity/Update`
+					const {id}    = this.store
 					var   payload = {data: data}
-					axios.post(url, payload).then(response => {
+					StoreRepository.updateActivity(this.store.id, payload).then(response => {
 						if(response.status === 200) {
 							this.$store.commit('SHOW_STORE', response.data)
 							this.close()

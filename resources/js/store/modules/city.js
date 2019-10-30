@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const CityRepository = RepositoryFactory.get('cities')
 
 const state = {
 	cities     : [],
@@ -46,8 +47,8 @@ const actions = {
         const data = []
         const url  = `City/Fetch`
         if(!state.loading) {
-            commit('LOADING_CITY')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+			commit('LOADING_CITY')
+			CityRepository.get().then(response => {
                 if(response.status === 200) {
                     commit('FETCH_CITY', response.data.cities)
 				}
