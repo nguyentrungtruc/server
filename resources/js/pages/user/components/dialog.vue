@@ -25,21 +25,21 @@
 					/>
 
 					<v-text-field
-					  prepend-icon  = "person"
-					  label         = "Name"
-					  v-model       = "editedItem.name"
-					  v-validate    = "'required'"
-					:error-messages = "errors.collect('name')"
-					  data-vv-name  = "name"
+					          prepend-icon  = "person"
+					          label         = "Name"
+					          v-model       = "editedItem.name"
+					          v-validate    = "'required'"
+					        :error-messages = "errors.collect('name')"
+					          data-vv-name  = "name"
 					/>
 
 					<v-text-field
-					  prepend-icon  = "email"
-					  label         = "Email"
-					  v-model       = "editedItem.email"
-					  v-validate    = "'required|email'"
-					:error-messages = "errors.collect('email')"
-					  data-vv-name  = "email"
+					          prepend-icon  = "email"
+					          label         = "Email"
+					          v-model       = "editedItem.email"
+					          v-validate    = "'required|email'"
+					        :error-messages = "errors.collect('email')"
+					          data-vv-name  = "email"
 					/>
 
 					<v-text-field
@@ -57,13 +57,13 @@
 					/>
 
 					<v-text-field 
-					  prepend-icon  = "lock"
-					  label         = "Confirm password"
-					  v-model       = "editedItem.confirmPassword"
-					:type           = "showPassword ? 'text' : 'password'"
-					  v-validate    = "{required:requiredPassword, is:editedItem.password}"
-					  data-vv-name  = "confirm password"
-					:error-messages = "errors.collect('confirm password')"
+					          prepend-icon  = "lock"
+					          label         = "Confirm password"
+					          v-model       = "editedItem.confirmPassword"
+					        :type           = "showPassword ? 'text' : 'password'"
+					          v-validate    = "{required:requiredPassword, is:editedItem.password}"
+					          data-vv-name  = "confirm password"
+					        :error-messages = "errors.collect('confirm password')"
 					/>
 
 					<v-radio-group v-model="editedItem.gender" row>
@@ -75,10 +75,10 @@
 					</v-radio-group>
 					
 					<v-menu
-						  ref                   = "menu"
-						  v-model               = "menu"
-						:close-on-content-click = "false"
-						  transition            = "scale-transition"
+						          ref                   = "menu"
+						          v-model               = "menu"
+						        :close-on-content-click = "false"
+						          transition            = "scale-transition"
 						offset-y
 						full-width
 						min-width = "290px"
@@ -89,18 +89,18 @@
 						label        = "Birthday date"
 						prepend-icon = "event"
 						readonly
-						  v-on          = "on"
-						  v-validate    = "'required'"
-						:error-messages = "errors.collect('birthday')"
-						  data-vv-name  = "birthday"
+						          v-on          = "on"
+						          v-validate    = "'required'"
+						        :error-messages = "errors.collect('birthday')"
+						          data-vv-name  = "birthday"
 							/>
 						</template>
 						<v-date-picker
-						  ref     = "picker"
-						  v-model = "editedItem.birthday"
-						:max      = "new Date().toISOString().substr(0, 10)"
-						  min     = "1950-01-01"
-						  @change = "changeDate"
+						          ref     = "picker"
+						          v-model = "editedItem.birthday"
+						        :max      = "new Date().toISOString().substr(0, 10)"
+						          min     = "1950-01-01"
+						          @change = "changeDate"
 						></v-date-picker>
 					</v-menu>
 				</v-container>
@@ -110,22 +110,22 @@
 				<v-container>				
 
 					<v-text-field
-					  mask          = "(####) ### - ###"
-					  prepend-icon  = "phone"
-					  label         = "Phone"
-					  v-model.trim  = "editedItem.phone"
-					  v-validate    = "'numeric|min:10|max:11'"
-					:error-messages = "errors.collect('phone')"
-					  data-vv-name  = "phone"
+					          mask          = "(####) ### - ###"
+					          prepend-icon  = "phone"
+					          label         = "Phone"
+					          v-model.trim  = "editedItem.phone"
+					          v-validate    = "'numeric|min:10|max:11'"
+					        :error-messages = "errors.collect('phone')"
+					          data-vv-name  = "phone"
 					/>
 
 					<v-text-field
-						  prepend-icon  = "place"
-						  label         = "Address"
-						  v-model       = "editedItem.address"
-						  v-validate    = "'max:255'"
-						:error-messages = "errors.collect('address')"
-						  data-vv-name  = "address"
+						          prepend-icon  = "place"
+						          label         = "Address"
+						          v-model       = "editedItem.address"
+						          v-validate    = "'max:255'"
+						        :error-messages = "errors.collect('address')"
+						          data-vv-name  = "address"
 					/>
 				</v-container>
 				
@@ -151,10 +151,11 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
 import {Geocoder} from '@/utils/maps'
+import {RepositoryFactory} from '@/services/Repository/index'
+const UserRepository = RepositoryFactory.get('users')
 export default {
 	data: function() {
 		return {
@@ -238,8 +239,7 @@ export default {
 		},
 		//ACTION ADD NEW 
 		add(data) {
-			const url = `User/Add`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			UserRepository.create(data).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateUser', response.data.user)
 					this.close()
@@ -254,12 +254,9 @@ export default {
 		//ACTION UPDATE
 		update(data) {
 			const {id} = data
-			const url  = `User/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			UserRepository.update(id, data).then(response => {
 				if(response.status === 200) {
-					this.$store.dispatch('updateUser', response.data.user)
-					this.close()
-					this.success(data.email+' user has been edited.')
+					this.$store.dispatch('updateUser', response.data.user) && this.close() && this.success(data.email+' user has been edited.')
 				}
 			}).catch(error => {
 				if(error.response.status === 422) {

@@ -74,10 +74,7 @@ export default {
     },
     beforeDestroy() {
         this.$store.dispatch('clearRole')
-        // this.$store.dispatch('clearType')
-        // this.$store.dispatch('clearStoreStatus')
-        // this.$store.dispatch('clearStore')
-        // this.$store.dispatch('offAlert')
+        this.$store.dispatch('offAlert')
     },
     methods: {
         //ACTION BUTTON ADD
@@ -85,11 +82,7 @@ export default {
             this.$store.commit('OPEN_USER_DIALOG')
         },
         async fetch() {
-            // const query = {...this.search, page: 1}
-            await this.$store.dispatch('fetchRole')
-            // await this.$store.dispatch('fetchType')
-            // await this.$store.dispatch('fetchStoreStatus')
-            // this.$store.dispatch('fetchStore', query)
+            this.$store.dispatch('fetchRole')
         }
     },
     computed: {

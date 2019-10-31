@@ -152,9 +152,9 @@
             </v-data-table>
             <div class="text-xs-center pt-2" v-if="pagination.lastPage>1">
                 <v-pagination 
-                      v-model = "pagination.currentPage"
-                    :length   = "pagination.lastPage"
-                      @input  = "changePage(pagination.currentPage)"
+                            v-model = "pagination.currentPage"
+                          :length   = "pagination.lastPage"
+                            @input  = "changePage(pagination.currentPage)"
                 circle
                 />
             </div>
@@ -167,6 +167,8 @@
 import {Alert, Confirm} from '@/components'
 import index from '@/mixins'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const UserRepository = RepositoryFactory.get('users')
 export default {
     mixins: [index],
     data() {
@@ -203,9 +205,7 @@ export default {
         removeItem(item) {
             this.$refs.confirm.open('Remove Item', 'delete '+item.email+' user').then(result => {
                 if(result) {
-                    const data = []
-                    const url  = `/User/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    UserRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeUser', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.email+' user has been deleted.', routeName: this.$route.name, show: true, type: 'success'})

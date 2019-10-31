@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const UserRepository = RepositoryFactory.get('users')
 
 const state = {
 	users      : [],
@@ -54,10 +55,9 @@ const mutations = {
 
 const actions = {
 	fetchUser: ({commit, state}, params) => new Promise((resolve, reject) => {
-        const url = `User/Fetch`
         if(!state.loading) {
             commit('LOADING_USER')
-            axios.get(url, {params, withCredentials: true}).then(response => {
+            UserRepository.get(params).then(response => {
                 if(response.status === 200) {
 					commit('FETCH_USER', response.data)
 				}

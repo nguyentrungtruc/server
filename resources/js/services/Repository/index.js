@@ -13,6 +13,7 @@ import store from './store'
 import storeStatus from './storeStatus'
 import topping from './topping'
 import type from './type'
+import user from './user'
 const repositories = {
     catalogues   : catalogue,
     cities       : city,
@@ -28,7 +29,8 @@ const repositories = {
     stores       : store,
     storeStatus  : storeStatus,
     toppings     : topping,
-    types        : type
+    types        : type,
+    users        : user
 }
 
 export const RepositoryFactory = {
