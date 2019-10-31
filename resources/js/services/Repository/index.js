@@ -10,6 +10,7 @@ import ratingType from './ratingType'
 import role from './role'
 import size from './size'
 import store from './store'
+import storeStatus from './storeStatus'
 const repositories = {
     catalogues   : catalogue,
     cities       : city,
@@ -22,7 +23,8 @@ const repositories = {
     ratingType   : ratingType,
     roles        : role,
     sizes        : size,
-    stores       : store
+    stores       : store,
+    storeStatus  : storeStatus
 }
 
 export const RepositoryFactory = {
