@@ -65,6 +65,8 @@
 <script>
 import {Alert, Confirm} from '@/components'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const TypeRepository = RepositoryFactory.get('types')
 export default {
     data() {
         return {
@@ -105,9 +107,7 @@ export default {
         removeItem(item) {
             this.$refs.confirm.open('Remove Item', 'delete '+item.name+' type').then(result => {
                 if(result) {
-                    const data = []
-                    const url  = `/Type/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    TypeRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeType', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.name+' type has been deleted.', routeName: this.$route.name, show: true, type: 'success'})
@@ -127,7 +127,6 @@ export default {
         },
         // FIND BY TEXT
         filterByText(list, value) {
-            console.log(value)
             const keywords = value.toLowerCase()
             if(keywords === '' || keywords === null) {
                 return list

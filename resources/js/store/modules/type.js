@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const TypeRepository = RepositoryFactory.get('types')
 
 const state = {
 	types      : [],
@@ -43,11 +44,9 @@ const mutations = {
 
 const actions = {
 	fetchType: ({commit, state}) => new Promise((resolve, reject) => {
-        const data = []
-        const url  = `Type/Fetch`
         if(!state.loading) {
             commit('LOADING_TYPE')
-            axios.get(url, data, {withCredentials: true}).then(response => {
+            TypeRepository.get().then(response => {
                 if(response.status === 200) {
 					commit('FETCH_TYPE', response.data.types)
 				}
