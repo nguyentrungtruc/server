@@ -11,6 +11,7 @@ import role from './role'
 import size from './size'
 import store from './store'
 import storeStatus from './storeStatus'
+import topping from './topping'
 const repositories = {
     catalogues   : catalogue,
     cities       : city,
@@ -24,7 +25,8 @@ const repositories = {
     roles        : role,
     sizes        : size,
     stores       : store,
-    storeStatus  : storeStatus
+    storeStatus  : storeStatus,
+    toppings     : topping
 }
 
 export const RepositoryFactory = {

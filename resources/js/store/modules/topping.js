@@ -1,4 +1,5 @@
-import axios from 'axios'
+import {RepositoryFactory} from '@/services/Repository/index'
+const ToppingRepository = RepositoryFactory.get('toppings')
 
 const state = {
 	toppings   : [],
@@ -47,14 +48,10 @@ const mutations = {
 const actions = {
 	fetchTopping: ({commit, state}, id) => new Promise((resolve, reject) => {
         const params = {storeId: id}
-        const url    = `Topping/Fetch`
         if(!state.loading) {
             commit('LOADING_TOPPING')
-            axios.get(url, {params, withCredentials: true}).then(response => {
-                if(response.status === 200) {
-					commit('FETCH_TOPPING', response.data.toppings)
-				}
-				resolve(response)
+            ToppingRepository.get(params).then(response => {
+				(response.status === 200) ? commit('FETCH_TOPPING', response.data.toppings): '' && resolve(response)
             }).catch(error => {reject(error)}).finally(() => commit('LOADING_TOPPING'))
         }
 	}),

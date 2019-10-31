@@ -69,6 +69,8 @@
 <script>
 import {Alert, Confirm} from '@/components'
 import {mapState} from 'vuex'
+import {RepositoryFactory} from '@/services/Repository/index'
+const ToppingRepository = RepositoryFactory.get('toppings')
 export default {
     data() {
         return {
@@ -108,7 +110,7 @@ export default {
                 if(result) {
                     const data = []
                     const url  = `/Topping/${item.id}/Remove`
-                    this.axios.post(url, data, {withCredentials: true}).then(response => {
+                    ToppingRepository.delete(item.id).then(response => {
                         if(response.status === 204) {
                             this.$store.dispatch('removeTopping', item)
 			                this.$store.dispatch('onAlert', {close: true, index: 0, message: item.name+' topping has been deleted.', routeName: this.$route.name, show: true, type: 'success'})

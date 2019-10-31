@@ -92,7 +92,7 @@ const actions = {
 	fetchStore: ({commit, state}, params) => new Promise((resolve, reject) => {
         if(!state.loading) {
             commit('LOADING_STORE')
-            StoreRepository.get().then(response => {
+            StoreRepository.get(params).then(response => {
                 if(response.status === 200) {
                     commit('FETCH_STORE', response.data)
                 }

@@ -8,31 +8,31 @@
 			<v-card-text> 
 				<v-form>
 					<v-text-field 
-					          label         = "Name"
-					          v-model       = "editedItem.name"
-					        :error-messages = "errors.collect('name')"
-					        :counter        = "45"
-					          v-validate    = "'required|max:45'"
-					          data-vv-name  = "name"
+					                  label         = "Name"
+					                  v-model       = "editedItem.name"
+					                :error-messages = "errors.collect('name')"
+					                :counter        = "45"
+					                  v-validate    = "'required|max:45'"
+					                  data-vv-name  = "name"
 					></v-text-field>
 
 					<v-text-field 
-					          label         = "English name"
-					          v-model       = "editedItem._name"
-					        :counter        = "45"
-					        :error-messages = "errors.collect('English name')"
-					          v-validate    = "'max:45'"
-					          data-vv-name  = "English name"
+					                  label         = "English name"
+					                  v-model       = "editedItem._name"
+					                :counter        = "45"
+					                :error-messages = "errors.collect('English name')"
+					                  v-validate    = "'max:45'"
+					                  data-vv-name  = "English name"
 					></v-text-field>
 
 					<v-text-field 
 					v-model = "editedItem.price"
 					label   = "Price"
 					persistent-hint 
-					    hint          = "Price for topping"
-					    suffix        = "vnđ" v-validate = "'required|max:10|numeric'"
-					    data-vv-name  = "price"
-					  :error-messages = "errors.collect('price')"
+					            hint          = "Price for topping"
+					            suffix        = "vnđ" v-validate = "'required|max:10|numeric'"
+					            data-vv-name  = "price"
+					          :error-messages = "errors.collect('price')"
 					/>			
 					
 					<v-switch label="Ẩn/Hiện" v-model="editedItem.isShow" color="primary"></v-switch>
@@ -50,9 +50,10 @@
 
 <script>
 import {ErrorBag, Validator} from 'vee-validate'
-import axios from 'axios'
 import {mapState} from 'vuex'
 import {Alert} from '@/components'
+import {RepositoryFactory} from '@/services/Repository/index'
+const ToppingRepository = RepositoryFactory.get('toppings')
 export default {
 	data: function() {
 		return {
@@ -88,8 +89,8 @@ export default {
 			vm.$validator.validateAll().then(async (result) => {
 				if(result) {
 					if(!vm.progress) {
-							                              vm.progress = true
-							                        const data        = {...this.editedItem}
+							      vm.progress = true
+							const data        = {...this.editedItem}
 						if(vm.editedIndex > -1) {
 							vm.update(data)
 						} else {
@@ -101,9 +102,8 @@ export default {
 		},
 		//ACTION ADD NEW
 		add(data) {
-			const url    = `Topping/Add`
 			const params = {storeId: this.$route.params.storeId}
-			this.axios.post(url, data, {params, withCredentials: true}).then(response => {
+			ToppingRepository.create(data, params).then(response => {
 				if(response.status === 201) {
 					this.$store.dispatch('updateTopping', response.data.topping)
 					this.close()
@@ -118,8 +118,7 @@ export default {
 		//ACTION UPDATE
 		update(data) {
 			const {id} = data
-			const url  = `Topping/${id}/Edit`
-			this.axios.post(url, data, {withCredentials: true}).then(response => {
+			ToppingRepository.update(id, data).then(response => {
 				if(response.status === 200) {
 					this.$store.dispatch('updateTopping', response.data.topping)
 					this.close()
