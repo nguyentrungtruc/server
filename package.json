@@ -36,7 +36,7 @@
         "babel-preset-stage-2": "^6.24.1",
         "css-loader": "^3.0.0",
         "laravel-echo": "^1.5.4",
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "numeral": "^2.0.6",
         "pusher-js": "^4.4.0",
         "vee-validate": "^2.2.11",
